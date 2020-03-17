@@ -2,6 +2,7 @@
 #pragma once
 
 #include "game_options.hpp"
+#include "random.hpp"
 #include <string>
 #include <vector>
 
