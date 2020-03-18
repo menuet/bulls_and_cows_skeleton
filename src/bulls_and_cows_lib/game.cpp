@@ -5,11 +5,13 @@
 #include "game_solver.hpp"
 #include "input.hpp"
 #include "main_menu.hpp"
+#include "random.hpp"
 #include <chrono>
 #include <fstream>
 #include <iostream>
 #include <thread>
-
+#include <vector>
+#include <list>
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
@@ -24,6 +26,8 @@ namespace bulls_and_cows {
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
                      "    Display a message telling if the user won or lost\n";
+
+        
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -87,5 +91,10 @@ namespace bulls_and_cows {
             }
         }
     }
+
+
+    
+
+
 
 } // namespace bulls_and_cows
