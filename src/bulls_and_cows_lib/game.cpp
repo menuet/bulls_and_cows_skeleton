@@ -15,74 +15,12 @@
 
 namespace bulls_and_cows {
 
-  void print_head(std::vector<AttemptAndFeedback> v)
-    {
-        int anssize = static_cast<int>(v.size());
-        std::string espaces = "";
-        std::string moins = "--------------------------";
-        std::string etoiles = "";
-        for (int j = 0; j < anssize; j++)
-        {
-            etoiles = etoiles + "* ";
-            espaces = espaces + "  ";
-            moins = moins + "--";
-        }
-        moins = moins + "\n";
-
-        std::cout << moins << "| SECRET  " << etoiles << "|              |\n"
-                  << moins << "| ATTEMPTS" << espaces << "| BULLS | COWS |"
-                  << "\n"
-                  << moins;
-    }
-
-  void print_body(const GameOptions& game_options, std::list<std::string> attempts, bool init)
-  {
-      if (init)
-      {
-          std::string defaultt = "";
-          for (int i = 0; i < game_options.number_of_characters_per_code; i++)
-          {
-              defaultt += ". ";
-          }
-
-          for (std::string test : attempts)
-          {
-              test = defaultt;
-          }
-          init = false;
-      }
-  }
-
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        int indexans = 0;
-        bool init = true;
-
-        std::list<std::string> attempts(game_options.max_number_of_attempts);
-        //CREATING BOARD
+       
+        //CREATING BOARD using functions we implemented
         Board myboard = bulls_and_cows::create_board(game_options);
 
-        print_head(myboard.attempts_and_feedbacks);
-        print_body(game_options, attempts, init);
-
-        
-//| SECRET   * * * * * |              |       
-//-------------------------------------
-//| ATTEMPTS           | BULLS | COWS |
-//-------------------------------------
-//| #12      . . . . . |       |      |
-//| #11      . . . . . |       |      |
-//| #10      . . . . . |       |      |
-//| #09      . . . . . |       |      |
-//| #08      . . . . . |       |      |
-//| #07      . . . . . |       |      |
-//| #06      . . . . . |       |      |
-//| #05      . . . . . |       |      |
-//| #04      . . . . . |       |      |
-//| #03      . . . . . |       |      |
-//| #02      . . . . . |       |      |
-//| #01      . . . . . |       |      |
-//-------------------------------------
 
         std::cout <<"\n" <<"TODO:\n"
                      "    Create a board with a randomly generated secret code DONE\n"
