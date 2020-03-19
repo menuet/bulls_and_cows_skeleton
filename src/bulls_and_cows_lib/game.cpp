@@ -21,8 +21,9 @@ namespace bulls_and_cows {
         std::istream input_stream{NULL};
         
         myboard = create_board(game_options);
+        std::cout << myboard.secret_code.value;
         
-        do
+       
         {
             display_board(output_stream, game_options, myboard);
             my_feedback.attempt = ask_attempt(output_stream, input_stream, game_options, myboard);

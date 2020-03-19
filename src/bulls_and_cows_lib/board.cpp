@@ -18,18 +18,6 @@ namespace bulls_and_cows {
 
         }
 
-        for (unsigned int j = 0; j < myboard.secret_code.value.size(); j++)
-        {
-            auto temp = myboard.secret_code.value[j];
-            for (unsigned int k = 0; k < myboard.secret_code.value.size(); k++)
-            {
-                if (temp == myboard.secret_code.value[k] && (j != k))
-                {
-                    //erreur
-                }
-            }
-        }
-
         return myboard;
     }
 
