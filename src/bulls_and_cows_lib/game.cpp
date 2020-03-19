@@ -16,20 +16,18 @@ namespace bulls_and_cows {
     {
         Board myboard{};
         AttemptAndFeedback my_feedback{};
-        std::ostream output_stream{NULL};
-        std::istream input_stream{NULL};
         
         myboard = create_board(game_options);
         
         do
         {
-            display_board(output_stream, game_options, myboard);
-            my_feedback.attempt = ask_attempt(output_stream, input_stream, game_options, myboard);
+            display_board(std::cout, game_options, myboard);
+            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
 
-            while (!validate_attempt(game_options,my_feedback.attempt));
+            while (!validate_attempt(game_options,my_feedback.attempt)); // ???
             {
-                output_stream << "Your attempt is not valid, try again";
-                my_feedback.attempt = ask_attempt(output_stream, input_stream, game_options, myboard);
+                std::cout << "Your attempt is not valid, try again";
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
             }
 
             my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, myboard.secret_code);
@@ -37,15 +35,15 @@ namespace bulls_and_cows {
 
         } while (!is_end_of_game(game_options, myboard));
 
-        display_board(output_stream, game_options, myboard);
+        display_board(std::cout, game_options, myboard);
 
         if (is_win(game_options, myboard))
         {
-            output_stream << "You won";
+            std::cout << "You won";
         }
         else
         {
-            output_stream << "You lost";
+            std::cout << "You lost";
         }
         
         /*std::cout << "TODO:\n"

@@ -1,6 +1,6 @@
 
 #include "board.hpp"
-#include "random.cpp"
+#include "random.hpp"
 
 namespace bulls_and_cows {
 
@@ -15,7 +15,6 @@ namespace bulls_and_cows {
                                                   game_options.maximum_allowed_character);
 
             myboard.secret_code.value.push_back(rand);
-
         }
 
         return myboard;
@@ -25,9 +24,16 @@ namespace bulls_and_cows {
     {
         if (attempt.value.size() == game_options.number_of_characters_per_code)
         {
+            for (unsigned int i=0; i<attempt.value.size(); i++)
+            {
+                if (!(attempt.value[i] >= game_options.minimum_allowed_character && attempt.value[i] <= game_options.maximum_allowed_character))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
-
         return false;
     }
 
@@ -36,10 +42,11 @@ namespace bulls_and_cows {
         Feedback myfeedback{};
         int cpt_bulls = 0;
         int cpt_cows = 0;
+        unsigned int n = 0;
 
         for (unsigned int i = 0; i < attempt.value.size(); i++)
         {
-            for (unsigned int j = 0; j < secret_code.value.size(); j++)
+            for (unsigned int j = n; j < secret_code.value.size(); j++)
             {
                 if (secret_code.value[j] == attempt.value[i])
                 {
@@ -53,6 +60,7 @@ namespace bulls_and_cows {
                     }
                 }
             }
+            n++;
         }
 
         myfeedback.bulls = cpt_bulls;
@@ -63,12 +71,7 @@ namespace bulls_and_cows {
 
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
-        if (board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts)
-        {
-            return true;
-        }
-
-        return false;
+        board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts;
     }
 
     bool is_win(const GameOptions& game_options, const Board& board)
@@ -87,21 +90,22 @@ namespace bulls_and_cows {
     {
         if (is_win(game_options, board) || is_end_of_game(game_options, board))
         {
-            output_stream << "Secret Code : " << board.secret_code.value;
+            output_stream << "Secret Code : " << board.secret_code.value << "\n";
         }
         else
         {
             output_stream << "Secret Code : ";
             for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
             {
-                output_stream << "* ";
+                output_stream << "* "
+                              << "\n";
             }
         }
 
         for (auto element : board.attempts_and_feedbacks)
         {
             output_stream << element.attempt.value << " ||||| "
-                          << "Bulls : " << element.feedback.bulls << " // Cows : " << element.feedback.cows;
+                          << "Bulls : " << element.feedback.bulls << " // Cows : " << element.feedback.cows << "\n";
         }
     }
 
