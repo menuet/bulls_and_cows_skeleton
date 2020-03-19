@@ -20,9 +20,7 @@ namespace bulls_and_cows {
         std::ostream output_stream{NULL};
         std::istream input_stream{NULL};
         
-        myboard = create_board(game_options);
-        std::cout << myboard.secret_code.value;
-        
+        myboard = create_board(game_options);    
        
         {
             display_board(output_stream, game_options, myboard);
