@@ -16,12 +16,12 @@ namespace bulls_and_cows {
     {
         Board myboard{};
         AttemptAndFeedback my_feedback{};
-        
         std::ostream output_stream{NULL};
         std::istream input_stream{NULL};
         
-        myboard = create_board(game_options);    
-       
+        myboard = create_board(game_options);
+        
+        do
         {
             display_board(output_stream, game_options, myboard);
             my_feedback.attempt = ask_attempt(output_stream, input_stream, game_options, myboard);
