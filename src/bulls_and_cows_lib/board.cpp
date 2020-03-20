@@ -1,6 +1,8 @@
 
 #include "board.hpp"
+#include "input.hpp"
 #include "random.hpp"
+#include <vector>
 
 namespace bulls_and_cows {
 
@@ -9,32 +11,57 @@ namespace bulls_and_cows {
     {
         Board myboard{};
 
+        std::vector<char> allowed_char;
+        for (auto i = game_options.minimum_allowed_character; i <= game_options.maximum_allowed_character;
+             i++) // remplir un vector avec la liste des caracteres autorisés
+        {
+            allowed_char.push_back(i);
+        }
+
         for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+        {
+            char temp = generate_random_character(
+                allowed_char[0],
+                allowed_char[allowed_char.size() - 1]); // piocher dedans en choisissant un index de manière aléatoire
+
+            for (unsigned int j = 0; j < allowed_char.size(); j++) //
+            {
+                if (allowed_char[j] == temp)
+                {
+                    allowed_char.erase(allowed_char.begin() + i); // supprimer le caractère du vector contenant les caracteres autorisés
+                }
+            }
+            myboard.secret_code.value.push_back(temp); //ajouter à la string secret_code.value
+        }
+
+        /*for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
         {
             auto rand = generate_random_character(game_options.minimum_allowed_character,
                                                   game_options.maximum_allowed_character);
 
             myboard.secret_code.value.push_back(rand);
-        }
+        }*/
 
         return myboard;
     }
 
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
-        if (attempt.value.size() == game_options.number_of_characters_per_code)
+        if (attempt.value.size() != game_options.number_of_characters_per_code)
         {
-            for (unsigned int i=0; i<attempt.value.size(); i++)
-            {
-                if (!(attempt.value[i] >= game_options.minimum_allowed_character && attempt.value[i] <= game_options.maximum_allowed_character))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return false;
         }
-        return false;
+
+        for (const char attempt_char : attempt.value)
+        {
+            if (attempt_char < game_options.minimum_allowed_character ||
+                attempt_char > game_options.maximum_allowed_character)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
@@ -56,7 +83,7 @@ namespace bulls_and_cows {
                     }
                     else
                     {
-                        cpt_cows;
+                        cpt_cows++;
                     }
                 }
             }
@@ -88,20 +115,12 @@ namespace bulls_and_cows {
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
-        if (is_win(game_options, board) || is_end_of_game(game_options, board))
+        output_stream << "Secret Code : ";
+        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
         {
-            output_stream << "Secret Code : " << board.secret_code.value << "\n";
+            output_stream << "* ";
         }
-        else
-        {
-            output_stream << "Secret Code : ";
-            for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
-            {
-                output_stream << "* ";
-                             
-            }
-            output_stream << "\n";
-        }
+        output_stream << "\n";
 
         for (auto element : board.attempts_and_feedbacks)
         {
@@ -115,7 +134,7 @@ namespace bulls_and_cows {
     {
         Code attempt{};
         output_stream << "Enter your attempt : ";
-        input_stream >> attempt.value;
+        attempt.value = ask_string(input_stream);
 
         return attempt;
     }
