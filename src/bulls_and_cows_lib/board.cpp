@@ -18,20 +18,24 @@ namespace bulls_and_cows {
             allowed_char.push_back(i);
         }
 
-        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+        unsigned int i = 0;
+
+        while ( i != game_options.number_of_characters_per_code)
         {
             char temp = generate_random_character(
-                allowed_char[0],
-                allowed_char[allowed_char.size() - 1]); // piocher dedans en choisissant un index de manière aléatoire
+                allowed_char.front(),
+                allowed_char.back()); // piocher dedans en choisissant un index de manière aléatoire
 
             for (unsigned int j = 0; j < allowed_char.size(); j++) //
             {
                 if (allowed_char[j] == temp)
                 {
-                    allowed_char.erase(allowed_char.begin() + i); // supprimer le caractère du vector contenant les caracteres autorisés
+                    allowed_char.erase(allowed_char.begin() + j); // supprimer le caractère du vector contenant les caracteres autorisés
+                    myboard.secret_code.value.push_back(temp); // ajouter à la string secret_code.value
+                    i++;
                 }
             }
-            myboard.secret_code.value.push_back(temp); //ajouter à la string secret_code.value
+            
         }
 
         /*for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
