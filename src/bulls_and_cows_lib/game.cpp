@@ -21,6 +21,7 @@ namespace bulls_and_cows {
 
         do
         {
+            std::cout << "\n";
             display_board(std::cout, game_options, myboard);
             std::cout << myboard.secret_code.value << "\n";
 
@@ -35,17 +36,18 @@ namespace bulls_and_cows {
            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, myboard.secret_code);
            myboard.attempts_and_feedbacks.push_back(my_feedback);
 
-        } while (!is_end_of_game(game_options, myboard));
+        } while ( !(is_end_of_game(game_options,myboard)) || !(is_win(game_options,myboard)) );
 
+        std::cout << "\n";
         display_board(std::cout, game_options, myboard);
 
         if (is_win(game_options, myboard))
         {
-            std::cout << "You won";
+            std::cout << "\n" << "You won ! The secret code is : " << myboard.secret_code.value << "\n";
         }
         else
         {
-            std::cout << "You lost";
+            std::cout << "\n" << "You lost" << "\n";
         }
 
         /*std::cout << "TODO:\n"

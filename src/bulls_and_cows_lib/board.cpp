@@ -35,16 +35,7 @@ namespace bulls_and_cows {
                     i++;
                 }
             }
-            
         }
-
-        /*for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
-        {
-            auto rand = generate_random_character(game_options.minimum_allowed_character,
-                                                  game_options.maximum_allowed_character);
-
-            myboard.secret_code.value.push_back(rand);
-        }*/
 
         return myboard;
     }
