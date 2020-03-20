@@ -71,7 +71,7 @@ namespace bulls_and_cows {
 
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
-        board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts;
+        return board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts;
     }
 
     bool is_win(const GameOptions& game_options, const Board& board)
@@ -97,9 +97,10 @@ namespace bulls_and_cows {
             output_stream << "Secret Code : ";
             for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
             {
-                output_stream << "* "
-                              << "\n";
+                output_stream << "* ";
+                             
             }
+            output_stream << "\n";
         }
 
         for (auto element : board.attempts_and_feedbacks)
