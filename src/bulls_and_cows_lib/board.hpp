@@ -5,7 +5,13 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 namespace bulls_and_cows {
+
+    void display_board(vector<vector<char>> attempt_historic, vector<int> bulls_historic, vector<int> cows_historic,
+                       unsigned int cpt_attempt, const GameOptions& game_options);
+    void print_vector_char(vector<char> const& vector);
 
     struct Code
     {

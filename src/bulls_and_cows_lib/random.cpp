@@ -1,6 +1,7 @@
 
 #include "random.hpp"
 #include <random>
+#include <vector>
 
 namespace bulls_and_cows {
 
