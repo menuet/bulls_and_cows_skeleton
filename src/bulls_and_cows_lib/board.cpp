@@ -41,4 +41,6 @@ namespace bulls_and_cows {
 
         std::cout << "Attempt(s) remaining:" << game_options.max_number_of_attempts - count << "\n";
     }
+
+
 } // namespace bulls_and_cows

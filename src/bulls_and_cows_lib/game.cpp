@@ -115,7 +115,6 @@ namespace bulls_and_cows {
         return userCode;
     }
 
-
     std::vector<char> attempsMethodComputer(const GameOptions& game_options,
                                             std::vector<std::vector<char>> const& tableauFinal)
     {
@@ -124,7 +123,7 @@ namespace bulls_and_cows {
         do
         {
             userCode = secretCodeMethod(game_options);
-            for (unsigned int i = 0; i < tableauFinal.size(); i++)
+            for (unsigned int i = 1; i < tableauFinal.size(); i++)
             {
                 if (userCode == tableauFinal[i])
                 {
@@ -212,11 +211,17 @@ namespace bulls_and_cows {
             }
             if (count == game_options.max_number_of_attempts)
             {
-                win = 1;
+                win = 2;
                 std::cout << "you lose \n";
             }
             count++;
         } while (win == 0);
+
+        if (game_options.save_game == true)
+        {
+            saveGameMethod(tableauFinal, win);
+        }
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -258,39 +263,28 @@ namespace bulls_and_cows {
             }
             if (count == game_options.max_number_of_attempts)
             {
-                win = 1;
+                win = 2;
                 std::cout << "you lose \n";
             }
             count++;
         } while (win == 0);
 
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        if (game_options.save_game == true)
+        {
+            saveGameMethod(tableauFinal, win);
+        }
     }
 
-    void configure_game_options(GameOptions& game_options)
+    GameOptions configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        GameOptions gameoption1;
+
+        gameoption1 = modifOptions(gameoption1);
+        std::cout << "\n";
+        printOptions(gameoption1);
+
+        return gameoption1;
+  
     }
 
     void play_game()
@@ -315,7 +309,7 @@ namespace bulls_and_cows {
                 computer_plays_against_computer(game_options);
                 break;
             case MainMenuChoice::ConfigureOptions:
-                configure_game_options(game_options);
+                game_options = configure_game_options(game_options);
                 break;
             case MainMenuChoice::Error:
                 std::cout << "\nYou did not enter a valid choice, please try again\n";

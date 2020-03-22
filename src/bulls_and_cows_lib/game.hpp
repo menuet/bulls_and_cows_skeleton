@@ -14,6 +14,8 @@ namespace bulls_and_cows {
     int cowsMethod(std::vector<char> secretCodeComputer, std::vector<char> attemps);
     int bullsMethod(std::vector<char> secretCodeComputer, std::vector<char> attemps);
     void user_plays_against_computer(const GameOptions& game_options);  
+    void computer_plays_against_computer(const GameOptions& game_options);
+    GameOptions configure_game_options(GameOptions& game_options);
     void play_game();
 
 } // namespace bulls_and_cows
