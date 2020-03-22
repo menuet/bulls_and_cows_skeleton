@@ -43,8 +43,9 @@ namespace bulls_and_cows {
             cows_historic.push_back(cows);
 
             display_board(attempt_historic, bulls_historic, cows_historic, cpt_attempt, game_options);
-        } while (cpt_attempt < game_options.max_number_of_attempts + 1 &&
+        } while (cpt_attempt < game_options.max_number_of_attempts &&
                  !(bulls == game_options.number_of_characters_per_code));
+        //The game keep going while the user has not reach the maximum number of attempts or has find the good code (bulls = number of characters in the code)
 
         if (bulls == game_options.number_of_characters_per_code)
         {
@@ -55,26 +56,6 @@ namespace bulls_and_cows {
             cout << "You have reach the maximum number of attempts allowed, you have loose :(";
         }
     }
-
-    // Return true if the user has win => the code is the same than the attempt
-    /*bool win_condition(vector<char> const& attempt, vector<char> const& code)
-    {
-        if (attempt.size() == code.size())
-        {
-            for (int i = 0; i < code.size(); i++)
-            {
-                if (attempt[i] != code[i])
-                {
-                    return false;
-                }
-            }
-        }
-        else
-        {
-            return false;
-        }
-        return true;
-    }*/
 
     // Count and return the number of bulls in the attempt
     unsigned int count_bull(vector<char> const& attempt, vector<char> const& code)
@@ -122,16 +103,6 @@ namespace bulls_and_cows {
             }
         }
         return true;
-    }
-
-    //Display a vector of int
-    void print_vector_int(vector<int> const& vector)
-    {
-        for (int i = 0; i < vector.size(); i++)
-        {
-            cout << vector[i] << " ";
-        }
-        cout << "\n";
     }
 
     // Return a vector of char containing random different char with the length defined in the options
@@ -204,7 +175,7 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
+        cout
             << "TODO:\n"
                "    Create a board with a randomly generated secret code\n"
                "    Generate the list of all the possible codes\n"

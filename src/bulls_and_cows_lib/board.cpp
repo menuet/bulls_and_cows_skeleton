@@ -6,15 +6,21 @@ using namespace std;
 
 namespace bulls_and_cows {
 
-    void display_board(vector<vector<char>> attempt_historic, vector<int> bulls_historic, vector<int> cows_historic,
+    //Display the different components of the board
+    void display_board(vector<vector<char>> const& attempt_historic, vector<int> const& bulls_historic,
+                       vector<int> const& cows_historic,
                        unsigned int cpt_attempt, const GameOptions& game_options)
     {
         cout << "___________________________________________________________\n";
         cout << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";
+        
+        //This loop display each attempt made by the player
         for (unsigned int i = 0; i < cpt_attempt; i++)
         {
-            cout << "| " << i;
-            if (cpt_attempt > 9)
+            //Numbers of attempts
+            cout << "| " << i+1;
+            //Managing the spaces on the array to make it good to see
+            if (i+1 > 9)
             {
                 cout << "          | ";
             }
@@ -23,12 +29,15 @@ namespace bulls_and_cows {
                 cout << "           | ";
             }
 
+            //Display the attempts' codes
             print_vector_char(attempt_historic[i]);
             for (int k = 0; k < 23 - attempt_historic[i].size(); k++)
             {
                 cout << " ";
             }
             cout << "|  ";
+
+            //Display the bulls
             cout << bulls_historic[i];
             if (bulls_historic[i] > 9)
             {
@@ -39,6 +48,8 @@ namespace bulls_and_cows {
                 cout << "      ";
             }
             cout << "|  ";
+
+            ///Display the cows
             cout << cows_historic[i];
             if (bulls_historic[i] > 9)
             {
@@ -52,6 +63,7 @@ namespace bulls_and_cows {
         }
         cout << "___________________________________________________________\n";
 
+        //Display the remaining attempts of the player
         cout << "Attempt(s) remaining:" << game_options.max_number_of_attempts - cpt_attempt << "\n";
     }
 
