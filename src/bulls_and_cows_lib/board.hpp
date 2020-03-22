@@ -16,7 +16,7 @@ namespace bulls_and_cows {
 
     struct Code
     {
-        std::string value{}; // Sequence of allowed characters
+        vector<char> value{}; // Sequence of allowed characters
     };
 
     struct Feedback
@@ -34,7 +34,7 @@ namespace bulls_and_cows {
     struct Board
     {
         Code secret_code{};                                       // computer-generated secret code
-        std::vector<AttemptAndFeedback> attempts_and_feedbacks{}; // List of attempts of the user
+        vector<AttemptAndFeedback> attempts_and_feedbacks{}; // List of attempts of the user
     };
 
     // Create a board and with a new random secret code composed of allowed characters
@@ -45,9 +45,6 @@ namespace bulls_and_cows {
 
     // Compare a user-entered code with the secret code and give the corresponding number of bulls and cows
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code);
-
-    // Test if this is the end of the game
-    bool is_end_of_game(const GameOptions& game_options, const Board& board);
 
     // Test if the last attempt is a win
     bool is_win(const GameOptions& game_options, const Board& board);

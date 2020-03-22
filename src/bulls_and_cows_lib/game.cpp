@@ -121,6 +121,7 @@ namespace bulls_and_cows {
         return code;
     }
 
+    //Ask to the user to write a attempt
     vector<char> do_attempt(const GameOptions& game_options)
     {
         int code_length = game_options.number_of_characters_per_code;
@@ -173,24 +174,63 @@ namespace bulls_and_cows {
         return true;
     }
 
+    bool check_attempt(vector<char> const& attempt, vector<vector<char>> const& attempt_historic)
+    {
+        for (int i = 0; i < attempt_historic.size(); i++)
+        {
+            if (attempt_historic[i]==attempt)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        unsigned int cpt_attempt = 0;
+        vector<char> attempt;
+        vector<char> code = generate_secret_code(game_options);
+        unsigned int bulls = 0;
+        unsigned int cows = 0;
+
+        vector<vector<char>> attempt_historic;
+        vector<int> bulls_historic;
+        vector<int> cows_historic;
+
+        do
+        {
+            do
+            {
+                attempt = generate_secret_code(game_options);
+            } while (!check_attempt(attempt,attempt_historic));
+            attempt_historic.push_back(attempt);
+
+            bulls = count_bull(attempt, code);
+            cows = count_cow(attempt, code);
+
+            bulls_historic.push_back(bulls);
+            cows_historic.push_back(cows);
+
+            cpt_attempt++;
+            display_board(attempt_historic, bulls_historic, cows_historic, cpt_attempt, game_options);
+            this_thread::sleep_for(chrono::milliseconds(2000));
+        } while (cpt_attempt < game_options.max_number_of_attempts &&
+                 !(bulls == game_options.number_of_characters_per_code));
+        // The game keep going while the computer has not reach the maximum number of attempts or has find the good code
+        // (bulls = number of characters in the code)
+
+        if (bulls == game_options.number_of_characters_per_code)
+        {
+            cout << "You have win! :)";
+        }
+        else
+        {
+            cout << "You have reach the maximum number of attempts allowed, you have loose :("
+                    "\nThe solution was ";
+            print_vector_char(code);
+        }
     }
 
     void configure_game_options(GameOptions& game_options)
