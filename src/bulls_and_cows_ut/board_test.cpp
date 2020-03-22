@@ -149,6 +149,27 @@ TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
     REQUIRE(!result);
 }
 
+TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
+{
+    // ARRANGE
+    const bulls_and_cows::GameOptions game_options{};
+    const bulls_and_cows::Board board{bulls_and_cows::Code{"DCBA"}};
+    std::stringstream output_stream{};
+    std::stringstream input_stream{"AB\nABCDE\nABCD"};
+
+    // ASK
+    const bulls_and_cows::Code attempt = bulls_and_cows::ask_attempt(output_stream, input_stream, game_options, board);
+
+    // ASSERT
+    REQUIRE(attempt.value == "ABCD");
+    REQUIRE(output_stream.str() ==
+            "What is your guess #01 (4 different characters between 'A' and 'H') : "
+            "Your attempt is not valid, try again\n"
+            "What is your guess #01 (4 different characters between 'A' and 'H') : "
+            "Your attempt is not valid, try again\n"
+            "What is your guess #01 (4 different characters between 'A' and 'H') : ");
+}
+
 /*
 TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet played")
 {
@@ -182,29 +203,8 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
             "| #01      . . . . . |       |      |\n"
             "-------------------------------------\n");
 }
-
-TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
-{
-    // ARRANGE
-    const bulls_and_cows::GameOptions game_options{};
-    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCD"}};
-    std::stringstream output_stream{};
-    std::stringstream input_stream{"AB\nABCDE\nABCD"};
-
-    // ASK
-    const bulls_and_cows::Code attempt = bulls_and_cows::ask_attempt(output_stream, input_stream, game_options, board);
-
-    // ASSERT
-    REQUIRE(attempt.value == "ABCDE");
-    REQUIRE(output_stream.str() ==
-            "What is your guess #01 (4 characters between 'A' and 'H')\n"
-            "? "
-            "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (4 characters between 'A' and 'H')\n"
-            "? "
-            "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (4 characters between 'A' and 'H')\n"
-            "? ");
-}
-
 */
+
+
+
+

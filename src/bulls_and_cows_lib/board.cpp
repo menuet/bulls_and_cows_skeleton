@@ -24,7 +24,7 @@ namespace bulls_and_cows {
         {
             char temp = generate_random_character(
                 allowed_char.front(),
-                allowed_char.back()); // piocher dedans en choisissant un index de manière aléatoire
+                allowed_char.back()); // piocher dans les caracteres autorisés
 
             for (unsigned int j = 0; j < allowed_char.size(); j++) //
             {
@@ -50,10 +50,25 @@ namespace bulls_and_cows {
 
         for (const char attempt_char : attempt.value)
         {
-            if (attempt_char < game_options.minimum_allowed_character || attempt_char > game_options.maximum_allowed_character)
+            if (attempt_char < game_options.minimum_allowed_character ||
+                attempt_char > game_options.maximum_allowed_character)
             {
                 return false;
             }
+        }
+
+        unsigned int cpt = 1;
+        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++) //permet de s'assurer qu'un caractère n'est pas présent en double (ce qui est interdit dans les règles)
+        {
+            const char tempo = attempt.value[i];
+            for (unsigned int j = cpt; j < game_options.number_of_characters_per_code; j++)
+            {
+                if (tempo == attempt.value[j])
+                {
+                    return false;
+                }
+            }
+            cpt++;
         }
 
         return true;
@@ -115,7 +130,7 @@ namespace bulls_and_cows {
 
         if (is_win(game_options, board) || is_end_of_game(game_options, board))
         {
-             secret.value = board.secret_code.value;
+            secret.value = board.secret_code.value;
         }
         else
         {
@@ -126,15 +141,18 @@ namespace bulls_and_cows {
             }
         }
 
-          output_stream <<  "----------------------------------\n"
-                            "| SECRET   " << secret.value <<"|              |\n"
-                            "----------------------------------|\n"
-                            "| ATTEMPTS         | BULLS | COWS |\n"
-                            "----------------------------------|\n";
+        output_stream << "----------------------------------\n"
+                         "| SECRET   "
+                      << secret.value
+                      << "|              |\n"
+                         "----------------------------------|\n"
+                         "| ATTEMPTS         | BULLS | COWS |\n"
+                         "----------------------------------|\n";
 
         for (auto element : board.attempts_and_feedbacks)
         {
-            output_stream << "| " << element.attempt.value <<"\t\t   | "<< element.feedback.bulls <<"\t   | "<< element.feedback.cows<<"\t  |\n";
+            output_stream << "| " << element.attempt.value << "\t\t   | " << element.feedback.bulls << "\t   | "
+                          << element.feedback.cows << "\t  |\n";
         }
         output_stream << "----------------------------------\n";
     }
@@ -143,7 +161,12 @@ namespace bulls_and_cows {
                      const Board& board)
     {
         Code attempt{};
-        output_stream << "Enter your attempt : ";
+        auto nb_attempt = board.attempts_and_feedbacks.size() + 1;
+        unsigned int nb_char = game_options.number_of_characters_per_code;
+        const char max = game_options.maximum_allowed_character;
+        const char min = game_options.minimum_allowed_character;
+
+        output_stream << "What is your guess #"<< nb_attempt <<" ("<< nb_char <<" different characters between '"<< min <<"' and '"<< max <<"') : ";
         attempt.value = ask_string(input_stream);
 
         return attempt;

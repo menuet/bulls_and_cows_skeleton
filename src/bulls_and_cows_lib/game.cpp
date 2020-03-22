@@ -30,7 +30,7 @@ namespace bulls_and_cows {
 
             while (!validate_attempt(game_options, my_feedback.attempt))
             {
-                std::cout << "Your attempt is not valid, try again" << "\n";
+                std::cout << "Your attempt is not valid, try again\n";
                 my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
             }
 
@@ -50,17 +50,6 @@ namespace bulls_and_cows {
         {
             std::cout << "\n" << "You lost ! The secret code is : " << myboard.secret_code.value << "\n";
         }
-
-        /*std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";*/
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
