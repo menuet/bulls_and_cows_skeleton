@@ -31,14 +31,15 @@ namespace bulls_and_cows {
             {
             }
 
-            return myboard;
+
         }
+        return myboard;
     }
 
 
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
-        if (attempt.value.size == game_options.number_of_characters_per_code)
+        if (attempt.value.size() == game_options.number_of_characters_per_code)
             return true;
         else
             return false;
@@ -47,10 +48,10 @@ namespace bulls_and_cows {
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
     {
         Feedback myfeed;
-        for (int i = 0; i < secret_code.value.size; i++)
+        for (int i = 0; i < secret_code.value.size(); i++)
         {
             char temp = secret_code.value[i];
-            for (int j = 0; j < attempt.value.size; j++)
+            for (int j = 0; j < attempt.value.size(); j++)
             {
                 if (secret_code.value.find(attempt.value[j]))
                     myfeed.cows++;
@@ -63,13 +64,22 @@ namespace bulls_and_cows {
 
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
-        if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size)
+        if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size())
+        {
             return true;
+        }
+        return false;
     }
+
 
     bool is_win(const GameOptions& game_options, const Board& board)
     {
+        if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
+        {
+            return true;
+        }
 
+        return false;
     }
 
 
