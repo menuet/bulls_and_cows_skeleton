@@ -7,6 +7,9 @@
 
 namespace bulls_and_cows {
 
+    void boardGame(std::vector<std::vector<char>> const& tableauFinal, const GameOptions& game_options,
+                   unsigned int count);
+
     struct Code
     {
         std::string value{}; // Sequence of allowed characters

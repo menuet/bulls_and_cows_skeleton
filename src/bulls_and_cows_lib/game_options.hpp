@@ -13,6 +13,8 @@ namespace bulls_and_cows {
         char maximum_allowed_character{'H'};
     };
 
+    
+
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
 
     void display_game_options_menu(std::ostream& output_stream);
