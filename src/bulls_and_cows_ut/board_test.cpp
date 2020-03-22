@@ -6,8 +6,6 @@
 // Examples of unit tests for the functions declared in board.hpp
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
 
-/*
-
 TEST_CASE("TEST bulls_and_cows::create_board")
 {
     // ARRANGE
@@ -43,7 +41,7 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allow
 {
     // ARRANGE
     const bulls_and_cows::GameOptions game_options{};
-    const bulls_and_cows::Code attempt{"ZZZZZ"};
+    const bulls_and_cows::Code attempt{"WXYZ"};
 
     // ACT
     const bool result = bulls_and_cows::validate_attempt(game_options, attempt);
@@ -55,8 +53,8 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allow
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bull and 3 cows")
 {
     // ARRANGE
-    const bulls_and_cows::Code attempt{std::string{"ABEDC"}};
-    const bulls_and_cows::Code secret{std::string{"CCCAB"}};
+    const bulls_and_cows::Code attempt{std::string{"ABCD"}};
+    const bulls_and_cows::Code secret{std::string{"DCBE"}};
 
     // ACT
     const bulls_and_cows::Feedback feedback = bulls_and_cows::compare_attempt_with_secret_code(attempt, secret);
@@ -69,8 +67,8 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bull and
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and 2 cows")
 {
     // ARRANGE
-    const bulls_and_cows::Code attempt{std::string{"ABCDE"}};
-    const bulls_and_cows::Code secret{std::string{"CCCAB"}};
+    const bulls_and_cows::Code attempt{std::string{"ABCD"}};
+    const bulls_and_cows::Code secret{std::string{"ACBE"}};
 
     // ACT
     const bulls_and_cows::Feedback feedback = bulls_and_cows::compare_attempt_with_secret_code(attempt, secret);
@@ -80,11 +78,11 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and
     REQUIRE(feedback.cows == 2);
 }
 
-TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and 0 cow")
+TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and 0 cow")  
 {
     // ARRANGE
-    const bulls_and_cows::Code attempt{std::string{"AAAAA"}};
-    const bulls_and_cows::Code secret{std::string{"CCCAB"}};
+    const bulls_and_cows::Code attempt{std::string{"ABCD"}};
+    const bulls_and_cows::Code secret{std::string{"AEFG"}};
 
     // ACT
     const bulls_and_cows::Feedback feedback = bulls_and_cows::compare_attempt_with_secret_code(attempt, secret);
@@ -94,25 +92,26 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and
     REQUIRE(feedback.cows == 0);
 }
 
-TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 5 bulls and 0 cow")
+TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 4 bulls and 0 cow")
 {
     // ARRANGE
-    const bulls_and_cows::Code attempt{std::string{"CCCAB"}};
-    const bulls_and_cows::Code secret{std::string{"CCCAB"}};
+    const bulls_and_cows::Code attempt{std::string{"ABCD"}};
+    const bulls_and_cows::Code secret{std::string{"ABCD"}};
 
     // ACT
     const bulls_and_cows::Feedback feedback = bulls_and_cows::compare_attempt_with_secret_code(attempt, secret);
 
     // ASSERT
-    REQUIRE(feedback.bulls == 5);
+    REQUIRE(feedback.bulls == 4);
     REQUIRE(feedback.cows == 0);
 }
+
 
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bulls and 0 cows")
 {
     // ARRANGE
-    const bulls_and_cows::Code attempt{"ABCAB"};
-    const bulls_and_cows::Code secret_code{"DEDED"};
+    const bulls_and_cows::Code attempt{"ABCD"};
+    const bulls_and_cows::Code secret_code{"EFGH"};
 
     // ACT
     const bulls_and_cows::Feedback feedback = bulls_and_cows::compare_attempt_with_secret_code(attempt, secret_code);
@@ -122,11 +121,12 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bulls an
     REQUIRE(feedback.cows == 0);
 }
 
+
 TEST_CASE("TEST bulls_and_cows::is_end_of_game WHEN not yet the end")
 {
     // ARRANGE
     const bulls_and_cows::GameOptions game_options{};
-    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCDE"}};
+    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCD"}};
 
     // ACT
     const bool result = bulls_and_cows::is_end_of_game(game_options, board);
@@ -135,11 +135,12 @@ TEST_CASE("TEST bulls_and_cows::is_end_of_game WHEN not yet the end")
     REQUIRE(!result);
 }
 
+
 TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
 {
     // ARRANGE
     const bulls_and_cows::GameOptions game_options{};
-    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCDE"}};
+    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCD"}};
 
     // ACT
     const bool result = bulls_and_cows::is_win(game_options, board);
@@ -148,11 +149,12 @@ TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
     REQUIRE(!result);
 }
 
+/*
 TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet played")
 {
     // ARRANGE
     const bulls_and_cows::GameOptions game_options{};
-    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCDE"}};
+    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCD"}};
     std::stringstream output_stream{};
 
     // ACT
@@ -185,9 +187,9 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
 {
     // ARRANGE
     const bulls_and_cows::GameOptions game_options{};
-    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCDE"}};
+    const bulls_and_cows::Board board{bulls_and_cows::Code{"ABCD"}};
     std::stringstream output_stream{};
-    std::stringstream input_stream{"AAB\nMLKQSD\nABCDE"};
+    std::stringstream input_stream{"AB\nABCDE\nABCD"};
 
     // ASK
     const bulls_and_cows::Code attempt = bulls_and_cows::ask_attempt(output_stream, input_stream, game_options, board);
@@ -195,13 +197,13 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
     // ASSERT
     REQUIRE(attempt.value == "ABCDE");
     REQUIRE(output_stream.str() ==
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
+            "What is your guess #01 (4 characters between 'A' and 'H')\n"
             "? "
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
+            "What is your guess #01 (4 characters between 'A' and 'H')\n"
             "? "
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
+            "What is your guess #01 (4 characters between 'A' and 'H')\n"
             "? ");
 }
 

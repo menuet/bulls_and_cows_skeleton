@@ -20,7 +20,7 @@ namespace bulls_and_cows {
 
         unsigned int i = 0;
 
-        while ( i != game_options.number_of_characters_per_code)
+        while (i != game_options.number_of_characters_per_code)
         {
             char temp = generate_random_character(
                 allowed_char.front(),
@@ -30,7 +30,8 @@ namespace bulls_and_cows {
             {
                 if (allowed_char[j] == temp)
                 {
-                    allowed_char.erase(allowed_char.begin() + j); // supprimer le caractère du vector contenant les caracteres autorisés
+                    allowed_char.erase(allowed_char.begin() +
+                                       j); // supprimer le caractère du vector contenant les caracteres autorisés
                     myboard.secret_code.value.push_back(temp); // ajouter à la string secret_code.value
                     i++;
                 }
@@ -49,8 +50,7 @@ namespace bulls_and_cows {
 
         for (const char attempt_char : attempt.value)
         {
-            if (attempt_char < game_options.minimum_allowed_character ||
-                attempt_char > game_options.maximum_allowed_character)
+            if (attempt_char < game_options.minimum_allowed_character || attempt_char > game_options.maximum_allowed_character)
             {
                 return false;
             }
@@ -110,18 +110,33 @@ namespace bulls_and_cows {
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
-        output_stream << "Secret Code : ";
-        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+        Code secret{};
+        const char star = '*';
+
+        if (is_win(game_options, board) || is_end_of_game(game_options, board))
         {
-            output_stream << "* ";
+             secret.value = board.secret_code.value;
         }
-        output_stream << "\n";
+        else
+        {
+            for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+            {
+                secret.value.push_back(star);
+                secret.value.push_back(' ');
+            }
+        }
+
+          output_stream <<  "----------------------------------\n"
+                            "| SECRET   " << secret.value <<"|              |\n"
+                            "----------------------------------|\n"
+                            "| ATTEMPTS         | BULLS | COWS |\n"
+                            "----------------------------------|\n";
 
         for (auto element : board.attempts_and_feedbacks)
         {
-            output_stream << element.attempt.value << " ||||| "
-                          << "Bulls : " << element.feedback.bulls << " // Cows : " << element.feedback.cows << "\n";
+            output_stream << "| " << element.attempt.value <<"\t\t   | "<< element.feedback.bulls <<"\t   | "<< element.feedback.cows<<"\t  |\n";
         }
+        output_stream << "----------------------------------\n";
     }
 
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
