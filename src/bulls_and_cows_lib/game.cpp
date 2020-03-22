@@ -14,16 +14,25 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        std::cout << 
+            "-------------------------------------\n"
+            "| SECRET   * * * * * |              |\n"
+            "-------------------------------------\n"
+            "| ATTEMPTS           | BULLS | COWS |\n"
+            "-------------------------------------\n"
+            "| #12      . . . . . |       |      |\n"
+            "| #11      . . . . . |       |      |\n"
+            "| #10      . . . . . |       |      |\n"
+            "| #09      . . . . . |       |      |\n"
+            "| #08      . . . . . |       |      |\n"
+            "| #07      . . . . . |       |      |\n"
+            "| #06      . . . . . |       |      |\n"
+            "| #05      . . . . . |       |      |\n"
+            "| #04      . . . . . |       |      |\n"
+            "| #03      . . . . . |       |      |\n"
+            "| #02      . . . . . |       |      |\n"
+            "| #01      . . . . . |       |      |\n"
+            "-------------------------------------\n";
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
