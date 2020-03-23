@@ -3,16 +3,33 @@
 #include <vector>
 #include "game_options.hpp"
 
-using namespace std;
-
 
 namespace bulls_and_cows {
+
+    struct Code
+    {
+        std::string value{};
+    };
+
+    struct AttemptBullsCows
+    {
+        Code attempt{};
+        unsigned int bulls{};
+        unsigned int cows{};
+    };
+
+    struct Historic
+    {
+        std::vector<AttemptBullsCows> value{};
+    };
+
     void play_game();
-    bool check_duplicates(vector<char> const& code, int current_index);
-    vector<char> generate_secret_code(const GameOptions& game_options);
-    vector<char> do_attempt(const GameOptions& game_options);
-    unsigned int count_bull(vector<char> const& attempt, vector<char> const& code);
-    unsigned int count_cow(vector<char> const& attempt, vector<char> const& code);
-    bool check_input(string const& attempt, const GameOptions& game_options);
+    bool check_duplicates(Code const& code, int current_index);
+    Code generate_secret_code(const GameOptions& game_options);
+    Code do_attempt(const GameOptions& game_options);
+    unsigned int count_bull(Code const& attempt, Code const& code);
+    unsigned int count_cow(Code const& attempt, Code const& code);
+    bool check_input(std::string const& attempt, const GameOptions& game_options);
+    bool check_attempt(Code const& attempt, Historic const& historic);
 
 } // namespace bulls_and_cows
