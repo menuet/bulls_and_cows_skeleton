@@ -1,0 +1,104 @@
+#include <iostream>
+#include <cstdlib>
+#include <time.h>
+#include <cstdlib>
+
+using namespace std;
+
+const int v=5;
+
+int tirageOrdi(int tabCacher[])
+{
+    int nombre;
+    for( int i = 0; i<v; i++)
+    {
+        nombre = rand()%(6-1)+1;
+        tabCacher[i]= nombre;
+        cout<< tabCacher[i];
+    }
+    return tabCacher[v];
+}
+
+void resultat(int tabCacher[], int tabChoix[], int & compteur1, int & compteur2)
+{
+    bool tabCacherValide[v];
+    bool tabChoixValide[v];
+
+    for(int i =0; i<v; i++)
+    {
+        if(tabCacher[i]==tabChoix[i])
+        {
+            tabChoixValide[i]=true;
+            tabCacherValide[i]=true;
+            compteur1++;
+        }
+        else
+        {
+            tabChoixValide[i]=false;
+            tabCacherValide[i]=false;
+        }
+    }
+    for(int i=0; i<v; i++)
+    {
+        if(tabCacherValide[i]==false)
+        {
+            for(int j=0; j<v; j++)
+            {
+                if(i!=j)
+                {
+
+                    if(tabCacher[i]==tabChoix[j]&& tabChoixValide[j]==false)
+                    {
+                        tabChoixValide[j]=true;
+                        tabChoixValide[i]=true;
+                        compteur2++;
+                    }
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    int compteur1=0; //compteur de pions bien placés
+    int compteur2=0; //compteur de pions mal placés
+    bool rejouer = false;
+    int tabCacher[v];
+    int tabChoix[v];
+    int nbTour = 10;
+
+    srand(time(NULL));
+
+    cout<< "Welcome in Bulls and Cows game"<< endl;
+    cout<< "The computer will choose 5 letters, you have to find them in the correct order" <<endl;
+    cout<< endl;
+
+    do
+    {
+        tirageOrdi(tabCacher);
+        do
+        {
+            cout<< "Choose between 1 to 5"<<endl;
+            for( int i=0; i<v;i++)
+                cin>> tabChoix[i];
+            compteur1=0;
+            compteur2=0;
+            resultat(tabCacher,tabChoix, compteur1, compteur2);
+            cout<<" You have " << compteur1 << " elements at the right place and"<< compteur2<< "elements in the wrong place"<< endl;
+            nbTour--;
+            cout<< "You still have "<< nbTour<< " try"<< endl;
+        }while(compteur1!=5 || nbTour==0);
+
+        if(nbTour!=0)
+            cout<< "Well done you find the solution in "<< nbTour<< " try"<< endl;
+        else
+            cout<<"Game over"<< endl;
+
+        cout<< "Try again = 1, no = 0";
+        cin>> rejouer;
+    }while(rejouer);
+
+    system("PAUSE");
+    return 0;
+}
