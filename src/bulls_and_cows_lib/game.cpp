@@ -18,7 +18,6 @@ namespace bulls_and_cows {
         AttemptAndFeedback my_feedback{};
 
         myboard = create_board(game_options);
-        myboard.secret_code.value = "ABCD";
 
         do
         {
@@ -50,6 +49,7 @@ namespace bulls_and_cows {
         {
             std::cout << "\n" << "You lost ! The secret code is : " << myboard.secret_code.value << "\n";
         }
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -74,13 +74,47 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
+
+            display_game_options(std::cout, game_options);
+            display_game_options_menu(std::cout);
+            const auto choice = ask_game_options_menu_choice(std::cin);
+            bool back_to_main = false;
+
+            switch (choice)
+            {
+            case GameOptionsMenuChoice::BackToMain:
+                back_to_main = true;
+                break;
+            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
+                modify_maximum_number_of_attempts(game_options, std::cout, std::cin);
+                break;
+            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
+                modify_number_of_characters_per_code(game_options, std::cout, std::cin);
+                break;
+            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
+                //
+                break;
+            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
+                //
+                break;
+            case GameOptionsMenuChoice::SaveOptions:
+                //
+                break;
+            case GameOptionsMenuChoice::LoadOptions:
+                //
+                break;
+            case GameOptionsMenuChoice::Error:
+                std::cout << "\nYou did not enter a valid choice, please try again\n"; //problem
+                break;
+            }
+
+        /*std::cout << "TODO:\n"
                      "    DO\n"
                      "       Display the current game options\n"
                      "       Display the game options menu\n"
                      "       Ask the user to type its choice\n"
                      "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+                     "    UNTIL user's choice is to go back to main menu\n";*/
     }
 
     void play_game()
