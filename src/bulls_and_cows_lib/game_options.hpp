@@ -34,8 +34,8 @@ namespace bulls_and_cows {
 
     void manage_game_options(GameOptionsMenuChoice choice, GameOptions& game_options);
 
-    bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options);
+    bool save_game_options(const GameOptions& game_options);
 
-    bool load_game_options(std::istream& input_file_stream, GameOptions& game_options);
+    bool load_game_options(GameOptions& game_options);
 
 } // namespace bulls_and_cows
