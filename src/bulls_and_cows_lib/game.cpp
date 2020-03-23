@@ -27,6 +27,24 @@ namespace bulls_and_cows {
                      "    Display the board and the list of attempts so far\n"
                      "    Display a message telling if the user won or lost\n";
 
+        // CREATING BOARD using functions we implemented
+        Board myboard = bulls_and_cows::create_board(game_options);
+        while (!bulls_and_cows::is_end_of_game(game_options, myboard) && !bulls_and_cows::is_win(game_options, myboard))
+        {
+            bulls_and_cows::display_board(std::cout, game_options, myboard);
+            Code temp = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
+            if (bulls_and_cows::validate_attempt(game_options, temp))
+            {
+                AttemptAndFeedback attemp{};
+                attemp.attempt = temp;
+                attemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(temp, myboard.secret_code);
+                myboard.attempts_and_feedbacks.push_back(attemp);
+                // myboard.attempts_and_feedbacks[1].feedback = bulls_and_cows::compare_attempt_with_secret_code(temp,
+                // myboard.secret_code);
+            }
+            else
+                std::cout << "Your attempt is not as asked, ... Please change it";
+        }
         
     }
 
