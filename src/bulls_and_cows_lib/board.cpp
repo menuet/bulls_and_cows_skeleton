@@ -39,10 +39,21 @@ namespace bulls_and_cows {
 
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
-        if (attempt.value.size() == game_options.number_of_characters_per_code)
+        if (game_options.number_of_characters_per_code == attempt.value.size())
+        {
+            for (const char& c : attempt.value)
+            {
+                if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+                {
+                    return false;
+                }
+            }
             return true;
+        }
         else
+        {
             return false;
+        }
     }
 
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
@@ -54,9 +65,15 @@ namespace bulls_and_cows {
             for (int j = 0; j < attempt.value.size(); j++)
             {
                 if (secret_code.value.find(attempt.value[j]))
+                {
                     myfeed.cows++;
+                    break;
+                }
                 if (temp == attempt.value[j])
+                {
                     myfeed.bulls++;
+                    break;
+                }
             }
         }
         return myfeed;
