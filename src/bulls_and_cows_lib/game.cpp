@@ -20,7 +20,6 @@ namespace bulls_and_cows {
         
         AttemptBullsCows attempt_bulls_cows;
         Historic historic;
-
         do
         {
             attempt_bulls_cows.attempt = do_attempt(game_options);
@@ -97,17 +96,21 @@ namespace bulls_and_cows {
     // Return a vector of char containing random different char with the length defined in the options
     Code generate_secret_code(const GameOptions& game_options)
     {
+        std::string dictionary = "";
+        for (char i = game_options.minimum_allowed_character; i < game_options.maximum_allowed_character+1; i++)
+        {
+            dictionary.push_back(i);
+        }
+
         Code code;
         code.value = "";
+        
         for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
         {
-            code.value.push_back(generate_random_character(game_options.minimum_allowed_character,
-                                                           game_options.maximum_allowed_character));
-            while (!check_duplicates(code, i))
-            {
-                code.value[i] = generate_random_character(game_options.minimum_allowed_character,
-                                                    game_options.maximum_allowed_character);
-            }
+            int random_integer = generate_random_integer(0,static_cast<int>(std::size(dictionary))-1);
+            code.value.push_back(dictionary[random_integer]);
+            dictionary[random_integer] = dictionary[std::size(dictionary)-1];
+            dictionary.pop_back();
         }
         return code;
     }
@@ -124,19 +127,32 @@ namespace bulls_and_cows {
                  << ") :";
             std::cin >> code.value;
 
-        } while (!check_input(code.value, game_options));
+            switch (check_input(code.value, game_options))
+            {
+            case (CheckInput::WrongNumberChars):
+                std::cout << "Wrong number of characters. Try again\n";
+                break;
+            case (CheckInput::CharacterOutOfRange):
+                std::cout << "Character(s) not allowed in your attempt. Try again\n";
+                break;
+            case (CheckInput::Duplicate):
+                std::cout << "There is at least one duplicate in your input. Try again\n";
+            default:
+                break;
+            }
+
+        } while (check_input(code.value, game_options)!=CheckInput::Valid);
         
         return code;
     }
 
     // Function to check if the input of the user for a attempt is right : length, characters allowed, duplicates
-    bool check_input(std::string const& attempt, const GameOptions& game_options)
+    CheckInput check_input(std::string const& attempt, const GameOptions& game_options)
     {
         // Check for the number of characters
         if (attempt.size() != game_options.number_of_characters_per_code)
         {
-            std::cout << "Wrong number of characters. Try again\n";
-            return false;
+            return CheckInput::WrongNumberChars;
         }
 
         // Check for the duplicates
@@ -146,8 +162,7 @@ namespace bulls_and_cows {
             {
                 if (attempt[i] == attempt[j])
                 {
-                    std::cout << "There is at least one duplicate in your input. Try again\n";
-                    return false;
+                    return CheckInput::Duplicate;
                 }
             }
         }
@@ -158,12 +173,11 @@ namespace bulls_and_cows {
             if (c < game_options.minimum_allowed_character ||
                 c > game_options.maximum_allowed_character)
             {
-                std::cout << "Character(s) not allowed in your attempt. Try again\n";
-                return false;
+                return CheckInput::CharacterOutOfRange;
             }
         }
 
-        return true;
+        return CheckInput::Valid;
     }
 
     bool check_attempt(Code const& attempt, Historic const& historic)

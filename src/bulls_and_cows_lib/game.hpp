@@ -23,13 +23,21 @@ namespace bulls_and_cows {
         std::vector<AttemptBullsCows> value{};
     };
 
+    enum class CheckInput
+    {
+        WrongNumberChars,
+        Duplicate,
+        CharacterOutOfRange,
+        Valid,
+    };
+
     void play_game();
     bool check_duplicates(Code const& code, int current_index);
     Code generate_secret_code(const GameOptions& game_options);
     Code do_attempt(const GameOptions& game_options);
     unsigned int count_bull(Code const& attempt, Code const& code);
     unsigned int count_cow(Code const& attempt, Code const& code);
-    bool check_input(std::string const& attempt, const GameOptions& game_options);
+    CheckInput check_input(std::string const& attempt, const GameOptions& game_options);
     bool check_attempt(Code const& attempt, Historic const& historic);
 
 } // namespace bulls_and_cows

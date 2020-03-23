@@ -29,6 +29,7 @@ namespace bulls_and_cows {
 
             //Display the attempts' codes
             std::cout << historic.value[i].attempt.value;
+            //Adding spaces according to the length of the code, 23 is the number of spaces taking by the display at the top of the array
             for (int k = 0; k < 23 - historic.value[i].attempt.value.size(); k++)
             {
                 std::cout << " ";
