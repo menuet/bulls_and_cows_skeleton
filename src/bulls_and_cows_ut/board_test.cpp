@@ -7,7 +7,7 @@
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
 
 
-
+/*
 TEST_CASE("TEST bulls_and_cows::create_board")
 {
     // ARRANGE
@@ -52,7 +52,7 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allow
     REQUIRE(!result);
 }
 
-/*
+
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bull and 3 cows")
 {
     // ARRANGE
@@ -67,7 +67,7 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bull and
     REQUIRE(feedback.cows == 3);
 }
 
-/*
+
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and 2 cows")
 {
     // ARRANGE

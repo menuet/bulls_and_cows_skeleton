@@ -7,12 +7,8 @@
 namespace bulls_and_cows {
 
     // TODO: define the body of the functions declared in game_options.cpp
-    void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
-    {
-        //This function is used to display the saved options for the game
 
-    }
-
+    // True
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
         output_stream << "Here are the current game_options:\n"
@@ -22,6 +18,8 @@ namespace bulls_and_cows {
                       << game_options.maximum_allowed_character << "'\n";
     }
 
+
+    // True
     void display_game_options_menu(std::ostream& output_stream)
     {
         output_stream << "Configure Options\n"
@@ -35,6 +33,7 @@ namespace bulls_and_cows {
                       << "What is your choice ? ";
     }
 
+    // True
     GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
     {
         int userin{};
@@ -70,6 +69,7 @@ namespace bulls_and_cows {
         return yes;
     }
 
+    // True
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
     {
         output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << "\n"
@@ -79,16 +79,17 @@ namespace bulls_and_cows {
         return true;
     }
 
-
+    //True
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
     {
 
          std::string line;
         while (std::getline(input_file_stream, line))
         {
-            std::string delimiter = "=";
-            std::string token = line.substr(0, line.find(delimiter));
-            std::string numb = line.substr(1, line.find(delimiter));
+            std::size_t delimiter = line.find("=");
+            std::string token = line.substr(0, delimiter);
+            std::string numb = line.substr(delimiter + 1);
+            char* cnumb = const_cast<char*>(numb.c_str());
 
             if (token == "max_number_of_attempts")
                 game_options.max_number_of_attempts = std::atoi(numb.c_str());
@@ -97,23 +98,12 @@ namespace bulls_and_cows {
                 game_options.number_of_characters_per_code = std::atoi(numb.c_str());
 
             else if (token == "minimum_allowed_character")
-                game_options.minimum_allowed_character = 
-            /*switch (token)
-            {
-                case "max_number_of_attempts":
-                    game_options.max_number_of_attempts = std::atoi(numb.c_str());
-                    break;
+                // game_options.minimum_allowed_character = (char)std::atoi(numb.c_str());
+                game_options.minimum_allowed_character = cnumb[0];
 
-                case "number_of_characters_per_code":
-                    game_options.number_of_characters_per_code = std::atoi(numb.c_str());
-                    break;
+            else if (token == "maximum_allowed_character")
+                game_options.maximum_allowed_character = cnumb[0];
 
-                case "minimum_allowed_character":
-
-                    break;
-                default:
-                    break;
-            }*/
         }
         return true;
     }

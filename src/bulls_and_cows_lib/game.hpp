@@ -7,6 +7,5 @@
 namespace bulls_and_cows {
 
     void play_game();
-    void print_head(std::vector<char> v);
 
 } // namespace bulls_and_cows

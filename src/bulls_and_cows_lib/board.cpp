@@ -58,24 +58,37 @@ namespace bulls_and_cows {
 
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
     {
-        Feedback myfeed;
-        for (int i = 0; i < secret_code.value.size(); i++)
+        Feedback myfeed{};
+        std::string tmp_secret_code = secret_code.value;
+        std::string tmp_attempt = attempt.value;
+        std::size_t found;
+        // bulls managing
+        for (int i = 0; i < tmp_secret_code.size(); i++)
         {
-            char temp = secret_code.value[i];
-            for (int j = 0; j < attempt.value.size(); j++)
+            if (tmp_secret_code[i] == tmp_attempt[i])
             {
-                if (secret_code.value.find(attempt.value[j]))
-                {
-                    myfeed.cows++;
-                    break;
-                }
-                if (temp == attempt.value[j])
-                {
-                    myfeed.bulls++;
-                    break;
-                }
+                std::cout << tmp_secret_code << "\n";
+                std::cout << tmp_attempt << "\n";
+                tmp_attempt.erase(i, 1);
+                tmp_secret_code.erase(i, 1);
+                myfeed.bulls++;
+                i--;
             }
         }
+
+        // cows managing
+        for (int j = 0; j < tmp_attempt.size(); j++)
+        {
+            found = tmp_secret_code.find(tmp_attempt[j]);
+            if (found != std::string::npos)
+            {
+                tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
+                myfeed.cows++;
+                std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
+                          << "\n";
+            }
+        }
+
         return myfeed;
     }
 
@@ -88,9 +101,10 @@ namespace bulls_and_cows {
         return false;
     }
 
-
     bool is_win(const GameOptions& game_options, const Board& board)
     {
+        if ((board.attempts_and_feedbacks.empty()))
+            return false;
         if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
         {
             return true;
@@ -99,18 +113,62 @@ namespace bulls_and_cows {
         return false;
     }
 
+    void whats_your_guess(std::ostream& output_stream, const GameOptions& game_options, std::string s,
+                          int current_attempt, unsigned int number_of_characters_per_code,
+                          char minimum_allowed_character, char maximum_allowed_character)
+        {
+        output_stream << "What is your guess #" << s << current_attempt << " (" << number_of_characters_per_code
+                      << " characters between '" << minimum_allowed_character << "' and '" << maximum_allowed_character
+                      << "')\n? ";
+        }
 
-    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,const Board& board)
+    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
+                     const Board& board)
     {
-        // Max number of attemps and max number of caracter ...
+        // Max number of attemps and max number of character ...
         Code incode;
-        std::string temp = "";
-        int current_attempt = (int)board.attempts_and_feedbacks.size();
-        output_stream << "Please enter your guess for the " << current_attempt
-                      << " (Tips : " << game_options.number_of_characters_per_code << " between "
-                      << game_options.minimum_allowed_character << " and " << game_options.maximum_allowed_character
-                      << ") :";
-        input_stream >> incode.value;
+        int current_attempt = (int)board.attempts_and_feedbacks.size() + 1;
+
+        bool valueformat = false;
+        while (!valueformat)
+        {
+            if (current_attempt < 10)
+            {
+                whats_your_guess(output_stream, game_options, "0", current_attempt,
+                                 game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
+                                 game_options.maximum_allowed_character);
+            }
+            else
+            {
+                whats_your_guess(output_stream, game_options, "", current_attempt,
+                                 game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
+                                 game_options.maximum_allowed_character);
+            }
+
+            valueformat = true;
+
+            input_stream >> incode.value;
+            if (incode.value.size() != game_options.number_of_characters_per_code)
+            {
+                valueformat = false;
+                output_stream
+                    << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
+            }
+
+            else
+            {
+                for (char& c : incode.value)
+                {
+                    if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+                    {
+                        valueformat = false;
+
+                        output_stream << "Your guess has an invalid length or contains non-allowed characters, "
+                                         "please try again\n";
+                    }
+                }
+            }
+        }
         return incode;
     }
 
