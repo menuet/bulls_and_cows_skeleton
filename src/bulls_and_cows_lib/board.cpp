@@ -165,7 +165,7 @@ namespace bulls_and_cows {
         {
             return false;
         }
-        // if the nb of bulls == the length of the secret code
+        // if the nb of bulls == the length of the secret code, then the player wins
         if (board.attempts_and_feedbacks.back().feedback.bulls == game_options.number_of_characters_per_code)
         {
             return true;
@@ -184,7 +184,7 @@ namespace bulls_and_cows {
         if (board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts ||
             is_win(game_options, board) == true)
         {
-            return true; // end of the game;
+            return true; // end of the game if max attempts reached or if nb of bulls == the length of the secret code;
         }
         return false;
     }
@@ -247,7 +247,7 @@ namespace bulls_and_cows {
         {
             if (board.attempts_and_feedbacks.empty())
             {
-                if (i < 9)
+                if (i < 9) //we had a 0 before numbers from 1 to 9
                 {
                     output_stream << "| #0" << i + 1 << "      ";
                     for (int j = 0; j < lengthCode; j++)

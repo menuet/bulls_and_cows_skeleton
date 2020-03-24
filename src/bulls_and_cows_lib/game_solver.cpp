@@ -5,26 +5,21 @@ namespace bulls_and_cows {
     // TODO: define the body of the functions declared in game_solver.cpp
 
     // The main recursive method
-    // to print all possible
-    // strings of length k
     void allCombinations(PossibleSolutions& possible_solutions, std::string& set, std::string prefix, int n, int k)
     {
 
         Code pref{};
         pref.value = prefix;
 
-        // Base case: k is 0,
-        // print prefix
+        // Base case: k is 0
         if (k == 0)
         {
-            pref.value.erase(0, 1);
-            possible_solutions.codes.push_back(pref);
+            pref.value.erase(0, 1); //because before that, pref=" ABCD" and not pref="ABCD"
+            possible_solutions.codes.push_back(pref); //we add to our vector codes the code pref
             return;
         }
 
-        // One by one add all characters
-        // from set and recursively
-        // call for k equals to k-1
+        // One by one add all characters from set and recursively call for k equals to k-1
         for (int i = 0; i < n; i++)
         {
             std::string newPrefix;
@@ -32,8 +27,7 @@ namespace bulls_and_cows {
             // Next character of input added
             newPrefix = prefix + set[i];
 
-            // k is decreased, because
-            // we have added a new character
+            // k is decreased, because we have added a new character
             allCombinations(possible_solutions, set, newPrefix, n, k - 1);
         }
     }

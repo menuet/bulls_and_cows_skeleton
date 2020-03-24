@@ -61,7 +61,6 @@ namespace bulls_and_cows {
         return GameOptionsMenuChoice::Error;
     }
 
-    // std::ofstream game_options_file{"game_options.txt",std::ios::app};
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
     {
         if (!output_file_stream)
@@ -77,7 +76,7 @@ namespace bulls_and_cows {
         return true;
     }
 
-    //std::string split implementation by using delimiter as a character.
+    //split implementation by using delimiter as a character.
     std::vector<std::string> split(std::string strToSplit, char delimeter)
     {
         std::stringstream ss(strToSplit);
@@ -99,9 +98,7 @@ namespace bulls_and_cows {
             while (input_file_stream.peek() != EOF)
             {
                 std::getline(input_file_stream, sentence);
-                //std::cout << "\n" << sentence;
             }
-            //std::cout << "\nthe last :" << sentence << "\n";
 
             //we split our string with delimiter ','
             std::vector<std::string> splittedStrings = split(sentence, ',');
@@ -109,7 +106,7 @@ namespace bulls_and_cows {
             // pointer to the first element
             std::string* pos = splittedStrings.data();
 
-            //we attribute the the game options the new options
+            //we attribute to the game options the new options from the file
             game_options.max_number_of_attempts = atoi(pos[0].c_str());
             game_options.number_of_characters_per_code = atoi(pos[1].c_str());
             game_options.minimum_allowed_character = *pos[2].c_str();
