@@ -1,7 +1,7 @@
-#include <fstream>
-#include <iostream>
-#include <vector>
 #include "game_options.hpp"
+#include "game.hpp"
+#include <fstream>
+
 
 namespace bulls_and_cows {
 
@@ -12,6 +12,7 @@ namespace bulls_and_cows {
         std::cout << "Nbr caractère par code : " << game_options.number_of_characters_per_code << "\n";
         std::cout << "Nbr attemps : " << game_options.max_number_of_attempts << "\n";
         std::cout << "Save Game : " << game_options.save_game << "\n";
+        std::cout << "Doublons acceptés : " << game_options.accept_doublons << "\n";
     }
 
     GameOptions modifOptions(GameOptions gameoption1)
@@ -35,12 +36,22 @@ namespace bulls_and_cows {
             gameoption1.save_game = true;
         else
             gameoption1.save_game = false;
+
+        choice = 0;
+        std::cout << "Doublons acceptés (T / F) : ";
+        std::cin >> choice;
+        if (choice == 'T')
+            gameoption1.accept_doublons = true;
+        else
+            gameoption1.accept_doublons = false;
         
         return gameoption1;
     }
 
-    void saveGameMethod(std::vector<std::vector<char>> const& tableauFinal, unsigned int win)
+    /*void saveGameMethod(std::vector<FinalBoard> const& finalBoard, unsigned int const& win)
     {
+        constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 20U;
+
         std::string const fichier = "C:/C++/PROJECTS/bulls_and_cows_skeleton/save.txt";
         std::ofstream monFlux(fichier);
 
@@ -49,7 +60,7 @@ namespace bulls_and_cows {
             monFlux << "___________________________________________________________\n";
             monFlux << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";
 
-            for (int unsigned i = 1; i < tableauFinal.size(); i++)
+            for (int unsigned i = 1; i < finalBoard.size(); i++)
             {
                 monFlux << "| " << i;
                 if (i > 9)
@@ -61,21 +72,18 @@ namespace bulls_and_cows {
                     monFlux << "           | ";
                 }
 
-                for (int unsigned j = 0; j < tableauFinal[i].size() - 2; j++)
-                {
-                    monFlux << tableauFinal[i][j];
-                }
+                monFlux << finalBoard[i].secretCode;
 
-                for (int unsigned k = 0; k < 25 - tableauFinal[i].size(); k++)
+                for (int unsigned k = 0; k < number_of_chars_taken_by_the_size_of_a_coloum - finalBoard.size(); k++)
                 {
                     monFlux << " ";
                 }
                 monFlux << "|  ";
 
-                monFlux << tableauFinal[i][tableauFinal[i].size() - 2];
+                monFlux << finalBoard[i].bulls;
                 monFlux << "      ";
                 monFlux << "|  ";
-                monFlux << tableauFinal[i][tableauFinal[i].size() - 1];
+                monFlux << finalBoard[i].cows;
                 monFlux << "     ";
                 monFlux << "|\n";
             }
@@ -90,6 +98,6 @@ namespace bulls_and_cows {
         }
         else
             std::cout << "Erreur, imposible d'ouvrir le fichier";
-    }
+    }*/
 
 } // namespace bulls_and_cows

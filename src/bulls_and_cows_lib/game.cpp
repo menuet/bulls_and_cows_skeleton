@@ -7,18 +7,17 @@
 #include "random.hpp"
 #include <chrono>
 #include <fstream>
-#include <iostream>
 #include <iterator>
 #include <thread>
-#include <vector>
 
 namespace bulls_and_cows {
 
-    bool checkDoublons(std::vector<char> const& code, char charCode)
+    //La methode checkDoublons permet de verifier qu'un code ne contient pas deux caractères identiques.
+    bool checkDoublons(std::string const& code, char const& charCode)
     {
-        for (int unsigned i = 0; i < code.size(); i++)
+        for (const char& c : code)
         {
-            if (code[i] == charCode)
+            if (c == charCode)
             {
                 return false;
             }
@@ -26,41 +25,39 @@ namespace bulls_and_cows {
         return true;
     }
 
-    std::vector<char> secretCodeMethod(const GameOptions& game_options)
+    //La methode giveCode permet de générer aléatoirement un code en respectant les options.
+    std::string giveCode(const GameOptions& game_options)
     {
-        std::vector<char> secretCode;
+        std::string secretCode;
         char charCode;
         for (int unsigned i = 0; i < game_options.number_of_characters_per_code; i++)
         {
-            do
+            if (game_options.accept_doublons)
             {
                 charCode = generate_random_character(game_options.minimum_allowed_character,
                                                      game_options.maximum_allowed_character);
-            } while (!checkDoublons(secretCode, charCode));
-
-            secretCode.push_back(charCode);
+            }
+            else
+            {
+                do
+                {
+                    charCode = generate_random_character(game_options.minimum_allowed_character,
+                                                         game_options.maximum_allowed_character);
+                } while (!checkDoublons(secretCode, charCode));
+            }
+            secretCode = secretCode + charCode;
         }
         return secretCode;
     }
 
-    void printCode(std::vector<char> const& code)
+    //La methode printCode permet d'afficher le code en paramètre.
+    void printCode(std::string const& code)
     {
-        for (int unsigned i = 0; i < code.size(); i++)
-        {
-            std::cout << code[i];
-        }
+        std::cout << code;
         std::cout << "\n";
     }
 
-    void printTableauFinal(std::vector<std::vector<char>> const& tableauFinal)
-    {
-        for (int unsigned i = 0; i < tableauFinal.size(); i++)
-        {
-            std::cout << tableauFinal[0][i];
-        }
-        std::cout << "\n";
-    }
-
+    //La methode checkDoublonsString check les doublons dans la string entière
     bool checkDoublonsString(std::string const& code)
     {
         char charCode(0);
@@ -71,7 +68,7 @@ namespace bulls_and_cows {
             {
                 if (charCode == code[j] && i != j)
                 {
-                    std::cout << "il y a deux fois la meme lettre \n";
+                    std::cout << "Il y a deux fois la même lettre, merci de rentrer un nouveau code : \n";
                     return false;
                 }
             }
@@ -79,79 +76,58 @@ namespace bulls_and_cows {
         return true;
     }
 
+    //La methode checkErrorAttemps permet de verifier si le code entré par le user est valide, respect les options.
     bool checkErrorAttemps(std::string const& code, const GameOptions& game_options)
     {
         if (code.size() != game_options.number_of_characters_per_code)
         {
-            std::cout << "La taille ne convient pas \n";
+            std::cout << "La taille ne convient pas, merci de rentrer un nouveau code : \n";
             return false;
         }
 
-        for (unsigned int i = 0; i < code.size(); i++)
+        for (const char& i : code)
         {
-            if (code[i] > game_options.maximum_allowed_character || code[i] < game_options.minimum_allowed_character)
+            if (i > game_options.maximum_allowed_character || i < game_options.minimum_allowed_character)
             {
-                std::cout << "Une lettre n'est pas dans la range demandé dans les options \n";
+                std::cout << "Une lettre n'est pas dans la range des options, merci de rentrer un nouveau code : \n";
                 return false;
             }
         }
         return true;
     }
 
-    std::vector<char> attempsMethod(const GameOptions& game_options)
+    //La methode askCodeUser permet au user de saisir un code, verification du code par checkErrorAttemps.
+    std::string askCodeUser(const GameOptions& game_options)
     {
-        std::vector<char> userCode;
         std::string code;
-        do
+        if (game_options.accept_doublons)
         {
-            std::cout << "Rentrez votre code : ";
-            std::cin >> code;
-        } while (!checkDoublonsString(code) || !checkErrorAttemps(code, game_options));
-
-        for (int unsigned i = 0; i < game_options.number_of_characters_per_code; i++)
-        {
-            userCode.push_back(code[i]);
-        }
-        return userCode;
-    }
-
-    std::vector<char> attempsMethodComputer(const GameOptions& game_options,
-                                            std::vector<std::vector<char>> const& tableauFinal)
-    {
-        std::vector<char> userCode;
-        bool accept(true);
-        do
-        {
-            userCode = secretCodeMethod(game_options);
-            for (unsigned int i = 1; i < tableauFinal.size(); i++)
+            do
             {
-                if (userCode == tableauFinal[i])
-                {
-                    accept = false;
-                }
-            }
-        } while (!accept);
-
-        return userCode;
-    }
-
-    bool checkWin(std::vector<char> secretCodeComputer, std::vector<char> attemps)
-    {
-        if (secretCodeComputer == attemps)
-        {
-            return true;
+                std::cout << "Rentrez votre code : ";
+                std::cin >> code;
+            } while (!checkErrorAttemps(code, game_options));
         }
-        return false;
+        else
+        {
+            do
+            {
+                std::cout << "Rentrez votre code : ";
+                std::cin >> code;
+            } while (!checkDoublonsString(code) || !checkErrorAttemps(code, game_options));
+        }
+        return code;
     }
 
-    int cowsMethod(std::vector<char> secretCodeComputer, std::vector<char> attemps)
+    //La methode giveCowsNumber permet de checker si le code du user possède des similitudes avec le code secret et retourne ce nombre.
+    unsigned int giveCowsNumber(std::string const& secretCodeComputer, std::string const& code)
     {
         int count(0);
-        for (int unsigned i = 0; i < attemps.size(); i++)
+        for (int unsigned i = 0; i < code.size(); i++)
         {
-            for (int unsigned j = 0; j < attemps.size(); j++)
+            for (int unsigned j = 0; j < code.size(); j++)
             {
-                if (secretCodeComputer[i] == attemps[j] && i != j)
+                if (secretCodeComputer[i] == code[j] && i != j)
                 {
                     count++;
                 }
@@ -160,12 +136,13 @@ namespace bulls_and_cows {
         return count;
     }
 
-    int bullsMethod(std::vector<char> secretCodeComputer, std::vector<char> attemps)
+    //La methode giveBullsNumber retourne le nombre d'éxactitude entre le code user et le code secret.
+    unsigned int giveBullsNumber(std::string const& secretCodeComputer, std::string const& code)
     {
         int count(0);
-        for (int unsigned i = 0; i < attemps.size(); i++)
+        for (int unsigned i = 0; i < code.size(); i++)
         {
-            if (secretCodeComputer[i] == attemps[i])
+            if (secretCodeComputer[i] == code[i])
             {
                 count++;
             }
@@ -173,118 +150,150 @@ namespace bulls_and_cows {
         return count;
     }
 
-    void user_plays_against_computer(const GameOptions& game_options)
+    //La methode checkWin permet de retourner un bool pour verifier la victoire ou la defaite d'un joueur.
+    bool checkWin(std::string const& secretCodeComputer, std::string const& code)
     {
-        std::vector<char> secretCodeComputer = secretCodeMethod(game_options);
-        printCode(secretCodeComputer);
-        std::cout << "\n";
+        return secretCodeComputer == code;
+    }
 
-        std::vector<std::vector<char>> tableauFinal;
-        tableauFinal.push_back(secretCodeComputer);
-
-        std::vector<char> attemps;
-
-        unsigned int count(1);
-        int bulls(0);
-        int cows(0);
-        int win(0);
-
+    //La methode askCodeComputer permet de générer un code lorsque l'ordinateur joue contre lui-meme.
+    std::string askCodeComputer(const GameOptions& game_options, std::vector<FinalBoard> const& finalBoard)
+    {
+        std::string code;
+        bool accept(true);
         do
         {
-            attemps = attempsMethod(game_options);
-            bulls = bullsMethod(secretCodeComputer, attemps);
-            cows = cowsMethod(secretCodeComputer, attemps);
-            printCode(attemps);
-            std::string bullsCast = std::to_string(bulls);
-            std::string cowsCast = std::to_string(cows);
+            code = giveCode(game_options);
+            for (unsigned int i = 1; i < finalBoard.size(); i++)
+            {
+                if (code == finalBoard[i].secretCode)
+                {
+                    accept = false;
+                }
+            }
+        } while (!accept);
+        return code;
+    }
+   
+    void user_plays_against_computer(const GameOptions& game_options)
+    {
+        std::string secretCodeComputer = giveCode(game_options); //nous générons un code aléatoire avec les paramètres demandés dans game_options
+        printCode(secretCodeComputer); //permet d'afficher un code, ici le secret code pour débugger
+        std::cout << "\n";
 
-            tableauFinal.push_back(attemps);
-            tableauFinal[count].push_back(bullsCast[0]);
-            tableauFinal[count].push_back(cowsCast[0]);
+        std::vector<FinalBoard> finalBoard; //creation d'un vector de structure : secretcode, bulls, cows.
+        finalBoard.push_back(FinalBoard(secretCodeComputer, 0, 0)); // initialisation du vector avec le secretCode.
 
-            boardGame(tableauFinal, game_options, count);
+        unsigned int count(1);
 
-            if (checkWin(secretCodeComputer, attemps))
+        GameStatus win = GameStatus::Continue;
+        do
+        {
+            std::string code;
+            code = askCodeUser(game_options);
+
+            unsigned int bulls(0);
+            unsigned int cows(0);
+            bulls = giveBullsNumber(secretCodeComputer, code);
+            cows = giveCowsNumber(secretCodeComputer, code);
+
+            finalBoard.emplace_back(code, bulls, cows);
+
+            boardGame(finalBoard, game_options, count);
+            
+            if (checkWin(secretCodeComputer, code))
             {
                 std::cout << "You win \n";
-                win = 1;
+                win = GameStatus::Win;
             }
             if (count == game_options.max_number_of_attempts)
             {
-                win = 2;
+                win = GameStatus::Lose;
                 std::cout << "you lose \n";
             }
             count++;
-        } while (win == 0);
+        } while (win == GameStatus::Continue);
 
-        if (game_options.save_game == true)
+        /*if (game_options.save_game == true)
         {
-            saveGameMethod(tableauFinal, win);
-        }
+            saveGameMethod(finalBoard, win);
+        }*/
 
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::vector<char> secretCodeComputer = secretCodeMethod(game_options);
-        printCode(secretCodeComputer);
+        std::string secretCodeComputer = giveCode(game_options); // nous générons un code aléatoire avec les paramètres demandés dans game_options
+        printCode(secretCodeComputer); // permet d'afficher un code, ici le secret code pour débugger
         std::cout << "\n";
 
-        std::vector<std::vector<char>> tableauFinal;
-        tableauFinal.push_back(secretCodeComputer);
-
-        std::vector<char> attemps;
+        std::vector<FinalBoard> finalBoard; // creation d'un vector de structure : secretcode, bulls, cows.
+        finalBoard.push_back(FinalBoard(secretCodeComputer, 0, 0)); // initialisation du vector avec le secretCode.
 
         unsigned int count(1);
-        int bulls(0);
-        int cows(0);
-        int win(0);
 
+        GameStatus win = GameStatus::Continue;
         do
         {
-            attemps = attempsMethodComputer(game_options, tableauFinal);
-            bulls = bullsMethod(secretCodeComputer, attemps);
-            cows = cowsMethod(secretCodeComputer, attemps);
-            std::string bullsCast = std::to_string(bulls);
-            std::string cowsCast = std::to_string(cows);
+            std::string code;
+            code = askCodeComputer(game_options, finalBoard);
+           
 
-            tableauFinal.push_back(attemps);
-            tableauFinal[count].push_back(bullsCast[0]);
-            tableauFinal[count].push_back(cowsCast[0]);
+            unsigned int bulls(0);
+            unsigned int cows(0);
+            bulls = giveBullsNumber(secretCodeComputer, code);
+            cows = giveCowsNumber(secretCodeComputer, code);
 
-            boardGame(tableauFinal, game_options, count);
+            finalBoard.emplace_back(code, bulls, cows);
+
+            boardGame(finalBoard, game_options, count);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-            if (checkWin(secretCodeComputer, attemps))
+            if (checkWin(secretCodeComputer, code))
             {
                 std::cout << "You win \n";
-                win = 1;
+                win = GameStatus::Win;
             }
             if (count == game_options.max_number_of_attempts)
             {
-                win = 2;
+                win = GameStatus::Lose;
                 std::cout << "you lose \n";
             }
             count++;
-        } while (win == 0);
+        } while (win == GameStatus::Continue);
 
-        if (game_options.save_game == true)
+        /*if (game_options.save_game == true)
         {
-            saveGameMethod(tableauFinal, win);
-        }
+            saveGameMethod(finalBoard, win);
+        }*/
     }
 
     GameOptions configure_game_options(GameOptions& game_options)
     {
         GameOptions gameoption1;
+        int menu(0);
+        do
+        {
+            std::cout << "Voici les options : \n";
+            std::cout << "1- Afficher les options du jeu : \n";
+            std::cout << "2- Modifier les options du jeu : \n";
+            std::cout << "0- Revenir au menu principal : \n";
+            std::cout << "choix de menu : ";
+            std::cin >> menu;
 
-        gameoption1 = modifOptions(gameoption1);
-        std::cout << "\n";
-        printOptions(gameoption1);
+            switch (menu)
+            {
+                case 1:
+                    printOptions(gameoption1);
+                case 2:
+                    gameoption1 = modifOptions(gameoption1);
+                default:
+                    break;
+            }
+        } while (menu == 0);
 
         return gameoption1;
-  
     }
 
     void play_game()
@@ -317,5 +326,4 @@ namespace bulls_and_cows {
             }
         }
     }
-
 } // namespace bulls_and_cows

@@ -1,13 +1,17 @@
 #include "board.hpp"
+#include "game.hpp"
 
 namespace bulls_and_cows {
 
-    void boardGame(std::vector<std::vector<char>>const& tableauFinal, const GameOptions& game_options, unsigned int count)
+
+    void boardGame(std::vector<FinalBoard> const& finalBoard, const GameOptions& game_options, unsigned int const& count)
     {
+        // constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 18U;
+
         std::cout << "___________________________________________________________\n";
         std::cout << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";
 
-        for (int unsigned i = 1; i < tableauFinal.size(); i++)
+        for (unsigned int i = 1; i < finalBoard.size(); i++)
         {
             std::cout << "| " << i;
             if (i > 9)
@@ -19,21 +23,18 @@ namespace bulls_and_cows {
                 std::cout << "           | ";
             }
 
-            for (int unsigned j = 0; j < tableauFinal[i].size() - 2; j++)
-            {
-                std::cout << tableauFinal[i][j];
-            }
+            std::cout << finalBoard[i].secretCode;
 
-            for (int unsigned k = 0; k < 25 - tableauFinal[i].size(); k++)
+            for (int unsigned k = 0; k < 18U; k++)
             {
                 std::cout << " ";
             }
             std::cout << "|  ";
 
-            std::cout << tableauFinal[i][tableauFinal[i].size()-2];
+            std::cout << finalBoard[i].bulls;
             std::cout << "      ";
             std::cout << "|  ";
-            std::cout << tableauFinal[i][tableauFinal[i].size()-1];
+            std::cout << finalBoard[i].cows;
             std::cout << "     ";
             std::cout << "|\n";
         }
@@ -41,6 +42,5 @@ namespace bulls_and_cows {
 
         std::cout << "Attempt(s) remaining:" << game_options.max_number_of_attempts - count << "\n";
     }
-
 
 } // namespace bulls_and_cows
