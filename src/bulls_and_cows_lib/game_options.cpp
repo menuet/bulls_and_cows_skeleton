@@ -71,10 +71,10 @@ namespace bulls_and_cows {
                                               std::istream& input_stream)
     {
         unsigned int new_nb_of_characters = 0;
-        unsigned int diff = (game_options.maximum_allowed_character - game_options.minimum_allowed_character) + 1;
         output_stream << "\nEnter the number of characters ((must be superior to 0) & (inferior or equal to the "
                          "numerecial difference btwn max_allowed_char and min_allowed_char)) : ";
         new_nb_of_characters = ask_uint_or_default(input_stream, 0);
+        unsigned int diff = (game_options.maximum_allowed_character - game_options.minimum_allowed_character) + 1;
 
         while (new_nb_of_characters == 0 || new_nb_of_characters > diff)
         {
@@ -82,6 +82,7 @@ namespace bulls_and_cows {
             output_stream << "Enter the number of characters ((must be > to 0) & ( <= to the "
                              "numerecial difference btwn max_allowed_char and min_allowed_char)) : ";
             new_nb_of_characters = ask_uint_or_default(input_stream, 0);
+            diff = (game_options.maximum_allowed_character - game_options.minimum_allowed_character) + 1;
         }
 
         game_options.number_of_characters_per_code = new_nb_of_characters;
@@ -94,16 +95,17 @@ namespace bulls_and_cows {
         char new_minimum{};
         auto max = game_options.maximum_allowed_character;
         auto nb_char = game_options.number_of_characters_per_code;
-        unsigned int diff = max - new_minimum;
 
-        output_stream << "\nEnter the minimum allowed character (must be <= to maximum allowed charcter & maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
+        output_stream << "\nEnter the minimum allowed character (must be < to maximum allowed charcter & maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
         new_minimum = ask_char_or_default(input_stream, -1);
+        unsigned int diff = max - new_minimum + 1;
 
-        while (new_minimum == -1 || new_minimum > max || diff < nb_char)
+        while (new_minimum == -1 || new_minimum >= max || diff < nb_char)
         {
             output_stream << "Incorrect input, try again !\n";
-            output_stream << "Enter the minimum allowed character (must be <= to maximum allowed charcter & maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
+            output_stream << "Enter the minimum allowed character (must be < to maximum allowed charcter & maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
             new_minimum = ask_char_or_default(input_stream, -1);
+            diff = max - new_minimum + 1;
         }
 
         game_options.minimum_allowed_character = new_minimum;
@@ -116,18 +118,19 @@ namespace bulls_and_cows {
         char new_maximum{};
         char min = game_options.minimum_allowed_character;
         auto nb_char = game_options.number_of_characters_per_code;
-        unsigned int diff = new_maximum - min;
 
-        output_stream << "\nEnter the maximum allowed character (must be >= to minimum allowed character & "
+        output_stream << "\nEnter the maximum allowed character (must be > to minimum allowed character & "
                          "maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
         new_maximum = ask_char_or_default(input_stream, -1);
+        unsigned int diff = new_maximum - min + 1;
 
-        while (new_maximum == -1 || ( new_maximum < min) || (diff < nb_char) )
+        while (new_maximum == -1 || ( new_maximum <= min) || (diff < nb_char) )
         {
             output_stream << "Incorrect input, try again !\n";
-            output_stream << "Enter the maximum allowed character (must be >= to minimum allowed character & "
+            output_stream << "Enter the maximum allowed character (must be > to minimum allowed character & "
                              "maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
             new_maximum = ask_char_or_default(input_stream, -1);
+            diff = new_maximum - min + 1;
         }
 
         game_options.maximum_allowed_character = new_maximum;

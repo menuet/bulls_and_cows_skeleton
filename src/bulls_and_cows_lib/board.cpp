@@ -50,8 +50,7 @@ namespace bulls_and_cows {
 
         for (const char attempt_char : attempt.value)
         {
-            if (attempt_char < game_options.minimum_allowed_character ||
-                attempt_char > game_options.maximum_allowed_character)
+            if (attempt_char < game_options.minimum_allowed_character || attempt_char > game_options.maximum_allowed_character)
             {
                 return false;
             }
