@@ -12,6 +12,14 @@ namespace bulls_and_cows {
              << "\nThe maximum number of attempts allowed is " << game_options.max_number_of_attempts
              << "\nThere are characters between " << game_options.minimum_allowed_character << " and "
              << game_options.maximum_allowed_character << "\n";
+        if (game_options.allow_duplicate)
+        {
+            std::cout << "Duplicates are allowed\n";
+        }
+        else
+        {
+            std::cout << "Duplicates are not allowed\n";
+        }
     }
 
     void display_game_options_menu()
@@ -22,7 +30,8 @@ namespace bulls_and_cows {
                 "3> Modify the minimum allowed character\n"
                 "4> Modify the maximum allowed character\n"
                 "5> Save the options\n"
-                "6> Load the options\n";
+                "6> Load the options\n"
+                "7> Allow duplicates in the code\n";
     }
 
     GameOptionsMenuChoice ask_game_options_menu_choice()
@@ -32,7 +41,7 @@ namespace bulls_and_cows {
         {
             std::cout << "Enter your choice ";
             std::cin >> choice;
-        } while (choice > 6 || choice < 0);
+        } while (choice > 7 || choice < 0);
         return GameOptionsMenuChoice(choice);
     }
 
@@ -50,6 +59,7 @@ namespace bulls_and_cows {
             stream << "number_of_characters_per_code=" << game_options.number_of_characters_per_code << std::endl;
             stream << "minimum_allowed_character=" << game_options.minimum_allowed_character << std::endl;
             stream << "maximum_allowed_character=" << game_options.maximum_allowed_character << std::endl;
+            stream << "duplicates_allowed=" << game_options.allow_duplicate << std::endl;
         }
         else
         {
@@ -116,6 +126,10 @@ namespace bulls_and_cows {
                 {
                     game_options.maximum_allowed_character = option_value[0];
                 }
+                else if (option_name == "duplicates_allowed=")
+                {
+                    game_options.allow_duplicate = std::stoi(option_value);
+                }
             }
         }
         else
@@ -127,8 +141,9 @@ namespace bulls_and_cows {
 
     void manage_game_options(GameOptionsMenuChoice choice, GameOptions& game_options)
     {
-        char input_char;
-        unsigned int input_int;
+        char input_char = ' ';
+        unsigned int input_int = 0;
+        bool input_bool = false;
         switch (choice)
         {
         case GameOptionsMenuChoice::BackToMain:
@@ -194,7 +209,17 @@ namespace bulls_and_cows {
             }
             break;
 
+        case GameOptionsMenuChoice::AllowDuplicate:
+            std::cout << "\nDo you want to allow duplicates (1 for Yes, 0 for No) ";
+            do
+            {
+                std::cin >> input_bool;
+            } while (input_int != 1 && input_int != 0);
+            game_options.allow_duplicate = input_bool;
+            break;
+
         default:
+            std::cout << "Error\n";
             break;
         }
     }

@@ -32,7 +32,6 @@ namespace bulls_and_cows {
     };
 
     void play_game();
-    bool check_duplicates(Code const& code, int current_index);
     Code generate_secret_code(const GameOptions& game_options);
     Code do_attempt(const GameOptions& game_options);
     unsigned int count_bull(Code const& attempt, Code const& code);

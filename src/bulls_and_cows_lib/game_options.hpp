@@ -11,6 +11,7 @@ namespace bulls_and_cows {
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
+        bool allow_duplicate{false};
     };
 
     void display_game_options(const GameOptions& game_options);
@@ -27,6 +28,7 @@ namespace bulls_and_cows {
         ModifyMaximumAllowedCharacter = 4,
         SaveOptions = 5,
         LoadOptions = 6,
+        AllowDuplicate = 7,
     };
 
     // Ask the user to select an option of the menu

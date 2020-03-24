@@ -76,42 +76,35 @@ namespace bulls_and_cows {
         return cow;
     }
 
-    // Return true if the is no duplicate in the current code (vector)
-    bool check_duplicates(Code const& code, int current_index)
-    {
-        if (current_index == 0)
-        {
-            return true;
-        }
-        for (int i = 0; i < current_index; i++)
-        {
-            if (code.value[current_index] == code.value[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
     // Return a vector of char containing random different char with the length defined in the options
     Code generate_secret_code(const GameOptions& game_options)
     {
-        std::string dictionary = "";
-        for (char i = game_options.minimum_allowed_character; i < game_options.maximum_allowed_character+1; i++)
-        {
-            dictionary.push_back(i);
-        }
-
         Code code;
         code.value = "";
-        
-        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+        if (game_options.allow_duplicate)
         {
-            int random_integer = generate_random_integer(0,static_cast<int>(std::size(dictionary))-1);
-            code.value.push_back(dictionary[random_integer]);
-            dictionary[random_integer] = dictionary[std::size(dictionary)-1];
-            dictionary.pop_back();
+            for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+            {
+                code.value.push_back(generate_random_character(game_options.minimum_allowed_character,game_options.maximum_allowed_character));
+            }
         }
+        else
+        {
+            std::string dictionary = "";
+            for (char i = game_options.minimum_allowed_character; i < game_options.maximum_allowed_character+1; i++)
+            {
+                dictionary.push_back(i);
+            }
+
+            for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+            {
+                int random_integer = generate_random_integer(0,static_cast<int>(std::size(dictionary))-1);
+                code.value.push_back(dictionary[random_integer]);
+                dictionary[random_integer] = dictionary[std::size(dictionary)-1];
+                dictionary.pop_back();
+            }
+        }
+        
         return code;
     }
 
@@ -155,14 +148,17 @@ namespace bulls_and_cows {
             return CheckInput::WrongNumberChars;
         }
 
-        // Check for the duplicates
-        for (int i = 0; i < attempt.size(); i++)
+        if (!game_options.allow_duplicate)
         {
-            for (int j = i+1; j < attempt.size(); j++)
+            // Check for the duplicates
+            for (int i = 0; i < attempt.size(); i++)
             {
-                if (attempt[i] == attempt[j])
+                for (int j = i+1; j < attempt.size(); j++)
                 {
-                    return CheckInput::Duplicate;
+                    if (attempt[i] == attempt[j])
+                    {
+                        return CheckInput::Duplicate;
+                    }
                 }
             }
         }
@@ -233,13 +229,7 @@ namespace bulls_and_cows {
     void configure_game_options(GameOptions& game_options)
     {
         GameOptionsMenuChoice choice;
-        std::cout << "TODO:\n"
-                "    DO\n"
-                "       Display the current game options\n"
-                "       Display the game options menu\n"
-                "       Ask the user to type its choice\n"
-                "       Treat the user's choice\n"
-                "    UNTIL user's choice is to go back to main menu\n";
+        
         do
         {
             display_game_options(game_options);
