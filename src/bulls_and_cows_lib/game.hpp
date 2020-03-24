@@ -33,7 +33,7 @@ namespace bulls_and_cows {
 
     void play_game();
     Code generate_secret_code(const GameOptions& game_options);
-    Code do_attempt(const GameOptions& game_options);
+    Code do_attempt(std::istream& input_stream, const GameOptions& game_options);
     unsigned int count_bull(Code const& attempt, Code const& code);
     unsigned int count_cow(Code const& attempt, Code const& code);
     CheckInput check_input(std::string const& attempt, const GameOptions& game_options);

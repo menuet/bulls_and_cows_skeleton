@@ -6,41 +6,42 @@
 
 namespace bulls_and_cows {
 
-    void display_game_options(const GameOptions& game_options)
+    void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
-        std::cout << "\nThe number of characters in the code is " << game_options.number_of_characters_per_code
+        output_stream << "\nThe number of characters in the code is " << game_options.number_of_characters_per_code
              << "\nThe maximum number of attempts allowed is " << game_options.max_number_of_attempts
              << "\nThere are characters between " << game_options.minimum_allowed_character << " and "
              << game_options.maximum_allowed_character << "\n";
         if (game_options.allow_duplicate)
         {
-            std::cout << "Duplicates are allowed\n";
+            output_stream << "Duplicates are allowed\n";
         }
         else
         {
-            std::cout << "Duplicates are not allowed\n";
+            output_stream << "Duplicates are not allowed\n";
         }
     }
 
-    void display_game_options_menu()
+    void display_game_options_menu(std::ostream& output_stream)
     {
-        std::cout << "0> Back to menu\n"
+        output_stream << "Configure Options\n"
+                "0> Back to menu\n"
                 "1> Modifiy the maximum number of attempts\n"
                 "2> Modify the number of characters per code\n"
                 "3> Modify the minimum allowed character\n"
                 "4> Modify the maximum allowed character\n"
                 "5> Save the options\n"
                 "6> Load the options\n"
-                "7> Allow duplicates in the code\n";
+                "7> Allow duplicates in the code\n"
+                "Enter your choice\n";
     }
 
-    GameOptionsMenuChoice ask_game_options_menu_choice()
+    GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
     {
         int choice = 0;
         do
         {
-            std::cout << "Enter your choice ";
-            std::cin >> choice;
+            input_stream >> choice;
         } while (choice > 7 || choice < 0);
         return GameOptionsMenuChoice(choice);
     }

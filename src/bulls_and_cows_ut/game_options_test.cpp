@@ -3,10 +3,7 @@
 #include <catch2/catch.hpp>
 #include <sstream>
 
-// Examples of unit tests for the functions declared in game_options.hpp
-// These unit tests are disabled because you first need to define the tested functions in game_options.cpp
-
-/*
+// Unit tests for the functions declared in game_options.hpp
 
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
@@ -20,10 +17,10 @@ TEST_CASE("TEST bulls_and_cows::display_game_options")
     // ASSERT
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
-            "Here are the current game_options:\n"
-            "Maximum number of attempts per game: 12\n"
-            "Number of characters in a code: 5\n"
-            "Range of allowed characters: from 'A' to 'H'\n");
+            "\nThe number of characters in the code is 5"
+            "\nThe maximum number of attempts allowed is 12"
+            "\nThere are characters between A and H\n"
+            "Duplicates are not allowed\n");
 }
 
 TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
@@ -38,14 +35,15 @@ TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
             "Configure Options\n"
-            "0 - Back to main menu\n"
-            "1 - Modify Maximum number of attempts per game\n"
-            "2 - Modify Number of characters in a code\n"
-            "3 - Modify Minimum allowed character\n"
-            "4 - Modify Maximum allowed character\n"
-            "5 - Save options\n"
-            "6 - Load options\n"
-            "What is your choice ? ");
+            "0> Back to menu\n"
+            "1> Modifiy the maximum number of attempts\n"
+            "2> Modify the number of characters per code\n"
+            "3> Modify the minimum allowed character\n"
+            "4> Modify the maximum allowed character\n"
+            "5> Save the options\n"
+            "6> Load the options\n"
+            "7> Allow duplicates in the code\n"
+            "Enter your choice\n");
 }
 
 TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
@@ -59,7 +57,7 @@ TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
     // ASSERT
     REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
 }
-
+/*
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
     // ARRANGE
@@ -98,6 +96,6 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(game_options.number_of_characters_per_code == 3);
     REQUIRE(game_options.minimum_allowed_character == '1');
     REQUIRE(game_options.maximum_allowed_character == '8');
-}
+}*/
 
-*/
+

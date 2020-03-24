@@ -12,11 +12,7 @@ namespace bulls_and_cows {
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
         bool allow_duplicate{false};
-    };
-
-    void display_game_options(const GameOptions& game_options);
-
-    void display_game_options_menu();
+    };    
 
     enum class GameOptionsMenuChoice
     {
@@ -31,8 +27,12 @@ namespace bulls_and_cows {
         AllowDuplicate = 7,
     };
 
+    void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
+
+    void display_game_options_menu(std::ostream& output_stream);
+
     // Ask the user to select an option of the menu
-    GameOptionsMenuChoice ask_game_options_menu_choice();
+    GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream);
 
     void manage_game_options(GameOptionsMenuChoice choice, GameOptions& game_options);
 

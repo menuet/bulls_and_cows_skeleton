@@ -22,7 +22,10 @@ namespace bulls_and_cows {
         Historic historic;
         do
         {
-            attempt_bulls_cows.attempt = do_attempt(game_options);
+            std::cout << "\nEnter your new attempt (length of " << game_options.number_of_characters_per_code
+                      << " and character between " << game_options.minimum_allowed_character << " and "
+                      << game_options.maximum_allowed_character << ") :";
+            attempt_bulls_cows.attempt = do_attempt(std::cin, game_options);
 
             attempt_bulls_cows.bulls = count_bull(attempt_bulls_cows.attempt, code);
             attempt_bulls_cows.cows = count_cow(attempt_bulls_cows.attempt, code);
@@ -109,27 +112,33 @@ namespace bulls_and_cows {
     }
 
     //Ask to the user to write a attempt
-    Code do_attempt(const GameOptions& game_options)
+    Code do_attempt(std::istream& input_stream, const GameOptions& game_options)
     {
         Code code;
         do
         {
-            std::cout << "\nEnter your new attempt (length of " << game_options.number_of_characters_per_code
-                      << " and character between "
-                 << game_options.minimum_allowed_character << " and " << game_options.maximum_allowed_character
-                 << ") :";
-            std::cin >> code.value;
+            input_stream >> code.value;
 
             switch (check_input(code.value, game_options))
             {
             case (CheckInput::WrongNumberChars):
                 std::cout << "Wrong number of characters. Try again\n";
+                std::cout << "\nEnter your new attempt (length of " << game_options.number_of_characters_per_code
+                          << " and character between " << game_options.minimum_allowed_character << " and "
+                          << game_options.maximum_allowed_character << ") :";
                 break;
             case (CheckInput::CharacterOutOfRange):
                 std::cout << "Character(s) not allowed in your attempt. Try again\n";
+                std::cout << "\nEnter your new attempt (length of " << game_options.number_of_characters_per_code
+                          << " and character between " << game_options.minimum_allowed_character << " and "
+                          << game_options.maximum_allowed_character << ") :";
                 break;
             case (CheckInput::Duplicate):
                 std::cout << "There is at least one duplicate in your input. Try again\n";
+                std::cout << "\nEnter your new attempt (length of " << game_options.number_of_characters_per_code
+                          << " and character between " << game_options.minimum_allowed_character << " and "
+                          << game_options.maximum_allowed_character << ") :";
+                break;
             default:
                 break;
             }
@@ -176,6 +185,7 @@ namespace bulls_and_cows {
         return CheckInput::Valid;
     }
 
+    //Check if the attempt has already been made, return true if the attempt is new/valid
     bool check_attempt(Code const& attempt, Historic const& historic)
     {
         for (AttemptBullsCows historic_attempt : historic.value)
@@ -232,9 +242,9 @@ namespace bulls_and_cows {
         
         do
         {
-            display_game_options(game_options);
-            display_game_options_menu();
-            choice = ask_game_options_menu_choice();
+            display_game_options(std::cout,game_options);
+            display_game_options_menu(std::cout);
+            choice = ask_game_options_menu_choice(std::cin);
             manage_game_options(choice, game_options);
         } while (choice != GameOptionsMenuChoice::BackToMain);
     }
