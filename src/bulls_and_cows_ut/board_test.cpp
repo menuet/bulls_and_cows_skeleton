@@ -6,7 +6,6 @@
 // Examples of unit tests for the functions declared in board.hpp
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
 
-/*
 
 TEST_CASE("TEST bulls_and_cows::create_board")
 {
@@ -38,6 +37,7 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt's length is too sm
     // ASSERT
     REQUIRE(!result);
 }
+
 
 TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allowed characters")
 {
@@ -147,7 +147,7 @@ TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
     // ASSERT
     REQUIRE(!result);
 }
-
+/*
 TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet played")
 {
     // ARRANGE

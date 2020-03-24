@@ -52,4 +52,7 @@ namespace bulls_and_cows {
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
                      const Board& board);
 
+   int where_is_the_letter(std::string mot, char lettre);
+
+
 } // namespace bulls_and_cows
