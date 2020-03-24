@@ -7,8 +7,8 @@ namespace bulls_and_cows {
 
     struct GameOptions
     {
-        unsigned int max_number_of_attempts{5};
-        unsigned int number_of_characters_per_code{8};
+        unsigned int max_number_of_attempts{12};
+        unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
     };
