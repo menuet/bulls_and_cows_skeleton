@@ -1,0 +1,95 @@
+name: CI
+
+on: [push]
+
+jobs:
+  linux:
+    timeout-minutes: 10
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: dependencies
+        working-directory: ${{runner.workspace}}
+        shell: bash
+        run: |
+          echo downloading ninja
+          curl -fsSL -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip
+          sudo 7z x ninja.zip -o/usr/local/bin
+          ninja --version
+          echo creating build directory here: ${{runner.workspace}}/build
+          cmake --version
+          cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: |
+          cmake -G "Ninja" "-DCMAKE_CXX_COMPILER=g++-9" "-DCMAKE_BUILD_TYPE=Debug" "$GITHUB_WORKSPACE"
+          cmake --build . --config Debug
+
+      - name: test
+        working-directory: ${{runner.workspace}}/build
+        run: ctest -C Debug
+
+  windows:
+    timeout-minutes: 10
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: dependencies
+        working-directory: ${{runner.workspace}}
+        shell: bash
+        run: |
+          echo creating build directory here: `pwd`/build
+          cmake --version
+          cmake -E make_directory build
+
+      - name: build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: |
+          cmake "-DCMAKE_BUILD_TYPE=Debug" "$GITHUB_WORKSPACE"
+          cmake --build . --config Debug
+
+      - name: test
+        working-directory: ${{runner.workspace}}/build
+        run: ctest -C Debug
+
+  macos:
+    timeout-minutes: 10
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: dependencies
+        working-directory: ${{runner.workspace}}
+        shell: bash
+        run: |
+          echo current directory: `pwd`
+          echo downloading ninja
+          curl -fsSL -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-mac.zip
+          unzip ninja.zip
+          mv ninja /usr/local/bin
+          ninja --version
+          echo creating build directory here: ${{runner.workspace}}/build
+          cmake --version
+          cmake -E make_directory "${{runner.workspace}}/build"
+
+      - name: build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: |
+          cmake "-DCMAKE_BUILD_TYPE=Debug" "$GITHUB_WORKSPACE"
+          cmake --build . --config Debug
+
+      - name: test
+        working-directory: ${{runner.workspace}}/build
+        run: ctest -C Debug
