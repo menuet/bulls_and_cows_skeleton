@@ -30,7 +30,7 @@ namespace bulls_and_cows {
         int i,j;
 
        
-        for (i = 0; i < 5; i++)
+        for (i = 0; i < 5; i++) //Create an array with the secret code 
         {
             motsecret[i] = generate_random_character(65, 72 );
             std::cout << motsecret[i];
