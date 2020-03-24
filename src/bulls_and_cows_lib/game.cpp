@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-// tyefgkzjdfjenzdjisdlkckzsdnkjcnkdsjnckodsnkos
+// tyefgkzjdfjenzdjisdlkckzsdnkjcnkdsjnckodsnkosklnkjbjknbkjbj,bjksdmlf,sdkl,fklds,
 
 namespace bulls_and_cows {
 
