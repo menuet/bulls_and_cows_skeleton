@@ -6,7 +6,7 @@
 // Examples of unit tests for the functions declared in board.hpp
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
 
-/*
+
 
 TEST_CASE("TEST bulls_and_cows::create_board")
 {
@@ -52,6 +52,7 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allow
     REQUIRE(!result);
 }
 
+/*
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bull and 3 cows")
 {
     // ARRANGE
@@ -65,6 +66,7 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bull and
     REQUIRE(feedback.bulls == 0);
     REQUIRE(feedback.cows == 3);
 }
+
 
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and 2 cows")
 {
@@ -94,6 +96,7 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 1 bull and
     REQUIRE(feedback.cows == 0);
 }
 
+
 TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 5 bulls and 0 cow")
 {
     // ARRANGE
@@ -122,6 +125,7 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bulls an
     REQUIRE(feedback.cows == 0);
 }
 
+
 TEST_CASE("TEST bulls_and_cows::is_end_of_game WHEN not yet the end")
 {
     // ARRANGE
@@ -146,7 +150,7 @@ TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
 
     // ASSERT
     REQUIRE(!result);
-}
+}*/
 
 TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet played")
 {
@@ -180,6 +184,7 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
             "| #01      . . . . . |       |      |\n"
             "-------------------------------------\n");
 }
+/*
 
 TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
 {
@@ -203,6 +208,4 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
             "What is your guess #01 (5 characters between 'A' and 'H')\n"
             "? ");
-}
-
-*/
+}*/
