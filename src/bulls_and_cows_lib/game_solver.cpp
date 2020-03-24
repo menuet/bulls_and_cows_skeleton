@@ -61,23 +61,6 @@ namespace bulls_and_cows {
         return possible_solutions;
     }
 
-    void combinationRecursive(unsigned int combinationLength, unsigned int position, Code& current, Code& elements,
-                              PossibleSolutions& possible_solutions)
-    {
-        if (position >= combinationLength)
-        {
-            possible_solutions.codes.push_back(current);
-        }
-
-        for (int j = 0; j < elements.value.size(); ++j)
-        {
-
-            current.value[position] = elements.value[j];
-
-            combinationRecursive(combinationLength, position + 1, current, elements, possible_solutions);
-        }
-    }
-
     Code pick_random_attempt(const PossibleSolutions& possible_solutions)
     {
         Code codeRandom{};

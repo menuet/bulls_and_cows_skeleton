@@ -123,7 +123,7 @@ namespace bulls_and_cows {
                      const Board& board)
     {
         Code user_choice{};
-        ;
+        
 
         if (game_options.number_of_characters_per_code < 9)
         {
