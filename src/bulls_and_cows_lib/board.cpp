@@ -107,12 +107,116 @@ namespace bulls_and_cows {
                return false;
            if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
            {
+               std::cout << "You won !! GG WP";
                return true;
            }
 
            return false;
        }
-       //Checked
+
+
+
+       // SIMPLE TEST
+       /*void display_board(std::ostream & output_stream, const GameOptions & game_options, const Board & board)
+       {
+           output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
+           for (unsigned int index = 0; index < board.attempts_and_feedbacks.size(); ++index)
+           {
+               const auto& attempt_and_feedback = board.attempts_and_feedbacks[index];
+               const auto& attempt = attempt_and_feedback.attempt;
+               const auto& feedback = attempt_and_feedback.feedback;
+               output_stream << "Attempt #" << (index + 1) << " = " << attempt.value << " | Bulls = " << feedback.bulls
+                   << " | Cows = " << feedback.cows << "\n";
+           }
+       }
+       */
+
+       std::string moins_function(int number, std::string loopadd)
+       {
+           std::string moins = "";
+           for (int i = 0; i < number; i++)
+           {
+               moins += loopadd;
+           }
+           return moins;
+       }
+
+       void print_code(std::string code)
+       {
+           char* ccode = const_cast<char*>(code.c_str());
+           std::string codewspace = "";
+           for (int i = 0; i < code.length(); i++)
+           {
+               std::cout << ccode[i] << " ";
+           }
+       }
+
+       void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
+       {
+           // HEAD ...
+           output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
+           output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
+                         << "---------------\n";
+           output_stream << "| SECRET   " << moins_function(game_options.number_of_characters_per_code, "* ") << "| "
+                         << "              |\n";
+           output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
+                         << "---------------\n";
+           output_stream << "| ATTEMPTS " << moins_function(game_options.number_of_characters_per_code, "  ") << "| "
+                         << " BULLS | COWS |\n";
+           output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
+                         << "---------------\n";
+           //...
+
+           // BODY ...
+           int number_of_attemps = game_options.max_number_of_attempts;
+           for (unsigned int i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
+           {
+               if (i >= 10)
+               {
+                   output_stream << "| #" << i << "      "
+                                 << moins_function(game_options.number_of_characters_per_code, ". ")
+                                 << "|       |       |\n";
+               }
+               else
+               {
+                   output_stream << "| #0" << i << "      "
+                                 << moins_function(game_options.number_of_characters_per_code, ". ")
+                                 << "|       |       |\n";
+               }
+           }
+
+           if (!board.attempts_and_feedbacks.empty())
+           {
+               for (size_t index = board.attempts_and_feedbacks.size(); index > 0; --index)
+               {
+                   const auto& attempt_and_feedback = board.attempts_and_feedbacks[index - 1];
+                   const auto& attempt = attempt_and_feedback.attempt;
+                   // std::cout <<"VALUE "<<attempt.value<<"\n";
+                   const auto& feedback = attempt_and_feedback.feedback;
+                   if (index >= 10)
+                   {
+                       output_stream << "| #" << index << "      ";
+                       print_code(attempt.value);
+                       output_stream << "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
+                   }
+                   else
+                   {
+                       output_stream << "| #0" << index << "      ";
+                       print_code(attempt.value);
+                       output_stream << "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
+                   }
+               }
+           }
+           //...
+
+           // FOOTER ...
+           output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "-"
+                         << "----------------\n";
+           //...
+       }
+       
+       //Checked display (not working though)
+       /*
        void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
        {
            
@@ -234,7 +338,7 @@ namespace bulls_and_cows {
 
        }
 
-       
+       */
        
        
        //Checked

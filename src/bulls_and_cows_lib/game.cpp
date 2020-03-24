@@ -16,36 +16,31 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
 
         // CREATING BOARD using functions we implemented
         Board myboard = bulls_and_cows::create_board(game_options);
+
+        // While the user didn't win or reach max attempt number, while loop
+
         while (!bulls_and_cows::is_end_of_game(game_options, myboard) && !bulls_and_cows::is_win(game_options, myboard))
         {
+            // First display of the empty board
             bulls_and_cows::display_board(std::cout, game_options, myboard);
-            Code temp = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
-            if (bulls_and_cows::validate_attempt(game_options, temp))
+
+            // Asking attemp to the user
+            Code tempattemp = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
+
+            if (bulls_and_cows::validate_attempt(game_options, tempattemp))
             {
-                AttemptAndFeedback attemp{};
-                attemp.attempt = temp;
-                attemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(temp, myboard.secret_code);
-                myboard.attempts_and_feedbacks.push_back(attemp);
-                // myboard.attempts_and_feedbacks[1].feedback = bulls_and_cows::compare_attempt_with_secret_code(temp,
-                // myboard.secret_code);
+                AttemptAndFeedback newattemp;
+                newattemp.attempt = tempattemp;
+                newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(tempattemp, myboard.secret_code);
+                myboard.attempts_and_feedbacks.push_back(newattemp);
             }
-            else
-                std::cout << "Your attempt is not as asked, ... Please change it";
+                
+
+            
         }
-        
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -82,12 +77,10 @@ namespace bulls_and_cows {
     void play_game()
     {
         GameOptions game_options{};
-
         while (true)
         {
             std::cout << "\n#################################\n";
             display_main_menu(std::cout);
-
             const auto user_choice = ask_main_menu_choice(std::cin);
             switch (user_choice)
             {
