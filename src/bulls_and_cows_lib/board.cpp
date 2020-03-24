@@ -1,9 +1,3 @@
-
-#include "board.hpp"
-
-namespace bulls_and_cows {
-
-    
 #include "board.hpp"
 #include "random.hpp"
 #include <algorithm>
