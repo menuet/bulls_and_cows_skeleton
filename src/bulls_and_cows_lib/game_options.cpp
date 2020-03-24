@@ -5,7 +5,7 @@
 
 namespace bulls_and_cows {
 
-	void printOptions(GameOptions& game_options)
+	void printOptions(const GameOptions& game_options)
     {
         std::cout << "Caractère min : " << game_options.minimum_allowed_character << "\n";
         std::cout << "Caractère max : " << game_options.maximum_allowed_character << "\n";
@@ -47,8 +47,8 @@ namespace bulls_and_cows {
         
         return gameoption1;
     }
-
-    /*void saveGameMethod(std::vector<FinalBoard> const& finalBoard, unsigned int const& win)
+    /*
+    void saveGameMethod(std::vector<FinalBoard> const& finalBoard, GameStatus win)
     {
         constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 20U;
 

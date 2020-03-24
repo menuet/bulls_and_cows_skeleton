@@ -19,10 +19,10 @@ namespace bulls_and_cows {
         {
             if (c == charCode)
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     //La methode giveCode permet de générer aléatoirement un code en respectant les options.
@@ -43,7 +43,7 @@ namespace bulls_and_cows {
                 {
                     charCode = generate_random_character(game_options.minimum_allowed_character,
                                                          game_options.maximum_allowed_character);
-                } while (!checkDoublons(secretCode, charCode));
+                } while (checkDoublons(secretCode, charCode));
             }
             secretCode = secretCode + charCode;
         }
@@ -69,11 +69,11 @@ namespace bulls_and_cows {
                 if (charCode == code[j] && i != j)
                 {
                     std::cout << "Il y a deux fois la même lettre, merci de rentrer un nouveau code : \n";
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     //La methode checkErrorAttemps permet de verifier si le code entré par le user est valide, respect les options.
@@ -114,7 +114,7 @@ namespace bulls_and_cows {
             {
                 std::cout << "Rentrez votre code : ";
                 std::cin >> code;
-            } while (!checkDoublonsString(code) || !checkErrorAttemps(code, game_options));
+            } while (checkDoublonsString(code) || !checkErrorAttemps(code, game_options));
         }
         return code;
     }
@@ -238,7 +238,6 @@ namespace bulls_and_cows {
             std::string code;
             code = askCodeComputer(game_options, finalBoard);
            
-
             unsigned int bulls(0);
             unsigned int cows(0);
             bulls = giveBullsNumber(secretCodeComputer, code);
@@ -254,19 +253,22 @@ namespace bulls_and_cows {
             {
                 std::cout << "You win \n";
                 win = GameStatus::Win;
+                /*if (game_options.save_game == true)
+                {
+                    saveGameMethod(finalBoard, win);
+                }*/
             }
             if (count == game_options.max_number_of_attempts)
             {
                 win = GameStatus::Lose;
                 std::cout << "you lose \n";
+                /*if (game_options.save_game == true)
+                {
+                    saveGameMethod(finalBoard, win);
+                }*/
             }
             count++;
         } while (win == GameStatus::Continue);
-
-        /*if (game_options.save_game == true)
-        {
-            saveGameMethod(finalBoard, win);
-        }*/
     }
 
     GameOptions configure_game_options(GameOptions& game_options)

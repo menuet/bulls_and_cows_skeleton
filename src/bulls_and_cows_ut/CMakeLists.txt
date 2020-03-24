@@ -7,6 +7,7 @@ add_executable(bulls_and_cows_ut
     input_test.cpp
     main_menu_test.cpp
     random_test.cpp
+    game_test.cpp
     )
 
 add_test(NAME bulls_and_cows_ut COMMAND bulls_and_cows_ut)
