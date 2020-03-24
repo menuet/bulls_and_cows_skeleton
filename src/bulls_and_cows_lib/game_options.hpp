@@ -2,6 +2,9 @@
 #pragma once
 
 #include <iostream>
+#include <iostream>
+#include <fstream>
+#include <vector>
 
 namespace bulls_and_cows {
 
@@ -34,6 +37,9 @@ namespace bulls_and_cows {
 
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options);
 
+    std::vector<std::string> split(std::string strToSplit, char delimeter);
+
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options);
+
 
 } // namespace bulls_and_cows

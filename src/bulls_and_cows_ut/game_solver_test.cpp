@@ -8,7 +8,6 @@
 // These unit tests are disabled because you first need to define the tested functions in game_solver.cpp
 
 /*
-
 static unsigned int computed_value(const bulls_and_cows::GameOptions game_options, const bulls_and_cows::Code& code)
 {
     const unsigned int characters_range_size =
@@ -50,6 +49,8 @@ TEST_CASE("TEST bulls_and_cows::generate_all_possible_codes")
     }
 }
 
+*/
+
 TEST_CASE("TEST bulls_and_cows::pick_random_attempt")
 {
     // ARRANGE
@@ -76,4 +77,4 @@ TEST_CASE("TEST bulls_and_cows::remove_incompatible_codes_from_possible_solution
     REQUIRE(possible_solutions.codes[0].value == "HABCD");
 }
 
-*/
+
