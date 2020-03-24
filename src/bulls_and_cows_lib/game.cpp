@@ -92,10 +92,10 @@ namespace bulls_and_cows {
                 modify_number_of_characters_per_code(game_options, std::cout, std::cin);
                 break;
             case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
-                //
+                modify_minimum_allowed_characters(game_options, std::cout, std::cin);
                 break;
             case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
-                //
+                 modify_maximum_allowed_characters(game_options, std::cout, std::cin);
                 break;
             case GameOptionsMenuChoice::SaveOptions:
                 //

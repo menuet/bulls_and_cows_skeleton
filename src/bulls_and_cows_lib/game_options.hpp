@@ -7,10 +7,10 @@ namespace bulls_and_cows {
 
     struct GameOptions
     {
-        unsigned int max_number_of_attempts{10};
-        unsigned int number_of_characters_per_code{4};
+        unsigned int max_number_of_attempts{4};
+        unsigned int number_of_characters_per_code{3};
         char minimum_allowed_character{'A'};
-        char maximum_allowed_character{'H'};
+        char maximum_allowed_character{'E'};
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
@@ -39,5 +39,9 @@ namespace bulls_and_cows {
     void modify_maximum_number_of_attempts(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
 
     void modify_number_of_characters_per_code(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
+
+    void modify_minimum_allowed_characters(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
+
+    void modify_maximum_allowed_characters(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
 
 } // namespace bulls_and_cows
