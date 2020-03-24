@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-
+using namespace std;
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
@@ -24,6 +24,50 @@ namespace bulls_and_cows {
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
                      "    Display a message telling if the user won or lost\n";
+        cout << "create your secret code" << endl;
+        int secode;
+        cin >> secode;
+        int A, B, C, D;
+        A = secode / 1000;
+        B = (secode - A * 1000) / 100;
+        C = (secode - A * 1000 - B * 100) / 10;
+        D = (secode - A * 1000 - B * 100 - C * 10);
+
+        cout << "||==========|=========|========|========|========|========|" << endl;
+        cout << "|| Bulls    |  Cows   |          Guesses                  |" << endl;
+        cout << "||==========|=========|========|========|========|========|" << endl;
+
+        int code, bulls = 0, cows = 0;
+        int A_, B_, C_, D_;
+        cout << "please input your 4 numbers" << endl;
+        cin >> code;
+        A_ = code / 1000;
+        B_ = (code - A_ * 1000) / 100;
+        C_ = (code - A_ * 1000 - B_ * 100) / 10;
+        D_ = (code - A_ * 1000 - B_ * 100 - C_ * 10);
+        int arr[4] = {A, B, C, D};
+        int arr_[4] = {A_, B_, C_, D_};
+        for (int i = 0; i < 4; i++)
+        {
+            if (arr[i] = arr_[i])
+            {
+                bulls++;
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (i != j)
+                {
+                    if (arr[i] = arr_[j])
+                    {
+                        cows++;
+                    }
+                }
+            }
+        }
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
