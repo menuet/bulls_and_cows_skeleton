@@ -45,7 +45,7 @@ namespace bulls_and_cows {
     // Test if the last attempt is a win
     bool is_win(const GameOptions& game_options, const Board& board);
 
-    // Display the scret code and the list of attempts of the board
+    // Display the secret code and the list of attempts of the board
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board);
 
     // Ask the user to provide another attempt

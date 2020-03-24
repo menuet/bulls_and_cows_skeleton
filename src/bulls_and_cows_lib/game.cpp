@@ -14,25 +14,8 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << 
-            "-------------------------------------\n"
-            "| SECRET   * * * * * |              |\n"
-            "-------------------------------------\n"
-            "| ATTEMPTS           | BULLS | COWS |\n"
-            "-------------------------------------\n"
-            "| #12      . . . . . |       |      |\n"
-            "| #11      . . . . . |       |      |\n"
-            "| #10      . . . . . |       |      |\n"
-            "| #09      . . . . . |       |      |\n"
-            "| #08      . . . . . |       |      |\n"
-            "| #07      . . . . . |       |      |\n"
-            "| #06      . . . . . |       |      |\n"
-            "| #05      . . . . . |       |      |\n"
-            "| #04      . . . . . |       |      |\n"
-            "| #03      . . . . . |       |      |\n"
-            "| #02      . . . . . |       |      |\n"
-            "| #01      . . . . . |       |      |\n"
-            "-------------------------------------\n";
+        std::cout << "-------------------------------------\n";
+        Board gameboard = bulls_and_cows::create_board(game_options);
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
