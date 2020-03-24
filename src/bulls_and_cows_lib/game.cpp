@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-// tyefgkzjdfjenzdjisdlkckzsdnkjcnkdsjnckodsnkosklnkjbjknbkjbj,bjksdmlf,sdkl,fklds,
+// tyefgkzjdfjenzdjisdlkckzsdnkjcnkdsjnckodsnkosklnkjbjknbkjbj,bjksdmlf,sdkl,fklds,SDCSDCSDCDCDS
 
 namespace bulls_and_cows {
 // test
@@ -25,19 +25,15 @@ namespace bulls_and_cows {
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
                      "    Display a message telling if the user won or lost\n";
-<<<<<<< HEAD
+
         
 
         // crÈer une chaine de caractËre de 10 lettres aux hasards
 
         using namespace std;
         char tt[27]; // crÈer un tableau de chaque lettre
-=======
-         // cr√©er une chaine de caract√®re de 10 lettres aux hasards
 
-        using namespace std;
-        char tt[27]; // cr√©er un tableau de chaque lettre
->>>>>>> origin
+         // cr√©er une chaine de caract√®re de 10 lettres aux hasards
         tt[0] = 'A';
         tt[1] = 'B';
         tt[2] = 'C';
@@ -72,16 +68,16 @@ namespace bulls_and_cows {
         {     
     
             int z = 0;        // initialise un nombre z
-<<<<<<< HEAD
+
             z = (rand()%25); // prendre un nombre z alÈatoirement compris entre 1-26
-=======
+
             z = (rand()%25); // prendre un nombre z al√©atoirement compris entre 1-26
->>>>>>> origin
+
             // cout << tt[z]; // pour chaque chiffre que prendra z on aura une lettre du tableau cout << tt[z]
             tableauCacher[i] = tt[z];
             //cout << tableauCacher[i];       
         }
-<<<<<<< HEAD
+
         // fonction permettant de compter le nombre de pion bien et mal placÈ (compteur1 et 2 pacÈ par reference)
 
         // si une case de ces deux tableaux passe ‡ vrai, alors elle permettent de ne plus revenir dessus (utilisÈ pour
@@ -112,8 +108,7 @@ namespace bulls_and_cows {
         //scanf();
         //char TableauTemp[10];
         //for ( )
-=======
->>>>>>> origin
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
