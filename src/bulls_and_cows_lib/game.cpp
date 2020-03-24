@@ -12,7 +12,7 @@
 
 namespace bulls_and_cows {
 
-    void user_plays_against_computer(const GameOptions& game_options)
+    void user_plays_against_computer( GameOptions& game_options)
     {
         std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
@@ -24,6 +24,24 @@ namespace bulls_and_cows {
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
                      "    Display a message telling if the user won or lost\n";
+        Board Board;
+        display_board(game_options, Board);
+
+        Code Code;
+        Code.value = "ABCDE";
+
+        Feedback feedback;
+        feedback.bulls = 1;
+        feedback.cows = 2;
+
+        AttemptAndFeedback test;
+        test.attempt = Code;
+        test.feedback = feedback;
+
+        Board.attempts_and_feedbacks.push_back(test);
+        display_board(game_options, Board);
+
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -44,6 +62,7 @@ namespace bulls_and_cows {
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
                "    Display a message telling if the computer won or lost\n";
+        std::cout << "WWW\nIII\n---\n   ]";
     }
 
     void configure_game_options(GameOptions& game_options)

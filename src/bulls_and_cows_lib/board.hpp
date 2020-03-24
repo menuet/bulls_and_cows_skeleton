@@ -30,6 +30,9 @@ namespace bulls_and_cows {
         std::vector<AttemptAndFeedback> attempts_and_feedbacks{}; // List of attempts of the user
     };
 
+    //Function dedicated for the display of a a beautiful homemade game board
+    void display_board(const GameOptions& game_options, Board Board);
+
     // Create a board and with a new random secret code composed of allowed characters
     Board create_board(const GameOptions& game_options);
 
