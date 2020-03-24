@@ -7,7 +7,8 @@ namespace bulls_and_cows {
     std::string ask_string(std::istream& input_stream)
     {
         std::string value{};
-        std::getline(input_stream, value);
+        std::cin >> value;
+        // std::getline(input_stream, value);
         return value;
     }
 

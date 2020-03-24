@@ -6,33 +6,22 @@ namespace bulls_and_cows {
     // TODO: define the body of the functions declared in board.cpp
     Board create_board(const GameOptions& game_options)
     {
-        //std::vector<char> answer{};
         Board myboard{};
 
         for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
         {
-            if (game_options.maximum_allowed_character >= 65 && game_options.maximum_allowed_character <= 90 &&
-                game_options.minimum_allowed_character >= 65 && game_options.minimum_allowed_character <= 90)
-            {
+
+            // Choice between Character and Int code, here i took the character one ...
+
                 myboard.secret_code.value = myboard.secret_code.value + bulls_and_cows::generate_random_character(
-                                                                    game_options.minimum_allowed_character,
-                                                                    game_options.maximum_allowed_character);
-            }
+                                                                            game_options.minimum_allowed_character,
+                                                                            game_options.maximum_allowed_character);
 
-            else if (game_options.maximum_allowed_character >= 48 && game_options.maximum_allowed_character <= 57 &&
-                     game_options.minimum_allowed_character >= 48 && game_options.minimum_allowed_character <= 57)
-            {
-                myboard.secret_code.value = myboard.secret_code.value + (char)bulls_and_cows::generate_random_integer(
-                                                                    game_options.minimum_allowed_character,
-                                                                    game_options.maximum_allowed_character);
-            }
-
-            else
-            {
-            }
-
-
+                //myboard.secret_code.value = myboard.secret_code.value + (char)bulls_and_cows::generate_random_integer(
+                //                                                            game_options.minimum_allowed_character,
+                //                                                            game_options.maximum_allowed_character);
         }
+        //std::cout << "Le code secret est le suivant :" << myboard.secret_code.value;
         return myboard;
     }
 
@@ -67,8 +56,8 @@ namespace bulls_and_cows {
         {
             if (tmp_secret_code[i] == tmp_attempt[i])
             {
-                std::cout << tmp_secret_code << "\n";
-                std::cout << tmp_attempt << "\n";
+                //std::cout << tmp_secret_code << "\n";
+                //std::cout << tmp_attempt << "\n";
                 tmp_attempt.erase(i, 1);
                 tmp_secret_code.erase(i, 1);
                 myfeed.bulls++;
@@ -84,8 +73,8 @@ namespace bulls_and_cows {
             {
                 tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
                 myfeed.cows++;
-                std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
-                          << "\n";
+                //std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
+                //          << "\n";
             }
         }
 
@@ -96,169 +85,151 @@ namespace bulls_and_cows {
     {
         if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size())
         {
+            std::cout << "You loose, too bad, try again you'll do maybe better ...";
             return true;
         }
-        return false;
+        else return false;
     }
 
     bool is_win(const GameOptions& game_options, const Board& board)
     {
+
         if ((board.attempts_and_feedbacks.empty()))
             return false;
-        if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
+
+        else if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
         {
+            if (board.attempts_and_feedbacks.size() < (game_options.max_number_of_attempts / 2))
+                std::cout << "You won on your " << board.attempts_and_feedbacks.size() << " attemp,  Well done !!!";
+            else if (board.attempts_and_feedbacks.size() > (game_options.max_number_of_attempts / 2))
+                std::cout << "You won on your " << board.attempts_and_feedbacks.size() << " attemp, That was close !!!";
             return true;
         }
 
-        return false;
+        else return false;
     }
 
-    void whats_your_guess(std::ostream& output_stream, const GameOptions& game_options, std::string s,
-                          int current_attempt, unsigned int number_of_characters_per_code,
-                          char minimum_allowed_character, char maximum_allowed_character)
-        {
-        output_stream << "What is your guess #" << s << current_attempt << " (" << number_of_characters_per_code
-                      << " characters between '" << minimum_allowed_character << "' and '" << maximum_allowed_character
-                      << "')\n? ";
-        }
 
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
-                     const Board& board)
-    {
-        // Max number of attemps and max number of character ...
-        Code incode;
-        int current_attempt = (int)board.attempts_and_feedbacks.size() + 1;
-
-        bool valueformat = false;
-        while (!valueformat)
+                         const Board& board)
         {
-            if (current_attempt < 10)
-            {
-                whats_your_guess(output_stream, game_options, "0", current_attempt,
-                                 game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
-                                 game_options.maximum_allowed_character);
-            }
-            else
-            {
-                whats_your_guess(output_stream, game_options, "", current_attempt,
-                                 game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
-                                 game_options.maximum_allowed_character);
-            }
+            // Max number of attemps and max number of character ...
+            Code incode;
+            auto current_attempt = board.attempts_and_feedbacks.size() + 1;
 
-            valueformat = true;
-
-            input_stream >> incode.value;
-            if (incode.value.size() != game_options.number_of_characters_per_code)
+            bool valueformat = false;
+            while (!valueformat)
             {
-                valueformat = false;
-                output_stream
-                    << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
-            }
+                output_stream << "What is your guess #" << current_attempt << " ("
+                              << game_options.number_of_characters_per_code << " characters between '"
+                              << game_options.minimum_allowed_character << "' and '"
+                              << game_options.maximum_allowed_character << "')\n? ";
 
-            else
-            {
-                for (char& c : incode.value)
+                valueformat = true;
+
+                input_stream >> incode.value;
+                if (incode.value.size() != game_options.number_of_characters_per_code)
                 {
-                    if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
-                    {
-                        valueformat = false;
+                    valueformat = false;
+                    output_stream
+                        << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
+                    break;
+                }
 
-                        output_stream << "Your guess has an invalid length or contains non-allowed characters, "
-                                         "please try again\n";
+                else
+                {
+                    for (char& c : incode.value)
+                    {
+                        if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+                        {
+                            valueformat = false;
+
+                            output_stream << "Your guess has an invalid length or contains non-allowed characters, "
+                                             "please try again\n";
+                            break;
+                        }
                     }
                 }
             }
+            return incode;
         }
-        return incode;
-    }
+
+        std::string moins_function(int number, std::string loopadd)
+        {
+            std::string moins = "";
+            for (int i = 0; i < number; i++)
+            {
+                moins += loopadd;
+            }
+            return moins;
+        }
+
+        void print_code(std::string code)
+        {
+            char* ccode = const_cast<char*>(code.c_str());
+            std::string codewspace = "";
+            for (int i = 0; i < code.length(); i++)
+            {
+                std::cout << ccode[i] << " ";
+            }
+        }
 
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
-    {
-        // start of head printing
-        int anssize = game_options.number_of_characters_per_code;
-        std::string espaces = "";
-        std::string moins = "--------------------------";
-        std::string etoiles = "";
-        std::string points = "";
-
-        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
         {
-            points = points + ". ";
-        }
-        for (int j = 0; j < anssize; j++)
-        {
-            etoiles = etoiles + "* ";
-            espaces = espaces + "  ";
-            moins = moins + "--";
-        }
-        moins = moins + "\n";
+            // HEAD ...
+            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"<< "---------------\n";
+            output_stream << "| SECRET   " << moins_function(game_options.number_of_characters_per_code, "* ") << "| "<< "              |\n";
+            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"<< "---------------\n";
+            output_stream << "| ATTEMPTS " << moins_function(game_options.number_of_characters_per_code, "  ") << "| "<< " BULLS | COWS |\n";
+            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"<< "---------------\n";
+            //...
 
-        output_stream << moins << "| SECRET  " << etoiles << "|              |\n"
-                      << moins << "| ATTEMPTS" << espaces << "| BULLS | COWS |\n"
-                      << moins << "\n";
-        // end of head printing
-
-        int sz = (int)board.attempts_and_feedbacks.size();
-        for (unsigned int i = 0U; i < game_options.max_number_of_attempts; i++) // for all attempts
-        {
-            // board.attempts_and_feedbacks[sz - i];
-            if (i < game_options.max_number_of_attempts - sz) // writting the empty attempts
+            // BODY ...
+            int number_of_attemps = game_options.max_number_of_attempts;
+            for (unsigned int i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
             {
-
-                if (game_options.max_number_of_attempts - i < 10)
+                if (i >= 10)
                 {
-                    output_stream << "| #" << '0' << game_options.max_number_of_attempts - i << '   ' << '   ' << points
-                                  << "|"
-                                  << "   "
-                                  << " "
-                                  << "   "
-                                  << "|"
-                                  << "  " << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
+                    output_stream << "| #" << i << "      "
+                                  << moins_function(game_options.number_of_characters_per_code, ". ")
+                                  << "|       |       |\n";
                 }
-                // two different cases to put the 0 digit in case of need
                 else
                 {
-                    output_stream << "| #" << game_options.max_number_of_attempts - i << '   ' << '   ' << points << "|"
-                                  << "   "
-                                  << " "
-                                  << "   "
-                                  << "|"
-                                  << "  "
-                                  << " "
-                                  << "   |\n";
+                    output_stream << "| #0" << i << "      "
+                                  << moins_function(game_options.number_of_characters_per_code, ". ")
+                                  << "|       |       |\n";
                 }
             }
 
-            else
-            { // writting played attempts
-                std::string codeout;
-                for (unsigned int k = 0U; k < game_options.number_of_characters_per_code; k++)
+            if (!board.attempts_and_feedbacks.empty())
+            {
+                for (size_t index = board.attempts_and_feedbacks.size(); index > 0; --index)
                 {
-                    codeout = codeout + board.attempts_and_feedbacks[i].attempt.value + " ";
-                }
-                if (game_options.max_number_of_attempts - i < 10)
-                {
-                    output_stream << "| #" << '0' << game_options.max_number_of_attempts - i << '   ' << '   '
-                                  << codeout + "|"
-                                  << "   " << board.attempts_and_feedbacks[i].feedback.bulls << "   "
-                                  << "|"
-                                  << "  " << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
-                }
-
-                else
-                {
-                    output_stream << "| #" << game_options.max_number_of_attempts - i << '   ' << '   ' << codeout + "|"
-                                  << "   " << board.attempts_and_feedbacks[i].feedback.bulls << "   "
-                                  << "|"
-                                  << "  " << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
+                    const auto& attempt_and_feedback = board.attempts_and_feedbacks[index - 1];
+                    const auto& attempt = attempt_and_feedback.attempt;
+                    const auto& feedback = attempt_and_feedback.feedback;
+                    if (index >= 10)
+                    {
+                        output_stream << "| #" << index << "      ";
+                        print_code(attempt.value);
+                        output_stream << "|   "<< feedback.bulls << "   |   " << feedback.cows << "   |\n";
+                    }
+                    else
+                    {
+                        output_stream << "| #0" << index << "      ";
+                        print_code(attempt.value);
+                        output_stream << "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
+                    }
                 }
             }
-        }
+            //...
 
-        output_stream << moins;
-    }
-
-
-
+            // FOOTER ...
+            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "-"
+                          << "----------------\n";
+            //...
+     }
+    
 } // namespace bulls_and_cows
