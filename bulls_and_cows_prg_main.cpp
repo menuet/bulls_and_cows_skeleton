@@ -3,7 +3,7 @@
  //  Mastermind
  //
  //  Created by KHALIFA FARES on 3/19/20.
- //  Copyright © 2020 Art is Social. All rights reserved.
+ //  Copyright © 2020 Art is Social. All rights reserved
  //
 
  #include <iostream>
