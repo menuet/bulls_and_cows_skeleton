@@ -20,6 +20,19 @@ namespace bulls_and_cows {
 
     void display_game_options_menu(std::ostream& output_stream);
 
+    void option_ModifyMaximumNumberOfAttempts(GameOptions& game_options);
+
+    void option_ModifyNumberOfCharactersPerCode(GameOptions& game_options);
+
+    void option_ModifyMinimumAllowedCharacter(GameOptions& game_options);
+
+    void option_ModifyMaximumAllowedCharacter(GameOptions& game_options);
+
+    void option_SaveOptions(std::ostream& output_file_stream, const GameOptions& game_options);
+
+    void option_LoadOptions(std::istream& input_file_stream, GameOptions& game_options);
+
+
     enum class GameOptionsMenuChoice
     {
         Error = -1,

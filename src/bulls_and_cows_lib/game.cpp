@@ -30,12 +30,9 @@ namespace bulls_and_cows {
         {
             std::cout << "\n";
             display_board(std::cout, game_options, boardCreated);
-            Code attempt = ask_attempt(std::cout, std::cin, game_options, boardCreated);
-
-            Feedback feed = compare_attempt_with_secret_code(attempt, boardCreated.secret_code);
             AttemptAndFeedback att_feed;
-            att_feed.attempt = attempt;
-            att_feed.feedback = feed;
+            att_feed.attempt = ask_attempt(std::cout, std::cin, game_options, boardCreated);
+            att_feed.feedback = compare_attempt_with_secret_code(att_feed.attempt, boardCreated.secret_code);
             boardCreated.attempts_and_feedbacks.push_back(att_feed);
 
         } while (!is_end_of_game(game_options, boardCreated));
@@ -80,16 +77,14 @@ namespace bulls_and_cows {
             display_board(std::cout, game_options, boardCreated);
             std::cout << "\nNumber of remaining possibles codes : " << possible_solutions.codes.size() << "\n";
             // wait 2 seconds
-            std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(2));
-            Code codeAttempt = pick_random_attempt(possible_solutions); // bien jusque là
-            Feedback feed = compare_attempt_with_secret_code(codeAttempt, boardCreated.secret_code);
+            std::this_thread::sleep_for(std::chrono::seconds(2));
             AttemptAndFeedback attempt_and_feedback;
-            attempt_and_feedback.attempt = codeAttempt;
-            attempt_and_feedback.feedback = feed;
+            attempt_and_feedback.attempt = pick_random_attempt(possible_solutions); // bien jusque là
+            attempt_and_feedback.feedback =
+                compare_attempt_with_secret_code(attempt_and_feedback.attempt, boardCreated.secret_code);
             boardCreated.attempts_and_feedbacks.push_back(attempt_and_feedback);
-
             std::cout << "\n";
-            remove_incompatible_codes_from_possible_solutions(attempt_and_feedback,possible_solutions);
+            remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possible_solutions);
 
         } while (!is_end_of_game(game_options, boardCreated));
 
@@ -127,97 +122,37 @@ namespace bulls_and_cows {
             {
             case GameOptionsMenuChoice::BackToMain:
                 return;
-                break;
             case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts: {
-                std::cout << "Enter the Maximum Number of Attempts (maximum allowed is 12): ";
-                const int user_maxAttempts = ask_int_or_default(std::cin, -1);
-                if (user_maxAttempts < 1 || user_maxAttempts > 12)
-                {
-                    std::cout << "\nPlease enter a correct Maximum Number of Attempts (maximum allowed is 12, minimum "
-                                 "is 1) \n";
-                }
-                else
-                {
-                    game_options.max_number_of_attempts = user_maxAttempts;
-                }
+                option_ModifyMaximumNumberOfAttempts(game_options);
                 break;
             }
             case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode: {
-                std::cout << "Enter the Number of characters Per Code (maximum allowed is 6): ";
-                const int user_nbChara = ask_int_or_default(std::cin, -1);
-                if (user_nbChara < 1 || user_nbChara > 6)
-                {
-                    std::cout << "\nPlease enter a correct Number of characters Per Code (maximum allowed is 6) \n";
-                }
-                else
-                {
-                    game_options.number_of_characters_per_code = user_nbChara;
-                }
+                option_ModifyNumberOfCharactersPerCode(game_options);
                 break;
             }
             case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter: {
-                std::cout << "Enter the Minimum allowed character to modify the previous one: ";
-                const char user_miniChara = ask_char_or_default(std::cin, 0);
-                if (user_miniChara > game_options.maximum_allowed_character)
-                {
-                    std::cout
-                        << "\nPlease enter a correct Minimum allowed character (inferior than the Maximum allowed "
-                           "character) \n";
-                }
-                else
-                {
-                    game_options.minimum_allowed_character = user_miniChara;
-                }
+                option_ModifyMinimumAllowedCharacter(game_options);
                 break;
             }
             case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter: {
-                std::cout << "Enter the Maximum allowed character to modify the previous one: ";
-                const char user_maxiChara = ask_char_or_default(std::cin, 0);
-                if (user_maxiChara < game_options.minimum_allowed_character)
-                {
-                    std::cout
-                        << "\nPlease enter a correct Maximum allowed character (superior than the Minimum allowed "
-                           "character) \n";
-                }
-                else
-                {
-                    game_options.maximum_allowed_character = user_maxiChara;
-                }
+                option_ModifyMaximumAllowedCharacter(game_options);
                 break;
             }
             case GameOptionsMenuChoice::SaveOptions: {
                 std::ofstream game_options_file{"game_options.txt", std::ios::app};
-                bool saved = save_game_options(game_options_file, game_options);
-                if (saved)
-                {
-                    std::cout << "Success: the game options are saved correctly\n";
-                }
-                else
-                {
-                    std::cout << "Error: the game options are not saved correctly\n";
-                }
+                option_SaveOptions(game_options_file,game_options);
                 game_options_file.close();
                 break;
             }
             case GameOptionsMenuChoice::LoadOptions: {
                 std::ifstream file("game_options.txt");
-                bool loaded = false;
-                loaded = load_game_options(file, game_options);
-                if (loaded)
-                {
-                    std::cout << "Success: the game options are loaded correctly\n";
-                }
-                else
-                {
-                    std::cout << "Error: the game options are not loaded correctly\n";
-                }
+                option_LoadOptions(file,game_options);
                 break;
             }
             case GameOptionsMenuChoice::Error:
                 std::cout << "\nYou did not enter a valid choice, please try again\n";
                 break;
             }
-
         }
     }
 

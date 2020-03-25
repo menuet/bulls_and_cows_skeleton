@@ -1,34 +1,33 @@
 
 #include "game_solver.hpp"
+#include "random.hpp"
+
 
 namespace bulls_and_cows {
     // TODO: define the body of the functions declared in game_solver.cpp
 
-    // The main recursive method
-    void allCombinations(PossibleSolutions& possible_solutions, std::string& set, std::string prefix, int n, int k)
+    // The recursive method
+    void allCombinations(PossibleSolutions& possible_solutions, std::string& setPossibleCharacters, std::string prefixCode, int nbPossibleChar, int sizeCode)
     {
+        Code newCombination{};
+        newCombination.value = prefixCode;
 
-        Code pref{};
-        pref.value = prefix;
-
-        // Base case: k is 0
-        if (k == 0)
+        if (sizeCode == 0)
         {
-            pref.value.erase(0, 1); //because before that, pref=" ABCD" and not pref="ABCD"
-            possible_solutions.codes.push_back(pref); //we add to our vector codes the code pref
+            possible_solutions.codes.push_back(newCombination); // we add to our vector possible_solutions.codes the code newCombination
             return;
         }
 
-        // One by one add all characters from set and recursively call for k equals to k-1
-        for (int i = 0; i < n; i++)
+        // One by one we add all characters from set of possible characters(ex: all char from A to H) and recursively call for sizeCode equals to sizeCode-1
+        for (int i = 0; i < nbPossibleChar; i++)
         {
-            std::string newPrefix;
+            std::string newPrefixCode;
 
-            // Next character of input added
-            newPrefix = prefix + set[i];
+            // we create a new combination with a char from the string setPossibleCharacters, and we add it to a prefix until the size of the code
+            newPrefixCode = prefixCode + setPossibleCharacters[i];
 
-            // k is decreased, because we have added a new character
-            allCombinations(possible_solutions, set, newPrefix, n, k - 1);
+            // sizeCode decreased, because we have added a new character to the new possible combination
+            allCombinations(possible_solutions, setPossibleCharacters, newPrefixCode, nbPossibleChar, sizeCode - 1);
         }
     }
 
@@ -36,27 +35,23 @@ namespace bulls_and_cows {
     {
 
         PossibleSolutions possible_solutions{};
-
-        unsigned int CODE_LENGTH = game_options.number_of_characters_per_code;
-        unsigned int NUM_CHAR =
-            ((int)game_options.maximum_allowed_character - (int)game_options.minimum_allowed_character) + 1;
-
+        unsigned int nbPossibleChar =((int)game_options.maximum_allowed_character - (int)game_options.minimum_allowed_character) + 1;
         std::vector<char> arrayPossibilities{};
-        std::string s{};
-
-        s.resize(NUM_CHAR);
+        std::string setPossibleCharacters{};
+        setPossibleCharacters.resize(nbPossibleChar);
 
         for (int i = game_options.minimum_allowed_character; i <= game_options.maximum_allowed_character; i++)
         {
-            arrayPossibilities.push_back((char)(i)); // ABC
+            arrayPossibilities.push_back((char)(i)); // on créé une array avec tous les char possibles
+            //si les char possibles sont de A à H, notre vector arrayPossibilities sera = "ABCDEFGH"
         }
 
-        for (unsigned int i = 0; i < NUM_CHAR; i++)
-        {
-            s[i] = arrayPossibilities[i];
-        }
+        //on copie les valeurs de ce vector dans un string setPossibleCharacters
+        for (unsigned int i = 0; i < nbPossibleChar; i++)
+            setPossibleCharacters[i] = arrayPossibilities[i];
 
-        allCombinations(possible_solutions, s, " ", NUM_CHAR, CODE_LENGTH);
+        //on génère toutes les solutions possibles, il y en aura en tout: nbPossibleChar^nbLengthOfCode
+        allCombinations(possible_solutions, setPossibleCharacters, "",nbPossibleChar, game_options.number_of_characters_per_code);
 
         return possible_solutions;
     }
@@ -66,6 +61,7 @@ namespace bulls_and_cows {
         Code codeRandom{};
 
         int indexRandom = rand() % possible_solutions.codes.size();
+        //int indexRandom = generate_random_integer(0, (possible_solutions.codes.size() - 1));
 
         codeRandom = possible_solutions.codes[indexRandom];
 
@@ -88,7 +84,7 @@ namespace bulls_and_cows {
             if ((feed.bulls != attempt_and_feedback.feedback.bulls) &&
                 (feed.cows != attempt_and_feedback.feedback.cows))
             {
-                if (i == possible_solutions.codes.size() - 1) //if it is the last element
+                if (i == size - 1) // if it is the last element
                 {
                     possible_solutions.codes.erase(possible_solutions.codes.end()-1);
                 }

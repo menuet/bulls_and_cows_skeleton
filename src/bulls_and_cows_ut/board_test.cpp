@@ -180,7 +180,7 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
             "| #01      . . . . . |       |      |\n"
             "-------------------------------------\n");
 }
-/*
+
 TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
 {
     // ARRANGE
@@ -204,5 +204,5 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
             "What is your guess #01 (5 characters between 'A' and 'H')\n"
             "? ");
 }
-*/
+
 

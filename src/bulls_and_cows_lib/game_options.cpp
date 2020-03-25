@@ -27,14 +27,104 @@ namespace bulls_and_cows {
     void display_game_options_menu(std::ostream& output_stream)
     {
         output_stream << "Configure Options\n"
-                        "0 - Back to main menu\n"
-                        "1 - Modify Maximum number of attempts per game\n"
-                        "2 - Modify Number of characters in a code\n"
-                        "3 - Modify Minimum allowed character\n"
-                        "4 - Modify Maximum allowed character\n"
-                        "5 - Save options\n"
-                        "6 - Load options\n"
-                        "What is your choice ? ";
+                         "0 - Back to main menu\n"
+                         "1 - Modify Maximum number of attempts per game\n"
+                         "2 - Modify Number of characters in a code\n"
+                         "3 - Modify Minimum allowed character\n"
+                         "4 - Modify Maximum allowed character\n"
+                         "5 - Save options\n"
+                         "6 - Load options\n"
+                         "What is your choice ? ";
+    }
+
+    void option_ModifyMaximumNumberOfAttempts(GameOptions& game_options)
+    {
+
+        std::cout << "Enter the Maximum Number of Attempts (maximum allowed is 12): ";
+        const int user_maxAttempts = ask_int_or_default(std::cin, -1);
+        if (user_maxAttempts < 1 || user_maxAttempts > 12)
+        {
+            std::cout << "\nPlease enter a correct Maximum Number of Attempts (maximum allowed is 12, minimum "
+                         "is 1) \n";
+        }
+        else
+        {
+            game_options.max_number_of_attempts = user_maxAttempts;
+        }
+    }
+
+    void option_ModifyNumberOfCharactersPerCode(GameOptions& game_options)
+    {
+
+        std::cout << "Enter the Number of characters Per Code (maximum allowed is 6): ";
+        const int user_nbChara = ask_int_or_default(std::cin, -1);
+        if (user_nbChara < 1 || user_nbChara > 6)
+        {
+            std::cout << "\nPlease enter a correct Number of characters Per Code (maximum allowed is 6) \n";
+        }
+        else
+        {
+            game_options.number_of_characters_per_code = user_nbChara;
+        }
+    }
+
+    void option_ModifyMinimumAllowedCharacter(GameOptions& game_options)
+    {
+        std::cout << "Enter the Minimum allowed character to modify the previous one: ";
+        const char user_miniChara = ask_char_or_default(std::cin, 0);
+        if (user_miniChara > game_options.maximum_allowed_character)
+        {
+            std::cout << "\nPlease enter a correct Minimum allowed character (inferior than the Maximum allowed "
+                         "character) \n";
+        }
+        else
+        {
+            game_options.minimum_allowed_character = user_miniChara;
+        }
+    }
+
+    void option_ModifyMaximumAllowedCharacter(GameOptions& game_options)
+    {
+        std::cout << "Enter the Maximum allowed character to modify the previous one: ";
+        const char user_maxiChara = ask_char_or_default(std::cin, 0);
+        if (user_maxiChara < game_options.minimum_allowed_character)
+        {
+            std::cout << "\nPlease enter a correct Maximum allowed character (superior than the Minimum allowed "
+                         "character) \n";
+        }
+        else
+        {
+            game_options.maximum_allowed_character = user_maxiChara;
+        }
+    }
+
+    void option_SaveOptions(std::ostream& output_file_stream, const GameOptions& game_options)
+    {
+
+        bool saved = save_game_options(output_file_stream, game_options);
+        if (saved)
+        {
+            std::cout << "Success: the game options are saved correctly\n";
+        }
+        else
+        {
+            std::cout << "Error: the game options are not saved correctly\n";
+        }
+    }
+
+    void option_LoadOptions(std::istream& input_file_stream, GameOptions& game_options)
+    {
+
+        bool loaded = false;
+        loaded = load_game_options(input_file_stream, game_options);
+        if (loaded)
+        {
+            std::cout << "Success: the game options are loaded correctly\n";
+        }
+        else
+        {
+            std::cout << "Error: the game options are not loaded correctly\n";
+        }
     }
 
     // Ask the user to select an option of the menu
@@ -69,14 +159,14 @@ namespace bulls_and_cows {
             return false;
         }
 
-        //we write in the file the information this way: 12,5,A,H
+        // we write in the file the information this way: 12,5,A,H
         output_file_stream << game_options.max_number_of_attempts << "," << game_options.number_of_characters_per_code
                            << "," << game_options.minimum_allowed_character << ","
                            << game_options.maximum_allowed_character << "\n";
         return true;
     }
 
-    //split implementation by using delimiter as a character.
+    // split implementation by using delimiter as a character.
     std::vector<std::string> split(std::string strToSplit, char delimeter)
     {
         std::stringstream ss(strToSplit);
@@ -100,19 +190,24 @@ namespace bulls_and_cows {
                 std::getline(input_file_stream, sentence);
             }
 
-            //we split our string with delimiter ','
+            // we split our string with delimiter ','
             std::vector<std::string> splittedStrings = split(sentence, ',');
+
+            if (splittedStrings.size() != 4) // if the file hasn't this form : 15,3,A,H
+            {
+                return false;
+            }
 
             // pointer to the first element
             std::string* pos = splittedStrings.data();
 
-            //we attribute to the game options the new options from the file
+            // we attribute to the game options the new options from the file
             game_options.max_number_of_attempts = atoi(pos[0].c_str());
             game_options.number_of_characters_per_code = atoi(pos[1].c_str());
             game_options.minimum_allowed_character = *pos[2].c_str();
             game_options.maximum_allowed_character = *pos[3].c_str();
 
-            //free the memory
+            // free the memory
             pos = nullptr;
             delete pos;
 
