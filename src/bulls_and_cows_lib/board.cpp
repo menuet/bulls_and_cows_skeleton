@@ -159,26 +159,32 @@ namespace bulls_and_cows {
 		std::string atpt_spaces = "";
 		for (int i = 0; i < atpt.size(); i++)
 		{
-			for (int j = 0; j < atpt.size(); j++) {
-				atpt_spaces.push_back(atpt[i]);
-				atpt_spaces.push_back(' ');
-			}
-			
+			atpt_spaces.push_back(atpt[i]);
+			atpt_spaces.push_back(' ');
 		}
-
 		return atpt_spaces;
 	}
 
-	void display_zero(const GameOptions& game_options, std::ostream& output_stream, unsigned int i) {
-		std::string s = (i < 10) ? "0" : "";
-		output_stream << "| #" << s << i << "      "
-			<< special_char(game_options.number_of_characters_per_code, ". ")
-			<< "|       |       |\n";
+	//SUPER GENERIC AND OPTIMIZED FUNCTION, I SWEATED. FINALLY.
+	//OBLIGED TO SET VARIABLES, IT DOESNT WORK DIRECTLY IN OUTPUTS.
+	void display_zero(const GameOptions& game_options, std::ostream& output_stream, size_t i, std::string at, unsigned int b, unsigned int c) {
+		std::string s = (i >= 10) ? "" : "0", s2 = (at == " ") ? special_char(game_options.number_of_characters_per_code, ". ") : display_current_attempt(at), s3 = (c != NULL || c == 0) ? "|   " : "",
+			s4 = (c != NULL || c == 0) ? std::to_string(b) : "|       |       |\n", s5= (c != NULL || c == 0) ? "   |   " : "", s6 = (c != NULL || c==0) ? std::to_string(c) : "", s7= (c != NULL || c == 0) ? "   |\n" : "";
+		output_stream << "| #" << s;
+		output_stream << i << "      ";
+		output_stream << s2;
+		output_stream << s3;
+		output_stream << s4;
+		output_stream << s5;
+		output_stream << s6;
+		output_stream << s7;
+
 	}
 
 	
 	void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
 	{
+		output_stream << "\n";
 		output_stream << "-----------" << special_char(game_options.number_of_characters_per_code, "--") << "--" << "---------------\n";
 		output_stream << "| SECRET   " << board.secret_code.value << "| " << "              |\n";
 		output_stream << "-----------" << special_char(game_options.number_of_characters_per_code, "--") << "--" << "---------------\n";
@@ -186,10 +192,9 @@ namespace bulls_and_cows {
 		output_stream << "-----------" << special_char(game_options.number_of_characters_per_code, "--") << "--" << "---------------\n";
 
 		int number_of_attemps = game_options.max_number_of_attempts;
-		for (unsigned int i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
+		for (size_t i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
 		{
-			display_zero(game_options, output_stream, i);
-
+			display_zero(game_options, output_stream, i, " ", NULL, NULL);
 		}
 		if (!board.attempts_and_feedbacks.empty())
 		{
@@ -198,35 +203,12 @@ namespace bulls_and_cows {
 				const auto& attempt_and_feedback = board.attempts_and_feedbacks[index - 1];
 				const auto& attempt = attempt_and_feedback.attempt;
 				const auto& feedback = attempt_and_feedback.feedback;
-				if (index >= 10)
-				{
-					output_stream << "| #" << index << "      " << display_current_attempt(attempt.value)
-						<< "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
-				}
-				else
-				{
-					output_stream << "| #0" << index << "      " << display_current_attempt(attempt.value)
-						<< "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
-				}
-
+				
+				display_zero(game_options, output_stream, index, attempt.value, feedback.bulls, feedback.cows);
 			}
 		}
 
 		output_stream << "-----------" << special_char(game_options.number_of_characters_per_code, "--") << "-" << "----------------\n";
 
 	} // namespace bulls_and_cows
-
-
-	//void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
-	//{
-	//	////SIMPLE TEST
-	//	//output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
-	//	//for (unsigned int index = 0; index < board.attempts_and_feedbacks.size(); ++index)
-	//	//{
-	//	//	const auto& attempt_and_feedback = board.attempts_and_feedbacks[index];
-	//	//	const auto& attempt = attempt_and_feedback.attempt;
-	//	//	const auto& feedback = attempt_and_feedback.feedback;
-	//	//	output_stream << "Attempt #" << (index + 1) << " = " << attempt.value << " | Bulls = " << feedback.bulls
-	//	//		<< " | Cows = " << feedback.cows << "\n";
-	//	//}
 }

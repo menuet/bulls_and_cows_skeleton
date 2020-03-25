@@ -33,10 +33,10 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt's length is too sm
     const bulls_and_cows::Code attempt{};
 
     // ACT
-    const bool result = bulls_and_cows::validate_attempt(game_options, attempt);
+    bulls_and_cows::CodeValidity result = bulls_and_cows::validate_attempt(game_options, attempt);
 
     // ASSERT
-    REQUIRE(!result);
+    REQUIRE(result == bulls_and_cows::CodeValidity::LengthError);
 }
 
 TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allowed characters")
@@ -46,10 +46,10 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allow
     const bulls_and_cows::Code attempt{"ZZZZZ"};
 
     // ACT
-    const bool result = bulls_and_cows::validate_attempt(game_options, attempt);
+	bulls_and_cows::CodeValidity result = bulls_and_cows::validate_attempt(game_options, attempt);
 
     // ASSERT
-    REQUIRE(!result);
+    REQUIRE(result == bulls_and_cows::CodeValidity::ForbiddenCharacter);
 }
 
 /*
