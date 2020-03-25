@@ -80,23 +80,19 @@ namespace bulls_and_cows {
 				break;
 			case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
 				std::cout << "Enter the maximum character you want:";
-				game_options.maximum_allowed_character =
-					ask_char_or_default(std::cin, game_options.maximum_allowed_character);
+				game_options.maximum_allowed_character = ask_char_or_default(std::cin, game_options.maximum_allowed_character);
 				break;
 			case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
 				std::cout << "Enter the number of attempts you want:";
-				game_options.max_number_of_attempts =
-					ask_uint_or_default(std::cin, game_options.max_number_of_attempts);
+				game_options.max_number_of_attempts = ask_uint_or_default(std::cin, game_options.max_number_of_attempts);
 				break;
 			case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
 				std::cout << "Enter the minimum character you want:";
-				game_options.minimum_allowed_character =
-					ask_char_or_default(std::cin, game_options.minimum_allowed_character);
+				game_options.minimum_allowed_character = ask_char_or_default(std::cin, game_options.minimum_allowed_character);
 				break;
 			case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
 				std::cout << "Enter the number of character per code:";
-				game_options.number_of_characters_per_code =
-					ask_uint_or_default(std::cin, game_options.number_of_characters_per_code);
+				game_options.number_of_characters_per_code = ask_uint_or_default(std::cin, game_options.number_of_characters_per_code);
 				break;
 			case GameOptionsMenuChoice::LoadOptions:
 				load_game_options(in, game_options);

@@ -178,7 +178,6 @@ namespace bulls_and_cows {
 		output_stream << s5;
 		output_stream << s6;
 		output_stream << s7;
-
 	}
 
 	

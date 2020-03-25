@@ -2,6 +2,7 @@
 #include "game_options.hpp"
 #include "input.hpp"
 #include <sstream>
+#include <algorithm>
 
 
 namespace bulls_and_cows {
@@ -80,30 +81,56 @@ namespace bulls_and_cows {
         return true;
     }
 
+	//Avoid bugs if wrong manual changes
+	std::string remove_spaces_or_alphanum(std::string str, bool b)
+	{
+		str.erase(remove(str.begin(), str.end(), ' '), str.end());
+		if (b == 0) {
+			for (int i = 0; i < str.size(); i++) {
+				if (!isdigit(str[i])) {
+					str.erase(i, 1);
+					i--;
+				}
+			}
+		}
+		if (b == 1) {
+			for (int j = 0; j < str.size(); j++) {
+				if (isdigit(str[j])) {
+					str.erase(j, 1);
+					j--;
+				}
+			}
+			str.erase(1);
+		}
+		return str;
+	}
 
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
     {
 
-        std::string line;
+        std::string line; 
         while (std::getline(input_file_stream, line))
         {
-			//std::string delimiter = "=";
 			std::size_t delimiter = line.find("=");
 			std::string token = line.substr(0, delimiter);
 			std::string numb = line.substr(delimiter + 1);
-			char* max_min_allowed_character = const_cast<char*>(numb.c_str());
 
-			if (token == "max_number_of_attempts")
+			std::cout << numb;
+			if (token == "max_number_of_attempts") {
+				numb = remove_spaces_or_alphanum(numb, 0);
 				game_options.max_number_of_attempts = std::atoi(numb.c_str());
-			else if (token == "number_of_characters_per_code")
-				game_options.number_of_characters_per_code = std::atoi(numb.c_str());
-
-			else if (token == "minimum_allowed_character") {
-				game_options.minimum_allowed_character = max_min_allowed_character[0];
 			}
-
+			else if (token == "number_of_characters_per_code") {
+				numb = remove_spaces_or_alphanum(numb, 0);
+				game_options.number_of_characters_per_code = std::atoi(numb.c_str());
+			}
+			else if (token == "minimum_allowed_character") {
+				numb = remove_spaces_or_alphanum(numb, 1);
+				game_options.minimum_allowed_character = numb[0];
+			}
 			else if (token == "maximum_allowed_character") {
-				game_options.maximum_allowed_character = max_min_allowed_character[0];
+				numb = remove_spaces_or_alphanum(numb, 1);
+				game_options.maximum_allowed_character = numb[0];
 			}
         }
         return true;
