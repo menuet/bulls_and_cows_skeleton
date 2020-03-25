@@ -31,6 +31,8 @@ namespace bulls_and_cows {
 
     void display_game_options_menu(std::ostream& output_stream);
 
+    bool adjust_char_number(GameOptions& game_options);
+
     // Ask the user to select an option of the menu
     GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream);
 

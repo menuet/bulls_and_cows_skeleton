@@ -140,6 +140,23 @@ namespace bulls_and_cows {
         return 1;
     }
 
+    //Function adjusting the option number of character in the code when there are not enough characters allowed and no duplicates allowed
+    //Return true if the length has been adjusted
+    bool adjust_char_number(GameOptions& game_options)
+    {
+        if (game_options.allow_duplicate == 0)
+        {
+            unsigned int number_possible_char =
+                game_options.maximum_allowed_character - game_options.minimum_allowed_character + 1;
+            if (game_options.number_of_characters_per_code > number_possible_char)
+            {
+                game_options.number_of_characters_per_code = number_possible_char;
+                return 1;
+            }
+        }
+        return 0;
+    }
+
     void manage_game_options(GameOptionsMenuChoice choice, GameOptions& game_options)
     {
         char input_char = ' ';
@@ -169,6 +186,11 @@ namespace bulls_and_cows {
                 std::cin >> input_char;
             } while (input_char < 'A' || input_char > game_options.maximum_allowed_character);
             game_options.minimum_allowed_character = input_char;
+            if (adjust_char_number(game_options))
+            {
+                std::cout << "\nThe number of characters per code has been adjusted according to the number characters "
+                             "allowed.\n";
+            }
             break;
 
         case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
@@ -179,6 +201,10 @@ namespace bulls_and_cows {
                 std::cin >> input_char;
             } while (input_char < game_options.minimum_allowed_character || input_char > 'Z');
             game_options.maximum_allowed_character = input_char;
+            if(adjust_char_number(game_options))
+            {
+                std::cout << "\nThe number of characters per code has been adjusted according to the number characters allowed.\n";
+            }
             break;
 
         case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
@@ -197,6 +223,11 @@ namespace bulls_and_cows {
                 std::cin >> input_int;
             } while (input_int < 1);
             game_options.number_of_characters_per_code = input_int;
+            if (adjust_char_number(game_options))
+            {
+                std::cout << "\nThe number of characters per code has been adjusted according to the number characters "
+                             "allowed.\n";
+            }
             break;
 
         case GameOptionsMenuChoice::SaveOptions:
@@ -217,6 +248,11 @@ namespace bulls_and_cows {
                 std::cin >> input_bool;
             } while (input_int != 1 && input_int != 0);
             game_options.allow_duplicate = input_bool;
+            if (adjust_char_number(game_options))
+            {
+                std::cout << "\nThe number of characters per code has been adjusted according to the number characters "
+                             "allowed.\n";
+            }
             break;
 
         default:

@@ -57,6 +57,49 @@ TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
     // ASSERT
     REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
 }
+
+TEST_CASE("TEST bulls_and_cows::adjust_char_number WHEN code length is too long and duplicates not allowed")
+{
+    //ARRANGE
+    bulls_and_cows::GameOptions game_options{};
+    game_options.number_of_characters_per_code = 10;
+
+    //ASK
+    const bool result = bulls_and_cows::adjust_char_number(game_options);
+
+    //ASSERT
+    REQUIRE(result);
+    REQUIRE(game_options.number_of_characters_per_code == 8);
+}
+
+TEST_CASE("TEST bulls_and_cows::adjust_char_number WHEN code length is too long and duplicates allowed")
+{
+    // ARRANGE
+    bulls_and_cows::GameOptions game_options{};
+    game_options.number_of_characters_per_code = 10;
+    game_options.allow_duplicate = 1;
+
+    // ASK
+    const bool result = bulls_and_cows::adjust_char_number(game_options);
+
+    // ASSERT
+    REQUIRE(!result);
+    REQUIRE(game_options.number_of_characters_per_code == 10);
+}
+
+TEST_CASE("TEST bulls_and_cows::adjust_char_number WHEN all is good")
+{
+    // ARRANGE
+    bulls_and_cows::GameOptions game_options{};
+
+    // ASK
+    const bool result = bulls_and_cows::adjust_char_number(game_options);
+
+    // ASSERT
+    REQUIRE(!result);
+    REQUIRE(game_options.number_of_characters_per_code == 5);
+}
+
 /*
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
