@@ -41,6 +41,9 @@ namespace bulls_and_cows {
 
             
         }
+
+        std::cout << (is_win(game_options, myboard) ? "You won !! GG WP\n" : "");
+        std::cout << (is_end_of_game(game_options, myboard) ? "You lost, please try again and not cry\n" : "");
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
