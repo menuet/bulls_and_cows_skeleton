@@ -89,7 +89,6 @@ namespace bulls_and_cows {
             std::size_t delimiter = line.find("=");
             std::string token = line.substr(0, delimiter);
             std::string numb = line.substr(delimiter + 1);
-            char* cnumb = const_cast<char*>(numb.c_str());
 
             if (token == "max_number_of_attempts")
                 game_options.max_number_of_attempts = std::atoi(numb.c_str());
@@ -99,10 +98,10 @@ namespace bulls_and_cows {
 
             else if (token == "minimum_allowed_character")
                 // game_options.minimum_allowed_character = (char)std::atoi(numb.c_str());
-                game_options.minimum_allowed_character = cnumb[0];
+                game_options.minimum_allowed_character = numb[0];
 
             else if (token == "maximum_allowed_character")
-                game_options.maximum_allowed_character = cnumb[0];
+                game_options.maximum_allowed_character = numb[0];
 
         }
         return true;

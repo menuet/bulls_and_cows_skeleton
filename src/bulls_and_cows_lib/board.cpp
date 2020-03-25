@@ -113,7 +113,6 @@ namespace bulls_and_cows {
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
                          const Board& board)
         {
-            // Max number of attemps and max number of character ...
             Code incode;
             auto current_attempt = board.attempts_and_feedbacks.size() + 1;
 
@@ -174,6 +173,25 @@ namespace bulls_and_cows {
             }
         }
 
+        void optiif(std::ostream& output_stream, const GameOptions& game_options, bool dotoratt, size_t number, AttemptAndFeedback att)
+        {
+            std::string space = moins_function(7, " ");
+            std::string starting_space = moins_function(6, " ");
+            std::string zero = (number >= 10) ? "" : "0";
+
+            if (dotoratt)
+                output_stream << "| #" << zero << number << starting_space 
+                << moins_function(game_options.number_of_characters_per_code, ". ") 
+                << "|" << space << "|"<< space << "|\n";
+            else
+            {
+                const auto& attempt = att.attempt;
+                const auto& feedback = att.feedback;
+                output_stream << "| #" << zero << number << starting_space;
+                print_code(attempt.value);
+                output_stream << "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
+            }
+        }
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
         {
@@ -186,21 +204,11 @@ namespace bulls_and_cows {
             //...
 
             // BODY ...
+            AttemptAndFeedback atte{};
             int number_of_attemps = game_options.max_number_of_attempts;
             for (unsigned int i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
             {
-                if (i >= 10)
-                {
-                    output_stream << "| #" << i << "      "
-                                  << moins_function(game_options.number_of_characters_per_code, ". ")
-                                  << "|       |       |\n";
-                }
-                else
-                {
-                    output_stream << "| #0" << i << "      "
-                                  << moins_function(game_options.number_of_characters_per_code, ". ")
-                                  << "|       |       |\n";
-                }
+               optiif(output_stream, game_options, true, i, atte);
             }
 
             if (!board.attempts_and_feedbacks.empty())
@@ -208,20 +216,7 @@ namespace bulls_and_cows {
                 for (size_t index = board.attempts_and_feedbacks.size(); index > 0; --index)
                 {
                     const auto& attempt_and_feedback = board.attempts_and_feedbacks[index - 1];
-                    const auto& attempt = attempt_and_feedback.attempt;
-                    const auto& feedback = attempt_and_feedback.feedback;
-                    if (index >= 10)
-                    {
-                        output_stream << "| #" << index << "      ";
-                        print_code(attempt.value);
-                        output_stream << "|   "<< feedback.bulls << "   |   " << feedback.cows << "   |\n";
-                    }
-                    else
-                    {
-                        output_stream << "| #0" << index << "      ";
-                        print_code(attempt.value);
-                        output_stream << "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
-                    }
+                    optiif(output_stream, game_options, false, index, attempt_and_feedback);
                 }
             }
             //...
