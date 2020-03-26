@@ -47,20 +47,16 @@ namespace bulls_and_cows {
     }
 
     //Function to save the options in a txt file, the return is 0 if the save has failed
-    bool save_game_options(const GameOptions& game_options)
+    bool save_game_options(const GameOptions& game_options, std::ostream& output_stream)
     {
-        std::string const fileName(
-            "C:/Users/AB/Documents/algo M1/Semester 8/C++/PROJECTS/bulls_and_cows_skeleton/game_options.txt");
-
-        std::ofstream stream(fileName.c_str());
-
-        if (stream)
+        if (output_stream)
         {
-            stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << std::endl;
-            stream << "number_of_characters_per_code=" << game_options.number_of_characters_per_code << std::endl;
-            stream << "minimum_allowed_character=" << game_options.minimum_allowed_character << std::endl;
-            stream << "maximum_allowed_character=" << game_options.maximum_allowed_character << std::endl;
-            stream << "duplicates_allowed=" << game_options.allow_duplicate << std::endl;
+            output_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << std::endl;
+            output_stream << "number_of_characters_per_code=" << game_options.number_of_characters_per_code
+                          << std::endl;
+            output_stream << "minimum_allowed_character=" << game_options.minimum_allowed_character << std::endl;
+            output_stream << "maximum_allowed_character=" << game_options.maximum_allowed_character << std::endl;
+            output_stream << "duplicates_allowed=" << game_options.allow_duplicate << std::endl;
         }
         else
         {
@@ -162,6 +158,11 @@ namespace bulls_and_cows {
         char input_char = ' ';
         unsigned int input_int = 0;
         bool input_bool = false;
+        std::string const fileName(
+            "C:/Users/AB/Documents/algo M1/Semester 8/C++/PROJECTS/bulls_and_cows_skeleton/game_options.txt");
+
+        std::ofstream write_stream{};
+
         switch (choice)
         {
         case GameOptionsMenuChoice::BackToMain:
@@ -231,7 +232,8 @@ namespace bulls_and_cows {
             break;
 
         case GameOptionsMenuChoice::SaveOptions:
-            if (save_game_options(game_options))
+             write_stream = std::ofstream(fileName.c_str());
+            if (save_game_options(game_options,write_stream))
             {
                 std::cout << "\nOptions saved!\n";
             }

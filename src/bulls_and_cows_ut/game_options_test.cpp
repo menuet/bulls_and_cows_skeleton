@@ -101,7 +101,7 @@ TEST_CASE("TEST bulls_and_cows::adjust_char_number WHEN all is good")
     REQUIRE(game_options.number_of_characters_per_code == 5);
 }
 
-/*
+
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
     // ARRANGE
@@ -109,7 +109,7 @@ TEST_CASE("TEST bulls_and_cows::save_game_options")
     std::stringstream output_stream;
 
     // ACT
-    const bool result = bulls_and_cows::save_game_options(output_stream, game_options);
+    const bool result = bulls_and_cows::save_game_options(game_options, output_stream);
 
     // ASSERT
     REQUIRE(result);
@@ -118,9 +118,10 @@ TEST_CASE("TEST bulls_and_cows::save_game_options")
             "max_number_of_attempts=12\n"
             "number_of_characters_per_code=5\n"
             "minimum_allowed_character=A\n"
-            "maximum_allowed_character=H\n");
+            "maximum_allowed_character=H\n"
+            "duplicates_allowed=0\n");
 }
-
+/*
 TEST_CASE("TEST bulls_and_cows::load_game_options")
 {
     // ARRANGE

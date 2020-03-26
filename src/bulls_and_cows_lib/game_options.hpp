@@ -11,7 +11,7 @@ namespace bulls_and_cows {
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
-        bool allow_duplicate{true};
+        bool allow_duplicate{false};
     };    
 
     enum class GameOptionsMenuChoice
@@ -38,7 +38,7 @@ namespace bulls_and_cows {
 
     void manage_game_options(GameOptionsMenuChoice choice, GameOptions& game_options);
 
-    bool save_game_options(const GameOptions& game_options);
+    bool save_game_options(const GameOptions& game_options, std::ostream& output_stream);
 
     bool load_game_options(GameOptions& game_options);
 
