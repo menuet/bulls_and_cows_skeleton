@@ -98,7 +98,7 @@ int main(int){
 
     cout << "Welcome to Mastermind." << endl;
     
-    cout << "Please select a difficulty level:" << endl;
+    cout << "Please select a mode" << endl;
     cout << " 1 - Play against the computer\n"
             "2 - Watch computer playing against itself\n"
             "3 - Configure options\n" << endl;
