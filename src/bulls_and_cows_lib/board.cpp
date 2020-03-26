@@ -6,7 +6,7 @@
 namespace bulls_and_cows {
 
     //Display the different components of the board
-    void display_board(Historic historic, const GameOptions& game_options)
+    void display_board(const Historic& historic, const GameOptions& game_options)
     {
         std::cout << "___________________________________________________________\n";
         std::cout << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";

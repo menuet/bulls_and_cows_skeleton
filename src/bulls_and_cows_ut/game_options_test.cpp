@@ -8,7 +8,8 @@
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
     // ARRANGE
-    const bulls_and_cows::GameOptions game_options{};
+    bulls_and_cows::GameOptions game_options{};
+    game_options.allow_duplicate = false;
     std::stringstream output_stream;
 
     // ACT
@@ -63,7 +64,7 @@ TEST_CASE("TEST bulls_and_cows::adjust_char_number WHEN code length is too long 
     //ARRANGE
     bulls_and_cows::GameOptions game_options{};
     game_options.number_of_characters_per_code = 10;
-
+    game_options.allow_duplicate = false;
     //ASK
     const bool result = bulls_and_cows::adjust_char_number(game_options);
 

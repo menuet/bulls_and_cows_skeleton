@@ -65,14 +65,30 @@ namespace bulls_and_cows {
     // Count and return the number of cows in the attempt
     unsigned int count_cow(Code const& attempt, Code const& code)
     {
+        Code attempt_variable = attempt;
+
+        //We need to retreive the bulls to avoid counting them as cows when there are duplicates
+        for (int i = 0; i < code.value.size(); i++)
+        {
+            if (attempt.value[i] == code.value[i])
+            {
+                attempt_variable.value[i]=0;
+            }
+        }
+
         unsigned int cow = 0;
         for (int i = 0; i < code.value.size(); i++)
         {
-            for (int j = 0; j < attempt.value.size(); j++)
+            for (int j = 0; j < attempt_variable.value.size(); j++)
             {
-                if (attempt.value[j] == code.value[i] && i != j)
+                if (i < code.value.size())
                 {
-                    cow++;
+                    if (attempt_variable.value[j] == code.value[i] && i != j)
+                    {
+                        //To count each character only 1 time, we change their value to a forbidden character
+                        attempt_variable.value[j]='0';
+                        cow++;
+                    }
                 }
             }
         }

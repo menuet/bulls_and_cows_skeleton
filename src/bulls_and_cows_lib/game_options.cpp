@@ -64,9 +64,9 @@ namespace bulls_and_cows {
         }
         else
         {
-            return 0;
+            return false;
         }
-        return 1;
+        return true;
     }
 
     // Function to load the options from a txt file, the return is 0 if the load has failed
@@ -135,9 +135,9 @@ namespace bulls_and_cows {
         }
         else
         {
-            return 0;
+            return false;
         }
-        return 1;
+        return true;
     }
 
     //Function adjusting the option number of character in the code when there are not enough characters allowed and no duplicates allowed
@@ -151,10 +151,10 @@ namespace bulls_and_cows {
             if (game_options.number_of_characters_per_code > number_possible_char)
             {
                 game_options.number_of_characters_per_code = number_possible_char;
-                return 1;
+                return true;
             }
         }
-        return 0;
+        return false;
     }
 
     void manage_game_options(GameOptionsMenuChoice choice, GameOptions& game_options)
