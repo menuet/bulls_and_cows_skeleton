@@ -63,16 +63,14 @@ namespace bulls_and_cows {
     }
 
     // Count and return the number of cows in the attempt
-    unsigned int count_cow(Code const& attempt, Code const& code)
+    unsigned int count_cow(Code attempt_variable, Code const& code)
     {
-        Code attempt_variable = attempt;
-
         //We need to retreive the bulls to avoid counting them as cows when there are duplicates
         for (int i = 0; i < code.value.size(); i++)
         {
-            if (attempt.value[i] == code.value[i])
+            if (attempt_variable.value[i] == code.value[i])
             {
-                attempt_variable.value[i]=0;
+                attempt_variable.value[i]='0';
             }
         }
 
