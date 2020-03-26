@@ -6,7 +6,7 @@
 // Examples of unit tests for the functions declared in board.hpp
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
 
-/*
+
 
 TEST_CASE("TEST bulls_and_cows::create_board")
 {
@@ -147,7 +147,7 @@ TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
     // ASSERT
     REQUIRE(!result);
 }
-
+/*
 TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet played")
 {
     // ARRANGE
@@ -156,7 +156,7 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
     std::stringstream output_stream{};
 
     // ACT
-    bulls_and_cows::display_board(output_stream, game_options, board);
+    bulls_and_cows::display_board(output_stream, game_options, board); 
 
     // ASSERT
     const std::string output_result = output_stream.str();
@@ -179,8 +179,8 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
             "| #02      . . . . . |       |      |\n"
             "| #01      . . . . . |       |      |\n"
             "-------------------------------------\n");
-}
-
+}*/
+/*    //un peu de créativité ne fais pas de mal
 TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
 {
     // ARRANGE
@@ -203,6 +203,6 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
             "What is your guess #01 (5 characters between 'A' and 'H')\n"
             "? ");
-}
+}*/
 
-*/
+
