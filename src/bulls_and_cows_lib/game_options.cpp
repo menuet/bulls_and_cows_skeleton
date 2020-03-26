@@ -5,8 +5,10 @@
 
 namespace bulls_and_cows {
 
+    //Permet d'afficher les options du jeu.
 	void printOptions(const GameOptions& game_options)
     {
+        std::cout << "\n";
         std::cout << "Caractère min : " << game_options.minimum_allowed_character << "\n";
         std::cout << "Caractère max : " << game_options.maximum_allowed_character << "\n";
         std::cout << "Nbr caractère par code : " << game_options.number_of_characters_per_code << "\n";
@@ -15,6 +17,7 @@ namespace bulls_and_cows {
         std::cout << "Doublons acceptés : " << game_options.accept_doublons << "\n";
     }
 
+    //Permet de modifier les options pendant une partie.
     void modifOptions(GameOptions& gameoption1)
     {
         std::cout << "Caractère min : ";
@@ -32,17 +35,11 @@ namespace bulls_and_cows {
         char choice(0);
         std::cout << "Save Game (T / F) : ";
         std::cin >> choice;
-        if (choice == 'T')
-            gameoption1.save_game = true;
-        else
-            gameoption1.save_game = false;
-
+        gameoption1.save_game = (choice == 'T');
+        
         choice = 0;
         std::cout << "Doublons acceptés (T / F) : ";
         std::cin >> choice;
-        if (choice == 'T')
-            gameoption1.accept_doublons = true;
-        else
-            gameoption1.accept_doublons = false;
+        gameoption1.accept_doublons = (choice == 'T');
     }
 } // namespace bulls_and_cows

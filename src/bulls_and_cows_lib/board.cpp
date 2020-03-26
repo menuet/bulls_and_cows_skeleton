@@ -7,6 +7,7 @@ namespace bulls_and_cows {
     void boardGame(std::vector<FinalBoard> const& finalBoards, const GameOptions& game_options,
                    std::ostream& output_stream)
     {
+        //Variable qui permet d'avoir un espacement net pour l'affichage.
         constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 18U;
 
         output_stream << "___________________________________________________________\n";
@@ -41,6 +42,7 @@ namespace bulls_and_cows {
         }
         output_stream << "___________________________________________________________\n";
 
+        //Retourne le nombre de tentative restant.
         output_stream << "Attempt(s) remaining:" << game_options.max_number_of_attempts - finalBoards.size()+1 << "\n";
     }
 
