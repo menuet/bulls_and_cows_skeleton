@@ -16,6 +16,8 @@ namespace bulls_and_cows {
     {
         std::cout << "-------------------------------------\n";
         Board gameboard = bulls_and_cows::create_board(game_options);
+        
+         bulls_and_cows::display_board(std::cout,game_options, gameboard); 
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
