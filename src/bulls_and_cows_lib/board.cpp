@@ -3,44 +3,45 @@
 
 namespace bulls_and_cows {
 
-
-    void boardGame(std::vector<FinalBoard> const& finalBoard, const GameOptions& game_options, unsigned int const& count)
+    //La methode boardGame permet d'afficher en console le jeu, si l'utilisateur veut save sa partie, elle permet aussi del'enregistrer dans un save.txt.
+    void boardGame(std::vector<FinalBoard> const& finalBoards, const GameOptions& game_options,
+                   std::ostream& output_stream)
     {
-        // constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 18U;
+        constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 18U;
 
-        std::cout << "___________________________________________________________\n";
-        std::cout << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";
+        output_stream << "___________________________________________________________\n";
+        output_stream << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";
 
-        for (unsigned int i = 1; i < finalBoard.size(); i++)
+        for (unsigned int i = 1; i < finalBoards.size(); i++)
         {
-            std::cout << "| " << i;
+            output_stream << "| " << i;
             if (i > 9)
             {
-                std::cout << "          | ";
+                output_stream << "          | ";
             }
             else
             {
-                std::cout << "           | ";
+                output_stream << "           | ";
             }
 
-            std::cout << finalBoard[i].secretCode;
+            output_stream << finalBoards[i].secretCodeUser;
 
-            for (int unsigned k = 0; k < 18U; k++)
+            for (int unsigned k = 0; k < number_of_chars_taken_by_the_size_of_a_coloum; k++)
             {
-                std::cout << " ";
+                output_stream << " ";
             }
-            std::cout << "|  ";
+            output_stream << "|  ";
 
-            std::cout << finalBoard[i].bulls;
-            std::cout << "      ";
-            std::cout << "|  ";
-            std::cout << finalBoard[i].cows;
-            std::cout << "     ";
-            std::cout << "|\n";
+            output_stream << finalBoards[i].bulls;
+            output_stream << "      ";
+            output_stream << "|  ";
+            output_stream << finalBoards[i].cows;
+            output_stream << "     ";
+            output_stream << "|\n";
         }
-        std::cout << "___________________________________________________________\n";
+        output_stream << "___________________________________________________________\n";
 
-        std::cout << "Attempt(s) remaining:" << game_options.max_number_of_attempts - count << "\n";
+        output_stream << "Attempt(s) remaining:" << game_options.max_number_of_attempts - finalBoards.size()+1 << "\n";
     }
 
 } // namespace bulls_and_cows

@@ -1,16 +1,15 @@
 ___________________________________________________________
 | Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |
-| 1           | FHEAG                  |  0      |  2     |
-| 2           | AFEGB                  |  2      |  1     |
-| 3           | GFADH                  |  0      |  2     |
-| 4           | AEFDH                  |  1      |  1     |
-| 5           | GHADE                  |  0      |  3     |
-| 6           | AFCBD                  |  0      |  3     |
-| 7           | DFCGB                  |  2      |  2     |
-| 8           | EGABC                  |  0      |  4     |
-| 9           | DEBHC                  |  1      |  3     |
-| 10          | DABEC                  |  0      |  4     |
-| 11          | DACHG                  |  0      |  3     |
-| 12          | EFHCA                  |  0      |  2     |
+| 1           | AHDFB                  |  1      |  2     |
+| 2           | HGECF                  |  0      |  4     |
+| 3           | DACEG                  |  0      |  3     |
+| 4           | AGHEC                  |  1      |  3     |
+| 5           | GHBCF                  |  2      |  2     |
+| 6           | GFBAC                  |  3      |  1     |
+| 7           | DEAGC                  |  1      |  2     |
+| 8           | EAHBG                  |  0      |  3     |
+| 9           | GHCBA                  |  2      |  2     |
+| 10          | AGECH                  |  0      |  4     |
+| 11          | CBGEA                  |  0      |  3     |
 ___________________________________________________________
-You lose ! 
+Attempt(s) remaining:0

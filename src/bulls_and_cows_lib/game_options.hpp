@@ -16,7 +16,6 @@ namespace bulls_and_cows {
     };
 
     void printOptions(const GameOptions& game_options);
-    GameOptions modifOptions(GameOptions gameoption1);
-    //void saveGameMethod(std::vector<FinalBoard> const& finalBoard, unsigned int const& win);
+    void modifOptions(GameOptions& gameoption1);
 
 } // namespace bulls_and_cows

@@ -15,7 +15,7 @@ namespace bulls_and_cows {
         std::cout << "Doublons acceptés : " << game_options.accept_doublons << "\n";
     }
 
-    GameOptions modifOptions(GameOptions gameoption1)
+    void modifOptions(GameOptions& gameoption1)
     {
         std::cout << "Caractère min : ";
         std::cin >> gameoption1.minimum_allowed_character;
@@ -44,60 +44,5 @@ namespace bulls_and_cows {
             gameoption1.accept_doublons = true;
         else
             gameoption1.accept_doublons = false;
-        
-        return gameoption1;
     }
-    /*
-    void saveGameMethod(std::vector<FinalBoard> const& finalBoard, GameStatus win)
-    {
-        constexpr unsigned int number_of_chars_taken_by_the_size_of_a_coloum = 20U;
-
-        std::string const fichier = "C:/C++/PROJECTS/bulls_and_cows_skeleton/save.txt";
-        std::ofstream monFlux(fichier);
-
-        if (monFlux)
-        {
-            monFlux << "___________________________________________________________\n";
-            monFlux << "| Attemps Nbr |      Attempt code      |  Bulls  |  Cows  |\n";
-
-            for (int unsigned i = 1; i < finalBoard.size(); i++)
-            {
-                monFlux << "| " << i;
-                if (i > 9)
-                {
-                    monFlux << "          | ";
-                }
-                else
-                {
-                    monFlux << "           | ";
-                }
-
-                monFlux << finalBoard[i].secretCode;
-
-                for (int unsigned k = 0; k < number_of_chars_taken_by_the_size_of_a_coloum - finalBoard.size(); k++)
-                {
-                    monFlux << " ";
-                }
-                monFlux << "|  ";
-
-                monFlux << finalBoard[i].bulls;
-                monFlux << "      ";
-                monFlux << "|  ";
-                monFlux << finalBoard[i].cows;
-                monFlux << "     ";
-                monFlux << "|\n";
-            }
-            monFlux << "___________________________________________________________\n";
-
-            if (win  == 2)
-            {
-                monFlux << "You lose ! ";
-            }
-            else
-                monFlux << "You win ! ";
-        }
-        else
-            std::cout << "Erreur, imposible d'ouvrir le fichier";
-    }*/
-
 } // namespace bulls_and_cows

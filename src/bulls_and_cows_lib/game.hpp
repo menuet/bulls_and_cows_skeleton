@@ -6,11 +6,11 @@ namespace bulls_and_cows {
 
     struct FinalBoard
     {
-        std::string secretCode{};
+        std::string secretCodeUser{};
         unsigned int bulls{};
         unsigned int cows{};
-        FinalBoard(std::string _secretCode, unsigned int _bulls, unsigned int _cows)
-            : secretCode(_secretCode), bulls(_bulls), cows(_cows)
+        FinalBoard(std::string _secretCodeUser, unsigned int _bulls, unsigned int _cows)
+            : secretCodeUser(_secretCodeUser), bulls(_bulls), cows(_cows)
         {}
     };
 
@@ -21,7 +21,7 @@ namespace bulls_and_cows {
         Lose=2,
     };
 
-    bool checkDoublons(std::string const& code, char const& charCode);
+    bool checkSameCharInString(std::string const& code, char const charCode);
     std::string giveCode(const GameOptions& game_options);
     void printCode(std::string const& code);
     bool checkDoublonsString(std::string const& code);
