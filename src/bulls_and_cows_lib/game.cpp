@@ -11,6 +11,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <algorithm>
 
 namespace bulls_and_cows {
 
@@ -79,15 +80,13 @@ namespace bulls_and_cows {
         {
             for (int j = 0; j < attempt_variable.value.size(); j++)
             {
-                if (i < code.value.size())
+                if (attempt_variable.value[j] == code.value[i] && i != j)
                 {
-                    if (attempt_variable.value[j] == code.value[i] && i != j)
-                    {
-                        //To count each character only 1 time, we change their value to a forbidden character
-                        attempt_variable.value[j]='0';
-                        cow++;
-                    }
+                    //To count each character only 1 time, we change their value to a forbidden character
+                    attempt_variable.value[j]='0';
+                    cow++;
                 }
+
             }
         }
         return cow;
@@ -162,6 +161,16 @@ namespace bulls_and_cows {
         return code;
     }
 
+    //Function return true if no duplicate is find
+    bool check_duplicates(std::string code)
+    {
+        //We sort the code
+        std::sort(code.begin(), code.end());
+        //We check if there is two consecutive elements that are the same (duplicates)
+        //Adjacent_find will return the last element if there is no duplicate found
+        return std::adjacent_find(code.begin(), code.end()) != code.end();
+    }
+
     // Function to check if the input of the user for a attempt is right : length, characters allowed, duplicates
     CheckInput check_input(std::string const& attempt, const GameOptions& game_options)
     {
@@ -174,15 +183,9 @@ namespace bulls_and_cows {
         if (!game_options.allow_duplicate)
         {
             // Check for the duplicates
-            for (int i = 0; i < attempt.size(); i++)
+            if (check_duplicates(attempt))
             {
-                for (int j = i+1; j < attempt.size(); j++)
-                {
-                    if (attempt[i] == attempt[j])
-                    {
-                        return CheckInput::Duplicate;
-                    }
-                }
+                return CheckInput::Duplicate;
             }
         }
         
