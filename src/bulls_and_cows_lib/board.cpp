@@ -47,7 +47,6 @@ namespace bulls_and_cows {
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
     {
         Feedback feedbackUser{};
-
         std::map<char, int> map_occurences_secretCode;
 
         // check bull AND fill a map with the characters and their corresponding occurence found in the SECRET CODE
@@ -59,15 +58,10 @@ namespace bulls_and_cows {
 
             if (secretChar == attemptChar)
                 feedbackUser.bulls++;
+            //if the char (the key) exists in the map, it sends a reference on the integer that we increment immediately
+            //if the char dosn't exist yet, then it insert a pair {secretChar, 0}, then sends a reference on the integer that we increment by 1
             else
-            {
-                const auto iter = map_occurences_secretCode.find(secretChar);
-
-                if (iter != map_occurences_secretCode.end()) // secret_code.value[i] exists dans la map
-                    ++iter->second;
-                else
-                    map_occurences_secretCode.insert({secretChar, 1}); // first occurence of this char
-            }
+                ++map_occurences_secretCode[secretChar];
         }
 
         // check cow
@@ -78,22 +72,16 @@ namespace bulls_and_cows {
 
             if (secretChar != attemptChar)
             {
-                if (map_occurences_secretCode.find(attemptChar) !=
-                    map_occurences_secretCode.end()) // AttemptChar exists dans la map
+                const auto iter = map_occurences_secretCode.find(attemptChar);
+                if (iter != map_occurences_secretCode.end()) // AttemptChar exists dans la map
                 {
-
                     feedbackUser.cows++;
-                    if (map_occurences_secretCode.find(attemptChar)->second == 1)
-                    {
-                        map_occurences_secretCode.erase(attemptChar);
-                    }
+                    int& attemptCharOccurrences = iter->second; // note la référence &
+
+                    if (attemptCharOccurrences == 1)
+                        map_occurences_secretCode.erase(iter);
                     else
-                    {
-                        int freq = map_occurences_secretCode.find(attemptChar)->second;
-                        freq--;
-                        map_occurences_secretCode.erase(attemptChar);
-                        map_occurences_secretCode.insert(std::pair<char, int>(attemptChar, freq));
-                    }
+                        --attemptCharOccurrences; // ça modifie directement la valeur de l'entier dans le map 
                 }
             }
         }
@@ -106,9 +94,7 @@ namespace bulls_and_cows {
                      const Board& board)
     {
         Code user_choice{};
-        std::string s;
-
-        s = (board.attempts_and_feedbacks.size() < 9) ? "What is your guess #0" : "What is your guess #";
+        const std::string s = (board.attempts_and_feedbacks.size() < 9) ? "What is your guess #0" : "What is your guess #";
 
         output_stream << s << board.attempts_and_feedbacks.size() + 1 << " ("
                       << game_options.number_of_characters_per_code << " characters between '"

@@ -80,8 +80,7 @@ namespace bulls_and_cows {
             std::this_thread::sleep_for(std::chrono::seconds(2));
             AttemptAndFeedback attempt_and_feedback;
             attempt_and_feedback.attempt = pick_random_attempt(possible_solutions); // bien jusque là
-            attempt_and_feedback.feedback =
-                compare_attempt_with_secret_code(attempt_and_feedback.attempt, boardCreated.secret_code);
+            attempt_and_feedback.feedback = compare_attempt_with_secret_code(attempt_and_feedback.attempt, boardCreated.secret_code);
             boardCreated.attempts_and_feedbacks.push_back(attempt_and_feedback);
             std::cout << "\n";
             remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possible_solutions);

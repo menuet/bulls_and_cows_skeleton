@@ -184,32 +184,24 @@ namespace bulls_and_cows {
         if (input_file_stream)
         {
             std::string sentence = "";
-            // EOF it is end of file.
+            //EOF it is end of file. We read each line with getline so that the last getline that we will do will put into "sentence" the last ligne in the file with content
             while (input_file_stream.peek() != EOF)
             {
                 std::getline(input_file_stream, sentence);
             }
 
-            // we split our string with delimiter ','
-            std::vector<std::string> splittedStrings = split(sentence, ',');
+            int i = 0;
+            std::string maxAttempts{};
 
-            if (splittedStrings.size() != 4) // if the file hasn't this form : 15,3,A,H
+            while (i < sentence.size() && sentence[i] != ',')
             {
-                return false;
+                maxAttempts += sentence[i];
+                i++;
             }
-
-            // pointer to the first element
-            std::string* pos = splittedStrings.data();
-
-            // we attribute to the game options the new options from the file
-            game_options.max_number_of_attempts = atoi(pos[0].c_str());
-            game_options.number_of_characters_per_code = atoi(pos[1].c_str());
-            game_options.minimum_allowed_character = *pos[2].c_str();
-            game_options.maximum_allowed_character = *pos[3].c_str();
-
-            // free the memory
-            pos = nullptr;
-            delete pos;
+            game_options.max_number_of_attempts = atoi(maxAttempts.c_str());
+            game_options.number_of_characters_per_code = static_cast<unsigned int>(sentence[i + 1])-48;
+            game_options.minimum_allowed_character = sentence[i + 3];
+            game_options.maximum_allowed_character = sentence[i + 5];
 
             return true; // load the file
         }
