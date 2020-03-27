@@ -9,12 +9,12 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-
+using namespace std;
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
+       /* std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
                      "    DO\n"
                      "       Display the board and the list of attempts so far\n"
@@ -23,7 +23,49 @@ namespace bulls_and_cows {
                      "       Add the user's attempt to the list of attempts of the board\n"
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+                     "    Display a message telling if the user won or lost\n";*/
+
+        string code = "AEFGH"; // TODO generation aleatoire
+        string test;
+        int i_bulls = 0;
+        int i_cows = 0;
+
+        while (i_bulls != 5)
+        {
+            i_bulls = 0;
+            i_cows = 0;
+
+            cout << "\nType your guess: "; // TODO securiser la saisie (Entre A Et H, 5 charactere obligatoire)
+            cin >> test;
+            cout << "\nYour guess is: " << test;
+
+            // compteur de bulls
+            for (int i = 0; i < 5; i++)
+            {
+                if (code[i] == test[i])
+                {
+                    i_bulls++;
+                }
+            }
+            // compteur de cows
+            for (int k = 0; k < 5; k++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    if (code[k] == test[j])
+                    {
+                        i_cows++;
+                    }
+                }
+            }
+
+            cout << "\nnombre de bulls  : \n";
+            cout << i_bulls;
+            cout << "\nnombre de cows  : \n";
+            cout << i_cows;
+        }
+        cout << "\n FELICITATION !!! \n"; 
+         
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -44,6 +86,14 @@ namespace bulls_and_cows {
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
                "    Display a message telling if the computer won or lost\n";
+
+
+
+
+
+
+
+
     }
 
     void configure_game_options(GameOptions& game_options)
