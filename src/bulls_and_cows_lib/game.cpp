@@ -14,16 +14,33 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+
+        Board board=create_board(game_options);
+        AttemptAndFeedback attempt_and_feedback;
+        do
+        {
+            display_board(std::cout, game_options, board);
+            
+            attempt_and_feedback.attempt = ask_attempt(std::cout,std::cin, game_options, board);
+
+            attempt_and_feedback.feedback = compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+
+            board.attempts_and_feedbacks.push_back(attempt_and_feedback);
+
+        } while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
+
+        display_board(std::cout, game_options, board);
+        
+        if (is_win(game_options, board))
+        {
+            std::cout << "Congratulations ! You won" << std::endl;
+        }
+
+        else
+        {
+            std::cout << "T'es nul" << std::endl;
+        }
+            
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -48,13 +65,39 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        display_game_options(std::cout,game_options);
+        display_game_options_menu(std::cout);
+        /*do
+        {
+            const GameOptionsMenuChoice choice = ask_game_options_menu_choice(std::cin);
+            switch (choice)
+            {
+            case choice == GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
+                std::cout << "\nBye bye!\n";
+                return;
+            case 2:
+                ;
+                break;
+            case 3:
+                ;
+                break;
+            case 4:
+                ;
+                break;
+            case 5:
+                save_game_options(std::cout, game_options);
+                break;
+            case 6:
+                load_game_options(std:cin,game_options);
+                break;
+            case -1::Error:
+                std::cout << "\nYou did not enter a valid choice, please try again\n";
+                break;
+            }
+        while (choice != GameOptionsMenuChoice::BackToMain);
+        display_main_menu(std::cout);
+        }*/
+
     }
 
     void play_game()

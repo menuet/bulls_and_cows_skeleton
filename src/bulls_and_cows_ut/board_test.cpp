@@ -147,7 +147,7 @@ TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
     // ASSERT
     REQUIRE(!result);
 }
-/*
+
 TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet played")
 {
     // ARRANGE
@@ -195,14 +195,12 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
     // ASSERT
     REQUIRE(attempt.value == "ABCDE");
     REQUIRE(output_stream.str() ==
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
-            "? "
+            "What is your guess #01 (5 characters between 'A' and 'H') "
+            "?\n"
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
-            "? "
+            "What is your guess #01 (5 characters between 'A' and 'H') "
+            "?\n"
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
-            "? ");
+            "What is your guess #01 (5 characters between 'A' and 'H') "
+            "?\n");
 }
-
-*/
