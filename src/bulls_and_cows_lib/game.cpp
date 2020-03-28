@@ -14,10 +14,18 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "-------------------------------------\n";
+       
         Board gameboard = bulls_and_cows::create_board(game_options);
-        
-         bulls_and_cows::display_board(std::cout,game_options, gameboard); 
+        while (!is_end_of_game(game_options, gameboard)&& !is_win(game_options,gameboard))
+        {
+            bulls_and_cows::display_board(std::cout, game_options, gameboard); 
+            Code expected_code = ask_attempt(std::cout, std::cin, game_options, gameboard);
+            AttemptAndFeedback result;
+            result.attempt = expected_code;
+           // result.feedback = bulls_and_cows::compare_attempt_with_secret_code;
+           // gameboard.attempts_and_feedbacks.insert.end(result);
+        }
+         
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
