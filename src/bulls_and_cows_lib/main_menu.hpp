@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include "board.hpp"
 #include <iostream>
 
 namespace bulls_and_cows {
@@ -17,7 +17,18 @@ namespace bulls_and_cows {
         ConfigureOptions = 3,
     };
 
+    enum class MainMenuChoice1
+    {
+        Error = -1,
+        Quit = 0,
+        RandomGenerator = 1,
+        UserGenerated = 2,
+    };
+
     // Ask the user to select an option of the menu
     MainMenuChoice ask_main_menu_choice(std::istream& input_stream);
+
+    // Ask the user to select an option of the menu
+    MainMenuChoice1 ask_main_random_or_typed(std::istream& input_stream);
 
 } // namespace bulls_and_cows

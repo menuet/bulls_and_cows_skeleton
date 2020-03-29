@@ -12,20 +12,48 @@
 
 namespace bulls_and_cows {
 
-    void user_plays_against_computer( GameOptions& game_options)
+    void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        
         Board Board;
-        display_board(game_options, Board);
+        std::cout << "    \n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                     "    Prepare yourself for a game against yourself or the computer\n"
+                     "    Create a randomly generated secret code\n"
+                     "    >Press 1 ...\n"
+                     "    If you want to play against a code that you enter with your oxn little fingers\n"
+                     "    >Press 2 ...\n"
+                     "What is your choice ? \n -> "
+                   << generate_random_character('A','H')
+                   << "\n";
+                    
+        auto user_choice = ask_main_random_or_typed(std::cin);
+        bool stop= false;
+        while (stop == false)
+        {
+            switch (user_choice)
+            {
+            case MainMenuChoice1::Quit:
+                std::cout << "\nBye bye!\n";
+                stop = true;
+                return;
+            case MainMenuChoice1::RandomGenerator:
+                Board.secret_code.value = create_secret_randomly(game_options, std::cin);
+                stop = true;
+                break;
+            case MainMenuChoice1::UserGenerated:
+                Board.secret_code.value = create_secret(game_options, std::cin);
+                stop = true;
+                break;
+            case MainMenuChoice1::Error:
+                std::cout << "\nYou did not enter a valid choice, please try again\n"
+                             "What is your choice ? \n -> ";
+                user_choice = ask_main_random_or_typed(std::cin);
+                break;
+            }
+        }
+
+        //display_board(game_options, Board);
+        std ::cout << "Code secret utilise " << Board.secret_code.value << "\n";
 
         Code Code;
         Code.value = "ABCDE";
@@ -62,7 +90,6 @@ namespace bulls_and_cows {
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
                "    Display a message telling if the computer won or lost\n";
-        std::cout << "WWW\nIII\n---\n   ]";
     }
 
     void configure_game_options(GameOptions& game_options)

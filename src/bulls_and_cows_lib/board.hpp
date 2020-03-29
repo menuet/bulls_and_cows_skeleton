@@ -1,7 +1,8 @@
 
 #pragma once
-
+#include "random.hpp"
 #include "game_options.hpp"
+#include "input.hpp"
 #include <string>
 #include <vector>
 
@@ -33,8 +34,11 @@ namespace bulls_and_cows {
     //Function dedicated for the display of a a beautiful homemade game board
     void display_board(const GameOptions& game_options, Board Board);
 
-    // Create a board and with a new random secret code composed of allowed characters
-    Board create_board(const GameOptions& game_options);
+    // Create a secret code composed of allowed characters proposed by the user
+    std :: string create_secret(const GameOptions& game_options, std::istream& input_stream);
+
+    // Create a secret code composed of allowed characters proposed by the user
+    std ::string create_secret_randomly(const GameOptions& game_options, std::istream& input_stream);
 
     // Validate that a user-entered code contains proper number of allowed characters
     bool validate_attempt(const GameOptions& game_options, const Code& attempt);
