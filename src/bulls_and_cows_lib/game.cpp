@@ -1,4 +1,3 @@
-
 #include "game.hpp"
 #include "board.hpp"
 #include "game_options.hpp"
@@ -14,16 +13,33 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        Board board = create_board(game_options);
+        AttemptAndFeedback attempt_and_feedback;
+
+        do // do while => do au mois fois puis while-do etc
+        {
+            display_board(std::cout, game_options, board);
+
+            attempt_and_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+
+            attempt_and_feedback.feedback = compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+
+            board.attempts_and_feedbacks.push_back(attempt_and_feedback);
+        }
+
+        while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
+
+        display_board(std::cout, game_options, board);
+
+        if (is_win(game_options, board))
+        {
+            std::cout << "Bravo ! Vous avez gagné la partie !" << std::endl;
+        }
+
+        else
+        {
+            std::cout << "Dommage ! Vous avez perdu..." << std::endl;
+        }
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
