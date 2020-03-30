@@ -9,6 +9,12 @@ namespace bulls_and_cows {
     {
         output_stream << "#################################\n"
                       << "0 - Back to main menu\n"
+                      << "1- Modify maximum number of attemps per game"
+                      << "2 - Modify number of character in a code\n"
+                      << "3 - Modify Minimun allowed character\n"
+                      << "4 - Modify Maximum allowed character\n"
+                      << "5 - Save options\n"
+                      << "6 - Load options\n";
 
     }
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)// on va mettre en parametre les game option pour y avoir accès à l'affichage le"." est pour voir l'attribut dans la struct
@@ -28,7 +34,18 @@ namespace bulls_and_cows {
         
             case 0:
                  return GameOptionsMenuChoice::BackToMain;
-
+            case 1:
+                return GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts; 
+            case 2:
+                return GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode;
+            case 3:
+                return GameOptionsMenuChoice::ModifyMinimumAllowedCharacter;
+            case 4:
+                return GameOptionsMenuChoice::ModifyMaximumAllowedCharacter;
+            case 5:
+                return GameOptionsMenuChoice::SaveOptions;
+            case 6:
+                return GameOptionsMenuChoice::LoadOptions;
 
             default:
                   return GameOptionsMenuChoice::Error;
