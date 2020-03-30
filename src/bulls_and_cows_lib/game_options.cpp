@@ -1,4 +1,3 @@
-
 #include "game_options.hpp"
 #include "input.hpp"
 #include <fstream>
@@ -82,12 +81,10 @@ namespace bulls_and_cows {
             game_options.number_of_characters_per_code = nb_character;
 
             std::getline(input_file_stream, ligne);
-            char min_character = ligne[0];
-            game_options.minimum_allowed_character = min_character;
+            game_options.minimum_allowed_character = ligne[0];
 
             std::getline(input_file_stream, ligne);
-            char max_character = ligne[0];
-            game_options.maximum_allowed_character = max_character;
+            game_options.maximum_allowed_character = ligne[0];
 
             return true;
         }

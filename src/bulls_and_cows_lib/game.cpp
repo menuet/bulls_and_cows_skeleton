@@ -105,7 +105,7 @@ namespace bulls_and_cows {
                 max = ask_char_or_default(std::cin, game_options.maximum_allowed_character);
                 if (max <= game_options.minimum_allowed_character)
                 {
-                    std::cout << "Maximum character cannot be inferior compared to maximum character";
+                    std::cout << "Maximum character cannot be inferior compared to minimum character";
                 }
                 else
                     game_options.maximum_allowed_character = max;
@@ -130,7 +130,6 @@ namespace bulls_and_cows {
                 break;
             }
         } while (op != GameOptionsMenuChoice::BackToMain);
-        display_main_menu(std::cout);
     }
 
     void play_game()
