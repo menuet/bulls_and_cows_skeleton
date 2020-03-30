@@ -62,7 +62,7 @@ TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
     REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
 }
 */
-
+/*
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
     // ARRANGE
@@ -81,7 +81,8 @@ TEST_CASE("TEST bulls_and_cows::save_game_options")
             "minimum_allowed_character=A\n"
             "maximum_allowed_character=H\n");
 }
-/*
+*/
+
 TEST_CASE("TEST bulls_and_cows::load_game_options")
 {
     // ARRANGE
@@ -103,4 +104,4 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(game_options.maximum_allowed_character == '8');
 }
 
-*/
+

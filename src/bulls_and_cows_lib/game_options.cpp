@@ -1,6 +1,11 @@
 
 #include "game_options.hpp"
 #include "input.hpp"
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+
 namespace bulls_and_cows {
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
@@ -33,24 +38,24 @@ namespace bulls_and_cows {
     {
         switch (ask_int_or_default(input_stream, -1))
         {
-        case -1:
-            return GameOptionsMenuChoice::Error;
-        case 0:
-            return GameOptionsMenuChoice::BackToMain;
-        case 1:
-            return GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts;
-        case 2:
-            return GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode;
-        case 3:
-            return GameOptionsMenuChoice::ModifyMinimumAllowedCharacter;
-        case 4:
-            return GameOptionsMenuChoice::ModifyMaximumAllowedCharacter;
-        case 5:
-            return GameOptionsMenuChoice::SaveOptions;
-        case 6:
-            return GameOptionsMenuChoice::LoadOptions;
-        default:
-            return GameOptionsMenuChoice::Error;
+            case -1:
+                return GameOptionsMenuChoice::Error;
+            case 0:
+                return GameOptionsMenuChoice::BackToMain;
+            case 1:
+                return GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts;
+            case 2:
+                return GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode;
+            case 3:
+                return GameOptionsMenuChoice::ModifyMinimumAllowedCharacter;
+            case 4:
+                return GameOptionsMenuChoice::ModifyMaximumAllowedCharacter;
+            case 5:
+                return GameOptionsMenuChoice::SaveOptions;
+            case 6:
+                return GameOptionsMenuChoice::LoadOptions;
+            default:
+                return GameOptionsMenuChoice::Error;
         }
     }
 
@@ -71,6 +76,46 @@ namespace bulls_and_cows {
             return true;
         }
 
+        bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
+        {
+            string ligne;
+            if (input_file_stream)
+            {
+
+                while (std::getline(input_file_stream, ligne))
+                {
+                    size_t equal_pos=ligne.find("=");
+                    string before_equal = ligne.substr(0, equal_pos);
+                    string after_equal = ligne.substr(equal_pos+1);
+
+                    if (before_equal == "max_number_of_attempts")
+                    {
+                        game_options.max_number_of_attempts = std::atoi(after_equal.c_str());
+                    }
+                    
+                    else if (before_equal == "number_of_characters_per_code")
+                    {
+                        game_options.number_of_characters_per_code = std::atoi(after_equal.c_str());
+                    }
+
+                    else if (before_equal == "minimum_allowed_character")
+                    {
+                        game_options.minimum_allowed_character = after_equal[0];
+                    }
+
+                    else if (before_equal == "maximum_allowed_character")
+                    {
+                        game_options.maximum_allowed_character = after_equal[0];
+                    }
+                }
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
     
     // TODO: define the body of the functions declared in game_options.cpp
 
