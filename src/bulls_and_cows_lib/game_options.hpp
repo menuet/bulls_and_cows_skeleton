@@ -15,7 +15,8 @@ namespace bulls_and_cows {
         bool save_game{false};
     };
 
-    void printOptions(const GameOptions& game_options);
+    void printOptions(const GameOptions& game_options, std::ostream& output_stream);
     void modifOptions(GameOptions& gameoption1);
+    void loadGame_options(GameOptions& gameoption1);
 
 } // namespace bulls_and_cows

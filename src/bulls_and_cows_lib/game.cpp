@@ -19,7 +19,7 @@ namespace bulls_and_cows {
         auto result = std::find(std::begin(code), std::end(code), charCode);
         if (result != std::end(code))
         {
-            //Retourne vrai si un charactère du code et le charactère (charCode) sont identiques.
+            // Retourne vrai si un charactère du code et le charactère (charCode) sont identiques.
             return true;
         }
         return false;
@@ -34,7 +34,7 @@ namespace bulls_and_cows {
         {
             if (game_options.accept_doublons)
             {
-                //Permet de générer aléatoirement un charactère entre deux lettres choisies dans les options du jeu.
+                // Permet de générer aléatoirement un charactère entre deux lettres choisies dans les options du jeu.
                 charCode = generate_random_character(game_options.minimum_allowed_character,
                                                      game_options.maximum_allowed_character);
             }
@@ -44,10 +44,10 @@ namespace bulls_and_cows {
                 {
                     charCode = generate_random_character(game_options.minimum_allowed_character,
                                                          game_options.maximum_allowed_character);
-                //Tant qu'il y a un doublon, on cherche un nouveau charactère.
+                    // Tant qu'il y a un doublon, on cherche un nouveau charactère.
                 } while (checkSameCharInString(secretCodeUser, charCode));
             }
-            //Permet de rajouter le nouveau charactère au secretCode.
+            // Permet de rajouter le nouveau charactère au secretCode.
             secretCodeUser.push_back(charCode);
         }
         return secretCodeUser;
@@ -74,7 +74,7 @@ namespace bulls_and_cows {
     {
         if (!game_options.accept_doublons && checkDoublonsString(code))
         {
-            //Si les doublons sont refusés et qu'il y a un doublon alors retourne false.
+            // Si les doublons sont refusés et qu'il y a un doublon alors retourne false.
             return false;
         }
 
@@ -105,7 +105,7 @@ namespace bulls_and_cows {
         {
             std::cout << "Rentrez votre code : ";
             std::cin >> code;
-            //tant que le code rentré par le user possède une erreur, on lui redemande un nouveau code.
+            // tant que le code rentré par le user possède une erreur, on lui redemande un nouveau code.
         } while (!checkErrorAttemps(code, game_options));
         return code;
     }
@@ -115,7 +115,7 @@ namespace bulls_and_cows {
     unsigned int giveCowsNumber(std::string const& secretCodeComputer, std::string const& code)
     {
         std::string codeTemp = secretCodeComputer;
-        //on cherche les bulls pour les enlever afin de ne pas les compter dans le calcul de cows.
+        // on cherche les bulls pour les enlever afin de ne pas les compter dans le calcul de cows.
         for (int i = 0; i < code.size(); i++)
         {
             if (secretCodeComputer[i] == code[i])
@@ -128,10 +128,10 @@ namespace bulls_and_cows {
         {
             for (int j = 0; j < codeTemp.size(); j++)
             {
-                if (code[i] == codeTemp[j] && i!=j)
+                if (code[i] == codeTemp[j] && i != j)
                 {
                     count++;
-                    //lorsque l'on a compté une cow alors on l'enlève du code pour ne pas la compter une seconde fois.
+                    // lorsque l'on a compté une cow alors on l'enlève du code pour ne pas la compter une seconde fois.
                     codeTemp[j] = '0';
                 }
             }
@@ -197,27 +197,27 @@ namespace bulls_and_cows {
         {
             std::string code;
             code = askCodeUser(game_options);
-            
-            unsigned int bulls = giveBullsNumber(secretCodeComputer, code); //retourne le nombre de bulls.
-            unsigned int cows = giveCowsNumber(secretCodeComputer, code); //retourne le nombre de cows.
 
-            finalBoards.emplace_back(code, bulls, cows); //on fill la list avec les infos du tour.
+            unsigned int bulls = giveBullsNumber(secretCodeComputer, code); // retourne le nombre de bulls.
+            unsigned int cows = giveCowsNumber(secretCodeComputer, code);   // retourne le nombre de cows.
 
-            boardGame(finalBoards, game_options, std::cout); //permet d'afficher le resultat dans la console.
+            finalBoards.emplace_back(code, bulls, cows); // on fill la list avec les infos du tour.
 
-            if (checkWin(secretCodeComputer, code)) //condition de victoire.
+            boardGame(finalBoards, game_options, std::cout); // permet d'afficher le resultat dans la console.
+
+            if (checkWin(secretCodeComputer, code)) // condition de victoire.
             {
                 std::cout << "You win \n";
                 win = GameStatus::Win;
             }
-            if (finalBoards.size() - 1 == game_options.max_number_of_attempts)  //condition de défaite.
+            if (finalBoards.size() - 1 == game_options.max_number_of_attempts) // condition de défaite.
             {
                 std::cout << "you lose \n";
                 win = GameStatus::Lose;
             }
         } while (win == GameStatus::Continue);
 
-        if (game_options.save_game == true) //si l'utilisateur choisit d'enregistrer sa partie
+        if (game_options.save_game == true) // si l'utilisateur choisit d'enregistrer sa partie
         {
             std::ofstream monFlux("C:/C++/PROJECTS/bulls_and_cows_skeleton/save.txt");
             if (monFlux)
@@ -267,37 +267,52 @@ namespace bulls_and_cows {
         if (game_options.save_game == true)
         {
             std::ofstream monFlux("C:/C++/PROJECTS/bulls_and_cows_skeleton/save.txt");
-            boardGame(finalBoards, game_options, monFlux);
+            if (monFlux)
+            {
+                boardGame(finalBoards, game_options, monFlux);
+            }
         }
     }
 
-    GameOptions configure_game_options(GameOptions& game_options)
+    void configure_game_options(GameOptions& game_options)
     {
-        GameOptions gameoption1;
         int menu{0};
-        do
-        {
+         
             std::cout << "\nVoici les options : \n";
             std::cout << "1- Afficher les options du jeu : \n";
             std::cout << "2- Modifier les options du jeu : \n";
-            std::cout << "3- Revenir au menu principal : \n";
-            std::cout << "choix de menu : \n";
+            std::cout << "3- Sauvegarder les options du jeu en cours : \n";
+            std::cout << "4- Chargé les options deja sauvegarder dans un fichier : \n";
+            std::cout << "4- Quitter : \n";
+            std::cout << "Choix de menu : \n";
             std::cin >> menu;
 
-            switch (menu)
+            //utilisation de if au lieu de switch, pour initialiser la variable monFlux seulement lors du print dans le fichier.
+            if (menu == 1)
             {
-            case 1:
-                printOptions(gameoption1);
-                break;
-            case 2:
-                modifOptions(gameoption1);
-                break;
-            default:
-                break;
+                printOptions(game_options, std::cout);
             }
-        } while (menu == 0);
-
-        return gameoption1;
+            else if (menu == 2)
+            {
+                modifOptions(game_options);
+            }
+            else if (menu == 3)
+            {
+                std::ofstream monFlux("C:/C++/PROJECTS/bulls_and_cows_skeleton/game_options.txt");
+                if (monFlux)
+                {
+                    printOptions(game_options, monFlux);
+                    std::cout << "Options bien enregistre\n";
+                }
+                else
+                    std::cout << "fichier introuvable\n";
+            }
+            else if (menu == 4)
+            {
+                loadGame_options(game_options);
+            }
+            else
+                std::cout << "retour vers le menu";
     }
 
     void play_game()
@@ -322,7 +337,7 @@ namespace bulls_and_cows {
                 computer_plays_against_computer(game_options);
                 break;
             case MainMenuChoice::ConfigureOptions:
-                game_options = configure_game_options(game_options);
+                configure_game_options(game_options);
                 break;
             case MainMenuChoice::Error:
                 std::cout << "\nYou did not enter a valid choice, please try again\n";
