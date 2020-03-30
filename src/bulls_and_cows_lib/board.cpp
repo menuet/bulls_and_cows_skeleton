@@ -2,12 +2,13 @@
 #include "board.hpp"
 #include <bulls_and_cows_lib\input.hpp>
 #include <bulls_and_cows_lib\random.hpp>
-using namespace bulls_and_cows;
+using namespace std;
+//#include <string>
 
 namespace bulls_and_cows {
 
     // TODO: define the body of the functions declared in board.cpp
-    Board create_board(const GameOptions& game_options)
+   Board create_board(const GameOptions& game_options)
     {
         Board gameboard{};
         gameboard.secret_code.value.resize(game_options.number_of_characters_per_code); // else we are out of range
@@ -17,33 +18,62 @@ namespace bulls_and_cows {
                                                                        game_options.maximum_allowed_character);
         }
         return gameboard;
+   }
+   bool validate_attempt(const GameOptions& game_options, const Code& attempt)
+   {
+     
+      string result = attempt.value;
+       if (result.length() != game_options.number_of_characters_per_code) //return false if the length isn't correct
+       {
+           return false;
+       }
+
+       for (int i = 0; i < result.size(); i++) //return false if the entered-user is out of range
+       {
+           if (result[i] < game_options.minimum_allowed_character || result[i] > game_options.maximum_allowed_character)
+
+           {
+               return false;
+           }
+       }
+
+       return true;
     }
-    bool validate_attempt(const GameOptions& game_options, const Code& attempt)
+
+    Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
     {
-        if (game_options.number_of_characters_per_code == attempt.value.size())
+        string secret = secret_code.value;
+        string result = attempt.value;
+        Feedback feed;
+        unsigned COWS = 0, BULLS = 0;
+
+        for (int i = 0; i < result.size(); i++)
         {
-            for (const char& c : attempt.value)
+            if (result[i] == secret[i]) //If the code entered by the user corresponds to secret code
             {
-                if (c < game_options.minimum_allowed_character ||
-                    c > game_options.maximum_allowed_character) // checking if the user-entered character is out of
-                {
-                    return false;
-                }
+                BULLS++;   //So count the bulls points
             }
         }
-        else
+        for (int i = 0; i < result.size(); i++)
         {
-            return false;
+            if (secret.find(result[i]) != string::npos && result[i] != secret[i])//if the user-entered code or its position is different
+            {
+                COWS++; //increment the cows points
+            }
         }
-        return true;
+        feed.cows = COWS; // Displays the cows score
+        feed.bulls = BULLS;  // Displays the bulls score
+        return feed;
+
     }
+
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
+
         if (board.attempts_and_feedbacks.size() ==
             game_options.maximum_allowed_character) // the space for attempts is full
         {
-            std::cout << " GAME OVER ! Is the end of game \n";
-            std::cout << " The secret was : " + board.secret_code.value;
+            std::cout << " GAME OVER ! Is the end of game ... \n";
             return true;
         }
         else
@@ -51,113 +81,60 @@ namespace bulls_and_cows {
             return false;
         }
     }
+
     bool is_win(const GameOptions& game_options, const Board& board)
     {
-        if (board.attempts_and_feedbacks.back().attempt.value ==
-            board.secret_code.value) //"back.() -->reference to the last element entered "
-        {
-            std::cout << " YOU WON !";
-            return true;
-        }
-        else if (board.attempts_and_feedbacks.empty())
+        if (board.attempts_and_feedbacks.empty())
         {
             return false;
         }
-        return false;
-    }
-    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
-                     const Board& board)
-    {
-        Code attempt;
-        const char current_enter = board.attempts_and_feedbacks.size();
-        int i;
-        while (true)
+        else if (board.attempts_and_feedbacks.back().attempt.value ==board.secret_code.value) //"back.() -->reference to the last element entered "
         {
-            output_stream << "Enter a letter to discover the secret code" << current_enter
-                          << game_options.number_of_characters_per_code << "" << game_options.maximum_allowed_character
-                          << "" << game_options.minimum_allowed_character <<"\n";
-            input_stream >> attempt.value;
+            std::cout << "############################ \n";
+            std::cout << "           YOU WON !         \n";
+            std::cout << "############################ \n";
+           
         }
-
-
-        return attempt;
+        return true;
+        
     }
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
-        output_stream << "-------------------------------------\n"
-                      << "| SECRET   * * * * * |              |\n"
-                      << "-------------------------------------\n"
-                      << "| ATTEMPTS           | BULLS | COWS |\n"
-                      << "-------------------------------------\n";
 
-        // if ((board.attempts_and_feedbacks.empty()))
-        
-        for (unsigned int i = board.attempts_and_feedbacks.size(); i--;) // Unsigned to define the min domain
-        {
-            if (i > 11)
-            {
-                const auto attempt_user = board.attempts_and_feedbacks.back().attempt.value;
-                output_stream << "| #" << (i + 1) << " :" << attempt_user << "\n";
-            }
-            else
-            {
-                output_stream << "| 0" << (i + 1) ;
-            }
-
-           // output_stream << "          " << board.attempts_and_feedbacks[i].attempt.value << " |   "
-                        //  << (board.attempts_and_feedbacks[i].feedback.bulls) << "   |   "
-                        //  << +(board.attempts_and_feedbacks[i].feedback.cows) << "  |\n";
-        }
-
+        output_stream <<
+            "-------------------------------------\n"
+            "| SECRET   * * * * * |              |\n"
+            "-------------------------------------\n"
+            "| ATTEMPTS           | BULLS | COWS |\n"
+            "-------------------------------------\n";
        
-        for (int i = game_options.max_number_of_attempts; i > board.attempts_and_feedbacks.size() - 1; i--)
+        for (unsigned int i = 0; i != board.attempts_and_feedbacks.size(); ++i)
         {
-            if (i > 8)
-            {
-                output_stream << "| #" << (i + 1) <<"      . . . . . |       |      |\n";
-            }
-            else
-            {
-                output_stream <<"| #0" <<(i + 1) << "      . . . . . |       |      |\n";
-            }
+            const auto& attempt_and_feedback = board.attempts_and_feedbacks[i];
+            output_stream << " ATTEMPTS #" << (i + 1) << " : " << attempt_and_feedback.attempt.value
+                          << "  | BULLS = " << attempt_and_feedback.feedback.bulls
+                          << "  | COWS = " << attempt_and_feedback.feedback.cows << "\n";
         }
+    }
 
-       
-    }
-        
-    }
-    Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
+    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
+                     const Board& board)
     {
-        std::string secret = secret_code.value;
-        std::string result = attempt.value;
-        std::string save; //to stock the user cows
-        Feedback feed;
-        unsigned COWS = 0, BULLS = 0;
+        output_stream << "Enter your attempt to discover the secret code" << "\n";
+        Code attempt;
+        input_stream >> attempt.value;
 
-        // For bulls
-        for (int i = 0; i < secret.size(); i++)
+        while (!validate_attempt(game_options, attempt)) // check if the attempt meet the requirements
         {
-            //int pos = selection.find(result[i]); if ((pos != std::string::npos))
-            if (secret[i] == result[i])
-            {
-                BULLS++;
-                
-            }
-            else 
-            {
-               
-               save+= result[i];
-            }
-        }
+                output_stream << " Retry, wrong format !" << endl;
+                input_stream >> attempt.value;
 
-        //For cows
-        for (int i = 0; i < save.size(); i++)
-        {
-            if (secret.find(save[i]) != std::string::npos && secret[save[i]] > 0)
-            {
-                COWS++;
-                save[i]--;
-            }
         }
-} // namespace bulls_and_cows
+        return attempt;
+
+
+    }
+   
+}
+// namespace bulls_and_cows

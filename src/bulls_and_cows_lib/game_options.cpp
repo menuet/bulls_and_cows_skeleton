@@ -1,17 +1,19 @@
 
 #include "game_options.hpp"
 #include "input.hpp"
+#include <vector>
+using namespace std;
 
 namespace bulls_and_cows {
 
     // TODO: define the body of the functions declared in game_options.cpp
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
-        output_stream << "These are the game options\n" 
+        output_stream << "\n######### GAME OPTIONS########\n" 
                       << "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n" 
                       << "Number of characters in a code: " << game_options.number_of_characters_per_code << "\n" 
                       << "Range of allowed characters: " << game_options.minimum_allowed_character 
-                      << "up to "<< game_options.maximum_allowed_character << "\n"; 
+                      << "\n up to "<< game_options.maximum_allowed_character << "\n"; 
 
     }
     void display_game_options_menu(std::ostream& output_stream)
@@ -78,13 +80,34 @@ namespace bulls_and_cows {
     }
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
     {
-       std::string result;
-       std::getline(input_file_stream, result);
        
-        //game_options.max_number_of_attempts == 5;
-        //game_options.number_of_characters_per_code == 3;
-        //game_options.minimum_allowed_character == '1';
-        //game_options.maximum_allowed_character == '8';
+       string line;
+       while (getline(input_file_stream, line))
+       {
+           size_t boundary = line.find("=");
+           string token = line.substr(0, boundary);
+           string tok = line.substr(boundary + 1);
+           if (tok != "")
+           {
+               if (token == "max_number_of_attempts")
+               {
+                   game_options.max_number_of_attempts = std::atoi(tok.c_str());
+               }
+               else if (token == "number_of_characters_per_code")
+               {
+                   game_options.number_of_characters_per_code = std::atoi(tok.c_str());
+               }
+               else if (token == "minimum_allowed_character")
+               {
+                   game_options.minimum_allowed_character = tok[0];
+               }
+               else if (token == "maximum_allowed_character")
+               {
+                   game_options.maximum_allowed_character = tok[0];
+               }
+           }
+       }
+       return true;
         return true;
     }
        

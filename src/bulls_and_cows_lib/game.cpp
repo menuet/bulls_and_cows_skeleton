@@ -9,23 +9,29 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+using namespace std;
 
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
        
-        Board gameboard = bulls_and_cows::create_board(game_options);
-        while (!is_end_of_game(game_options, gameboard)&& !is_win(game_options,gameboard))
+        Board gameboard = bulls_and_cows::create_board(game_options); //Create the board
+        while (!is_end_of_game(game_options, gameboard))//As long as the player the game isn't over
         {
-            bulls_and_cows::display_board(std::cout, game_options, gameboard); 
-            Code expected_code = ask_attempt(std::cout, std::cin, game_options, gameboard);
-            AttemptAndFeedback result;
-            result.attempt = expected_code;
-           // result.feedback = bulls_and_cows::compare_attempt_with_secret_code;
-           // gameboard.attempts_and_feedbacks.insert.end(result);
+            bulls_and_cows::display_board(cout, game_options, gameboard);
+            Code result = ask_attempt(cout, cin, game_options, gameboard);// Ask the user's attempt/test
+            Feedback f = compare_attempt_with_secret_code(result, gameboard.secret_code);// Compare with the random secret code 
+            AttemptAndFeedback a;
+            a.attempt = result;
+            a.feedback = f;
+            gameboard.attempts_and_feedbacks.push_back(a);// insert the value into the vector at the end
         }
-         
+        //display if is the end of fame or is the user won
+        
+         cout <<(is_win(game_options, gameboard)? " YOU WIN ! CONGRATULATION" : "");
+         cout << (is_end_of_game(game_options, gameboard) ?" THE TIME IS OVER ! RETRY ? " :"");
+        
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -57,6 +63,44 @@ namespace bulls_and_cows {
                      "       Ask the user to type its choice\n"
                      "       Treat the user's choice\n"
                      "    UNTIL user's choice is to go back to main menu\n";
+        
+        while (true)
+        {
+           
+            display_game_options(cout, game_options);
+            display_game_options_menu(cout);
+            GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(cin);
+            switch ((int)user_choice) // require int type
+            {
+            case 0:
+                false;
+                break;
+            case 1:
+                cout << " modify max attempt\n";
+                cin >> game_options.max_number_of_attempts;
+                break;
+            case 2:
+                cout << " modfiy number of characters \n";
+                cin >> game_options.number_of_characters_per_code;
+                break;
+            case 3:
+                cout << " modfiy min allowed \n";
+                cin >> game_options.minimum_allowed_character;
+                break;
+            case 4:
+                cout << " modfiy max allowed \n";
+                cin >> game_options.maximum_allowed_character;
+                break;
+            case 5:
+                save_game_options(cout, game_options);
+                break;
+            case 6:
+                load_game_options(cin, game_options);
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     void play_game()
