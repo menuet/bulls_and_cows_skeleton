@@ -82,16 +82,6 @@ namespace bulls_and_cows {
             ptit message sympa
         */
 
-       // GameOptions game_option{};
-       /* cout << "voulez vous changez les options?" << endl;
-        cout << "1 - oui" << endl;
-        cout << "2 - non" << endl;
-        int reqponse;
-        cin >> reqponse;
-        if (reqponse == 1)
-        {
-            configure_game_options(game_options);
-        }*/
         Board board = create_board(game_options);
         // std::cout << " le mot de passe est : " << board.secret_code.value << std::endl;
         while (!is_end_of_game(game_options, board))
@@ -112,7 +102,7 @@ namespace bulls_and_cows {
         }
         else
         {
-            std::cout << " dommage, tu as perdu!" << std::endl;
+            std::cout << " dommage, tu as perdu! le bon code est : " << board.secret_code.value << std::endl;
         }
         std::cout << std::endl;
         std::cout << std::endl;
