@@ -15,14 +15,15 @@
         Board board{};
         // On remplit de façon aléatoire un vecteur (plutot qu'une string pour avoir un code dynamique) avec la fonction generate_random_character "les caractères autorisés"
         //std::vector<char> filling_code;
-            for (unsigned int j = 0; j< game_options.characters_per_code;j++)
+            for (unsigned int j = 0; j< game_options.number_of_characters_per_code;j++)
             {
                 char temp = generate_random_character(game_options.minimum_allowed_character,
-                                  game_options.maximum_allowed_character); // piocher dans les caractères autorisé
+                                  game_options.maximum_allowed_character); 
                 board.secret_code.value.push_back(temp);
-            }            
+            }
+         return board;
         }
-        return board;
+        
      }
      bool validate_attempt(const GameOptions& game_options, const Code& attempt)
 
