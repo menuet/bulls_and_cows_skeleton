@@ -3,10 +3,6 @@
 #include <catch2/catch.hpp>
 #include <sstream>
 
-// Examples of unit tests for the functions declared in game_options.hpp
-// These unit tests are disabled because you first need to define the tested functions in game_options.cpp
-
-/*
 
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
@@ -20,7 +16,7 @@ TEST_CASE("TEST bulls_and_cows::display_game_options")
     // ASSERT
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
-            "Here are the current game_options:\n"
+            "\nHere are the current game_options:\n"
             "Maximum number of attempts per game: 12\n"
             "Number of characters in a code: 5\n"
             "Range of allowed characters: from 'A' to 'H'\n");
@@ -37,7 +33,7 @@ TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
     // ASSERT
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
-            "Configure Options\n"
+            "\nConfigure Options\n"
             "0 - Back to main menu\n"
             "1 - Modify Maximum number of attempts per game\n"
             "2 - Modify Number of characters in a code\n"
@@ -60,6 +56,7 @@ TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
     REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
 }
 
+/*
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
     // ARRANGE
@@ -99,5 +96,4 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(game_options.minimum_allowed_character == '1');
     REQUIRE(game_options.maximum_allowed_character == '8');
 }
-
 */

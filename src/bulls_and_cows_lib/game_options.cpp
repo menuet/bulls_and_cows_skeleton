@@ -6,10 +6,10 @@ namespace bulls_and_cows {
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
-        output_stream << "\nNumber of characters per code : " << game_options.number_of_characters_per_code << "\n";
-        output_stream << "Minimum allowed character : " << game_options.minimum_allowed_character << "\n";
-        output_stream << "Maximum allowed character : " << game_options.maximum_allowed_character << "\n";
-        output_stream << "Maximum number of attemtps : " << game_options.max_number_of_attempts << "\n";
+        output_stream << "\nHere are the current game_options :\n";
+        output_stream << "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n";
+        output_stream << "Number of characters in a code: " << game_options.number_of_characters_per_code << "\n";
+        output_stream << "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '" << game_options.maximum_allowed_character << "'\n";
     }
 
     void display_game_options_menu(std::ostream& output_stream)

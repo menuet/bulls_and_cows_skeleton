@@ -6,38 +6,36 @@
 
 namespace bulls_and_cows {
 
-    // TODO: define the body of the functions declared in board.cpp
     Board create_board(const GameOptions& game_options)
     {
         Board myboard{};
 
-        std::vector<char> allowed_char;
-        for (auto i = game_options.minimum_allowed_character; i <= game_options.maximum_allowed_character;
-             i++) // remplir un vector avec la liste des caracteres autorisés
+        // On crée un vecteur et on insert dedans tous les charactères autorisés
+        std::vector<char> allowed_char{};
+
+        for (auto i = game_options.minimum_allowed_character; i <= game_options.maximum_allowed_character; i++)
         {
             allowed_char.push_back(i);
         }
 
-        unsigned int i = 0;
-
-        while (i != game_options.number_of_characters_per_code)
+        unsigned int n = 0;
+        while (n != game_options.number_of_characters_per_code)
         {
-            char temp = generate_random_character(
-                allowed_char.front(),
-                allowed_char.back()); // piocher dans les caracteres autorisés
+            // On genère aléatoirement un char parmi les char autorisés dans le vecteur contenant les char autorisés.
+            char alea_char = generate_random_character(allowed_char.front(), allowed_char.back());
 
-            for (unsigned int j = 0; j < allowed_char.size(); j++) //
+            for (unsigned int k = 0; k < allowed_char.size(); k++)
             {
-                if (allowed_char[j] == temp)
+                if (allowed_char[k] == alea_char)
                 {
-                    allowed_char.erase(allowed_char.begin() +
-                                       j); // supprimer le caractère du vector contenant les caracteres autorisés
-                    myboard.secret_code.value.push_back(temp); // ajouter à la string secret_code.value
-                    i++;
+                    allowed_char.erase(allowed_char.begin() + k); // on supprime le char de la liste des char autorisés
+                    myboard.secret_code.value.push_back(alea_char); // on l'insert dans le code secret
+                    n++;
                 }
             }
         }
 
+        // std::cout << myboard.secret_code.value;
         return myboard;
     }
 
@@ -50,24 +48,23 @@ namespace bulls_and_cows {
 
         for (const char attempt_char : attempt.value)
         {
-            if (attempt_char < game_options.minimum_allowed_character || attempt_char > game_options.maximum_allowed_character)
+            if (attempt_char < game_options.minimum_allowed_character ||
+                attempt_char > game_options.maximum_allowed_character)
             {
                 return false;
             }
         }
 
-        unsigned int cpt = 1;
-        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++) //permet de s'assurer qu'un caractère n'est pas présent en double (ce qui est interdit dans les règles)
+        for (unsigned int i = 0; i < attempt.value.size();
+             i++) // permet de detecter la présence de doublon de char dans l'attempt
         {
-            const char tempo = attempt.value[i];
-            for (unsigned int j = cpt; j < game_options.number_of_characters_per_code; j++)
+            for (unsigned int j = 0; j < attempt.value.size(); j++)
             {
-                if (tempo == attempt.value[j])
+                if ((attempt.value[i] == attempt.value[j]) && (i != j))
                 {
                     return false;
                 }
             }
-            cpt++;
         }
 
         return true;
@@ -78,13 +75,12 @@ namespace bulls_and_cows {
         Feedback myfeedback{};
         int cpt_bulls = 0;
         int cpt_cows = 0;
-        unsigned int n = 0;
 
         for (unsigned int i = 0; i < attempt.value.size(); i++)
         {
-            for (unsigned int j = n; j < secret_code.value.size(); j++)
+            for (unsigned int j = 0; j < secret_code.value.size(); j++)
             {
-                if (secret_code.value[j] == attempt.value[i])
+                if (attempt.value[j] == secret_code.value[i])
                 {
                     if (i == j)
                     {
@@ -96,7 +92,6 @@ namespace bulls_and_cows {
                     }
                 }
             }
-            n++;
         }
 
         myfeedback.bulls = cpt_bulls;
@@ -122,7 +117,7 @@ namespace bulls_and_cows {
         return false;
     }
 
-    void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
+    void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board) //
     {
         Code secret{};
         const char star = '*';
@@ -131,6 +126,7 @@ namespace bulls_and_cows {
         {
             secret.value = board.secret_code.value;
         }
+
         else
         {
             for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
@@ -141,17 +137,14 @@ namespace bulls_and_cows {
         }
 
         output_stream << "----------------------------------\n"
-                         "| SECRET   "
-                      << secret.value
-                      << "|              |\n"
+                         "| SECRET CODE : "<<secret.value<< "\n"
                          "----------------------------------|\n"
                          "| ATTEMPTS         | BULLS | COWS |\n"
                          "----------------------------------|\n";
-
         for (auto element : board.attempts_and_feedbacks)
         {
-            output_stream << "| " << element.attempt.value << "\t\t   | " << element.feedback.bulls << "\t   | "
-                          << element.feedback.cows << "\t  |\n";
+            output_stream << "| "<< element.attempt.value <<"\t\t   | "<< element.feedback.bulls <<"\t   | "
+                          <<element.feedback.cows<< "\t  |\n";
         }
         output_stream << "----------------------------------\n";
     }
@@ -160,12 +153,13 @@ namespace bulls_and_cows {
                      const Board& board)
     {
         Code attempt{};
-        auto nb_attempt = board.attempts_and_feedbacks.size() + 1;
-        unsigned int nb_char = game_options.number_of_characters_per_code;
-        const char max = game_options.maximum_allowed_character;
-        const char min = game_options.minimum_allowed_character;
+        auto nb_guess = board.attempts_and_feedbacks.size() + 1;
+        auto nb_char = game_options.number_of_characters_per_code;
+        auto min = game_options.minimum_allowed_character;
+        auto max = game_options.maximum_allowed_character;
 
-        output_stream << "What is your guess #"<< nb_attempt <<" ("<< nb_char <<" different characters between '"<< min <<"' and '"<< max <<"') : ";
+        output_stream << "What is your guess #" << nb_guess << " (" << nb_char << " different characters between '"
+                      << min << "' and '" << max << "') : ";
         attempt.value = ask_string(input_stream);
 
         return attempt;

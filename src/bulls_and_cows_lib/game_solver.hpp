@@ -2,6 +2,7 @@
 #pragma once
 
 #include "board.hpp"
+#include "random.hpp"
 #include "game_options.hpp"
 #include <vector>
 

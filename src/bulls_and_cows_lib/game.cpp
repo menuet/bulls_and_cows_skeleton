@@ -23,7 +23,6 @@ namespace bulls_and_cows {
         {
             std::cout << "\n";
             display_board(std::cout, game_options, myboard);
-            //std::cout << myboard.secret_code.value << "\n";
 
             my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
 
@@ -33,23 +32,24 @@ namespace bulls_and_cows {
                 my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
             }
 
-           my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, myboard.secret_code);
-           myboard.attempts_and_feedbacks.push_back(my_feedback);
+            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, myboard.secret_code);
+            myboard.attempts_and_feedbacks.push_back(my_feedback);
 
-        } while ( !(is_end_of_game(game_options,myboard)) && !(is_win(game_options,myboard)) );
+        } while (!(is_end_of_game(game_options, myboard)) && !(is_win(game_options, myboard)));
 
         std::cout << "\n";
         display_board(std::cout, game_options, myboard);
 
         if (is_win(game_options, myboard))
         {
-            std::cout << "\n" << "You won ! The secret code is : " << myboard.secret_code.value << "\n";
+            std::cout << "\n"
+                      << "You won ! The secret code is : " << myboard.secret_code.value << "\n";
         }
         else
         {
-            std::cout << "\n" << "You lost ! The secret code is : " << myboard.secret_code.value << "\n";
+            std::cout << "\n"
+                      << "You lost ! The secret code is : " << myboard.secret_code.value << "\n";
         }
-
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -74,11 +74,13 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
+        bool back_to_main = false;
 
+        while (!back_to_main)
+        {
             display_game_options(std::cout, game_options);
             display_game_options_menu(std::cout);
             const auto choice = ask_game_options_menu_choice(std::cin);
-            bool back_to_main = false;
 
             switch (choice)
             {
@@ -95,7 +97,7 @@ namespace bulls_and_cows {
                 modify_minimum_allowed_characters(game_options, std::cout, std::cin);
                 break;
             case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
-                 modify_maximum_allowed_characters(game_options, std::cout, std::cin);
+                modify_maximum_allowed_characters(game_options, std::cout, std::cin);
                 break;
             case GameOptionsMenuChoice::SaveOptions:
                 //
@@ -104,17 +106,10 @@ namespace bulls_and_cows {
                 //
                 break;
             case GameOptionsMenuChoice::Error:
-                std::cout << "\nYou did not enter a valid choice, please try again\n"; //problem
+                std::cout << "\nYou did not enter a valid choice, please try again\n"; // problem
                 break;
             }
-
-        /*std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";*/
+        }
     }
 
     void play_game()
