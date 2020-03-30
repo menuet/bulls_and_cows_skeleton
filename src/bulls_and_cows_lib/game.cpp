@@ -29,7 +29,6 @@ namespace bulls_and_cows {
 
             // Asking attemp to the user
             Code tempattemp = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
-
             if (bulls_and_cows::validate_attempt(game_options, tempattemp))
             {
                 AttemptAndFeedback newattemp;
@@ -38,12 +37,10 @@ namespace bulls_and_cows {
                 myboard.attempts_and_feedbacks.push_back(newattemp);
             }
                 
-
-            
         }
 
         std::cout << (is_win(game_options, myboard) ? "You won !! GG WP\n" : "");
-        std::cout << (is_end_of_game(game_options, myboard) ? "You lost, please try again and not cry\n" : "");
+        std::cout << (is_end_of_game(game_options, myboard) ? "You lost, please try again and not cry\n The code was" + myboard.secret_code.value : "");
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -68,47 +65,102 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::ifstream in{"game_options.txt"};
         bool getout = false;
         while (!getout)
         {
 
             display_game_options(std::cout, game_options);
             display_game_options_menu(std::cout);
+            std::cout << "What is your choice ? ";
             const auto user_choice = ask_game_options_menu_choice(std::cin);
+
 
             switch (user_choice)
             {
             case GameOptionsMenuChoice::BackToMain:
                 getout = true;
                 break;
-            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
+            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter: {
+
                 std::cout << "Enter the maximum character you want:";
-                game_options.maximum_allowed_character =
-                    ask_char_or_default(std::cin, game_options.maximum_allowed_character);
+                char newmax = ask_char_or_default(std::cin, game_options.maximum_allowed_character);
+                unsigned int range = newmax - game_options.minimum_allowed_character;
+                if (newmax < game_options.minimum_allowed_character)
+                {
+                    std::cout << "Maximum cannot be inferior to minimum\n";
+                }
+                if (range < game_options.number_of_characters_per_code)
+                {
+                    std::cout << "Character range is too short, please first reduce number of character per code";
+                }
+                else
+                    game_options.maximum_allowed_character = newmax;
                 break;
-            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
+            }
+            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts: {
+
                 std::cout << "Enter the number of attempts you want:";
-                game_options.max_number_of_attempts =
-                    ask_uint_or_default(std::cin, game_options.max_number_of_attempts);
+                unsigned int newmax = ask_uint_or_default(std::cin, game_options.max_number_of_attempts);
+                if (newmax <= 20)
+                {
+                    game_options.max_number_of_attempts = newmax;
+                }
+                else
+                    std::cout << "Number of attempts cannot exceed 20 attempts\n";
                 break;
-            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
+            }
+            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter: {
                 std::cout << "Enter the minimum character you want:";
-                game_options.minimum_allowed_character =
-                    ask_char_or_default(std::cin, game_options.minimum_allowed_character);
+                char newmin = ask_char_or_default(std::cin, game_options.minimum_allowed_character);
+                unsigned int range = game_options.maximum_allowed_character - newmin;
+                if (newmin > game_options.maximum_allowed_character)
+                {
+                    std::cout << "Minimum cannot be superior to maximum\n";
+                }
+                if (range < game_options.number_of_characters_per_code)
+                {
+                    std::cout << "Character range is too short, please first reduce number of character per code";
+                }
+                else
+                    game_options.minimum_allowed_character = newmin;
                 break;
-            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
-                std::cout << "Enter the number of character per code:";
-                game_options.number_of_characters_per_code =
-                    ask_uint_or_default(std::cin, game_options.number_of_characters_per_code);
+            }
+            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode: {
+
+                std::cout << "Enter the number of characters per code:";
+                unsigned int newmax = ask_uint_or_default(std::cin, game_options.number_of_characters_per_code);
+                if (newmax <= 10)
+                {
+                    game_options.number_of_characters_per_code = newmax;
+                }
+                else
+                    std::cout << "Number of characters per code cannot exceed 10\n";
                 break;
-            case GameOptionsMenuChoice::LoadOptions:
+            }
+            case GameOptionsMenuChoice::LoadOptions: {
+                std::ifstream in{"game_options.txt"};
                 load_game_options(in, game_options);
                 break;
-            case GameOptionsMenuChoice::SaveOptions:
+            }
+            case GameOptionsMenuChoice::SaveOptions: {
                 std::ofstream out{"game_options.txt"};
                 save_game_options(out, game_options);
                 break;
+            }
+            case GameOptionsMenuChoice::UniqueCharacters: {
+                std::cout << "Enter 0/1: ";
+                std::string ans;
+                std::cin >> ans;
+                if (ans == "0")
+                    game_options.unique_characters = false;
+                else if (ans == "1")
+                    game_options.unique_characters = true;
+                else
+                    std::cout << "Unknown input";
+                break;
+            }
+            default:
+                std::cout << "Unknown request, please enter a valid choice\n";
             
             }
         }

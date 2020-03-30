@@ -14,8 +14,8 @@ namespace bulls_and_cows {
                       << "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n"
                       << "Number of characters in a code: " << game_options.number_of_characters_per_code << "\n"
                       << "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '"
-                      << game_options.maximum_allowed_character << "'\n";
-
+                      << game_options.maximum_allowed_character << "'\n"
+                      << "Character unicity: " << ((game_options.unique_characters) ? "Enabled\n" : "Disabled\n");
     }
 
     //Checked
@@ -30,15 +30,13 @@ namespace bulls_and_cows {
                       << "4 - Modify Maximum allowed character\n"
                       << "5 - Save options\n"
                       << "6 - Load options\n"
-                      << "What is your choice ? ";
+                      << "7 - Modify character unicity\n";
     }
     //Checked
     GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
     {
         switch (ask_int_or_default(input_stream, -1))
         {
-            case -1:
-                return GameOptionsMenuChoice::Error;
             case 0:
                 return GameOptionsMenuChoice::BackToMain;
             case 1:
@@ -53,6 +51,8 @@ namespace bulls_and_cows {
                 return GameOptionsMenuChoice::SaveOptions;
             case 6:
                 return GameOptionsMenuChoice::LoadOptions;
+            case 7:
+                return GameOptionsMenuChoice::UniqueCharacters;
             default:
                 return GameOptionsMenuChoice::Error;
         }
@@ -64,13 +64,13 @@ namespace bulls_and_cows {
         output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << "\n"
                            << "number_of_characters_per_code=" << game_options.number_of_characters_per_code << "\n"
                            << "minimum_allowed_character=" << game_options.minimum_allowed_character << "\n"
-                           << "maximum_allowed_character=" << game_options.maximum_allowed_character << "\n";
+                           << "maximum_allowed_character=" << game_options.maximum_allowed_character << "\n"
+                           << "unique_characters=" << game_options.unique_characters << "\n";
         return true;
     }
     //Checked
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
     {
-
         std::string line;
         while (std::getline(input_file_stream, line))
         {
@@ -80,7 +80,6 @@ namespace bulls_and_cows {
             std::string numb = line.substr(delimiter + 1);
             if (numb != "")
             {
-
                 if (token == "max_number_of_attempts")
                     game_options.max_number_of_attempts = std::atoi(numb.c_str());
                 else if (token == "number_of_characters_per_code")
@@ -95,11 +94,21 @@ namespace bulls_and_cows {
                 {
                     game_options.maximum_allowed_character = numb[0];
                 }
+                else if (token == "unique_characters")
+                {
+                    game_options.unique_characters = numb[0];
+                }
                 else
-                    std::cout << "Error, file corrupted";
+                {
+                    std::cout << "Error, file corrupted\n";
+                    break;
+                }
             }
             else
-                std::cout << "Error, file corrupted";
+            {
+                std::cout << "Error, file corrupted\n";
+                break;
+            }
         }
         return true;
     }

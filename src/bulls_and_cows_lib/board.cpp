@@ -2,39 +2,70 @@
 #include "board.hpp"
 #include "random.hpp"
 #include <iostream>
+#include <vector>
+//#include <boost/algorithm/string.hpp>
 namespace bulls_and_cows {
+
+
+
+
+
+    bool unichar(std::string str)
+    {
+        for (int i = 0; i < str.length() - 1; i++)
+        {
+            for (int j = i + 1; j < str.length(); j++)
+            {
+                if (str[i] == str[j])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     //Checked
-   Board create_board(const GameOptions& game_options)
+    Board create_board(const GameOptions& game_options)
     {
         Board ans;
 
         for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
         {
-            if (game_options.maximum_allowed_character >= 65 && game_options.maximum_allowed_character <= 90 &&
-                game_options.minimum_allowed_character >= 65 && game_options.minimum_allowed_character <= 90)
+            ans.secret_code.value.push_back(bulls_and_cows::generate_random_character(
+                game_options.minimum_allowed_character, game_options.maximum_allowed_character));
+        }
+
+        if (game_options.unique_characters)
+        {
+            bool out = false;
+            while (!out)
             {
-                ans.secret_code.value = ans.secret_code.value + bulls_and_cows::generate_random_character(
-                                                                    game_options.minimum_allowed_character,
-                                                                    game_options.maximum_allowed_character);
+
+                if (unichar(ans.secret_code.value))
+                {
+                    out = true;
+                }
+                else
+                {
+                    ans.secret_code.value.clear();
+                    for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
+                    {
+                        ans.secret_code.value.push_back(bulls_and_cows::generate_random_character(
+                            game_options.minimum_allowed_character, game_options.maximum_allowed_character));
+                    }
+                }
             }
 
-            else if(game_options.maximum_allowed_character >= 48 && game_options.maximum_allowed_character <= 57 &&
-                     game_options.minimum_allowed_character >= 48 && game_options.minimum_allowed_character <= 57)
-            {
-                ans.secret_code.value = ans.secret_code.value + (char)bulls_and_cows::generate_random_integer(
-                                                                    game_options.minimum_allowed_character,
-                                                                    game_options.maximum_allowed_character);
-            }
-
-            else
-            {
-                
-            }
-            
-            
         }
         return ans;
     }
+
+
+   
+
+
         //Checked
        bool validate_attempt(const GameOptions& game_options, const Code& attempt)
        {
@@ -82,8 +113,8 @@ namespace bulls_and_cows {
                {
                    tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
                    myfeed.cows++;
-                   std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
-                             << "\n";
+                   //std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
+                            // << "\n";
                }
            }
 
@@ -295,6 +326,18 @@ namespace bulls_and_cows {
                }
            }
            return incode;
+       }
+
+
+       std::vector<Code> generate_attempts(const GameOptions& game_options)
+       {
+           std::vector<Code> tentatives;
+           
+
+
+
+
+           return tentatives;
        }
 
 
