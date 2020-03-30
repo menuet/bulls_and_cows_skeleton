@@ -19,7 +19,7 @@
             {
                 char temp = generate_random_character(game_options.minimum_allowed_character,
                                   game_options.maximum_allowed_character); // piocher dans les caractères autorisé
-                myboard.secret_code.value.push_back(temp);
+                board.secret_code.value.push_back(temp);
             }            
         }
         return board;
