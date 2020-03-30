@@ -6,7 +6,7 @@
 // Examples of unit tests for the functions declared in game_options.hpp
 // These unit tests are disabled because you first need to define the tested functions in game_options.cpp
 
-/*
+
 
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
@@ -44,8 +44,7 @@ TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
             "3 - Modify Minimum allowed character\n"
             "4 - Modify Maximum allowed character\n"
             "5 - Save options\n"
-            "6 - Load options\n"
-            "What is your choice ? ");
+            "6 - Load options\n");
 }
 
 TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
@@ -100,4 +99,4 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(game_options.maximum_allowed_character == '8');
 }
 
-*/
+

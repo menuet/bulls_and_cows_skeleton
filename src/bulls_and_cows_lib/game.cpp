@@ -48,13 +48,7 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        display_game_options_menu(std::cout);
     }
 
     void play_game()

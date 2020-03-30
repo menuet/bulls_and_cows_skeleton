@@ -7,9 +7,10 @@ namespace bulls_and_cows {
     // TODO: define the body of the functions declared in game_options.cpp
     void display_game_options_menu(std::ostream& output_stream)
     {
-        output_stream << "#################################\n"
+        output_stream << "#################################\n" 
+                       << " Configure Options\n"
                       << "0 - Back to main menu\n"
-                      << "1- Modify maximum number of attemps per game"
+                      << "1 - Modify maximum number of attemps per game\n"
                       << "2 - Modify number of character in a code\n"
                       << "3 - Modify Minimun allowed character\n"
                       << "4 - Modify Maximum allowed character\n"
