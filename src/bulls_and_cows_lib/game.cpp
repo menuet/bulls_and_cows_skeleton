@@ -18,22 +18,22 @@ namespace bulls_and_cows {
 
 	
 	//fonction qui permet de savoir si un char est deja present dans le vector de char 
-	bool isContainedIn(char rand, const std::vector <char> secretCode)
+	bool isContainedIn(char rand, const std::vector <char>& secretCode)
 	{
 		bool is_found = false;
-		for (const char c : secretCode)
+		for (const char c : secretCode) // on parcourt le vector de char 
 		{
-			if (rand == c)
+			if (rand == c) // si le char est deja present
 			{
-				is_found = true;
+				is_found = true; // bool devient true
 				break;
 			}
 		}
 	
-		return is_found;
+		return is_found; // renvoit un bool 
 	}
 
-
+	// choix pour le menu des options return un choix present dans l'Enum OptionMenuChoice
 	OptionMenuChoice ask_option_menu_choice(std::istream& input_stream)
 	{
 		const int user_choice = ask_int_or_default(input_stream, -1);
@@ -87,41 +87,43 @@ namespace bulls_and_cows {
 		return check;
 	}
 
-	// Algorithme standard à tester
-	bool isContainedIn_V2(char characterToSearchFor, const std::vector<char> charactersToSearchIn)
+	// Algorithme standard à tester, pas encore utilisé
+	bool isContainedIn_V2(char characterToSearchFor, const std::vector<char>& charactersToSearchIn)
 	{
 		const auto iter = std::find(charactersToSearchIn.begin(), charactersToSearchIn.end(), characterToSearchFor);
 		return iter != charactersToSearchIn.end();
 	}
 
+
 	//Function to initialize secret code 
-	std::vector<char> secret_code_init(std::vector <char> secretCode, const GameOptions& option)
+	std::vector<char> secret_code_init(const GameOptions& option)
 	{
 
-		
+		std::vector <char> secretCode(option.number_of_characters_per_code);
 		const char min = option.minimum_allowed_character;
 		const char max = option.maximum_allowed_character;
 		char rand = generate_random_character(min, max);
 		int l = 0;
-		
+
 		while (l < secretCode.size())
 		{
-			
+
 			for (int i = 0; i < secretCode.size(); i++)
 			{
-				
+
 				while (isContainedIn(rand, secretCode))
 				{
 					rand = generate_random_character(min, max);
-					
+
 				}
-				
+
 				secretCode[i] = rand;
-			
+
+
 			}
 			l++;
 		}
-	
+
 		return secretCode;
 	}
 
@@ -129,14 +131,21 @@ namespace bulls_and_cows {
 	void display_board(std::vector <FinalBoard>  board)
 	{
 		
-		
+		std::cout << "------------------------------\n";
 		std::cout << "|";
 		std::cout << "Attempts" <<"||";
 		std::cout << "Code" <<" " << "||";
 		std::cout << "Bulls" << "||";
 		std::cout << "Cows" << "|";
+
+		std::cout << "\n";
+		std::cout << "|";
+		std::cout << " Secret " << "||";
+		std::cout << " " << board[0].secretCode << "||";
+		std::cout << "   " << board[0].bulls << "||";
+		std::cout << "   " << board[0].cows << "|";
 		
-		for (int i = 0; i < board.size(); i++) {
+		for (int i = 1; i < board.size(); i++) {
 			std::cout << "\n";
 			std::cout << "|";
 			std::cout << "   " << i << "    " << "||";
@@ -144,13 +153,15 @@ namespace bulls_and_cows {
 			std::cout << "   " << board[i].bulls << "||";
 			std::cout << "   " << board[i].cows << "|";
 		}
+
+		std::cout << "\n------------------------------\n";
 	}
 
 	//fonction qui permet de retourner le code secret qu'a input l'utilisateur
 	std::vector<char> secret_code_player(std::vector <char> playerCode, const GameOptions& game_options)
 	{
 		std::istream& input_stream = std::cin;
-		std::cout << "\n Give a secret code character by character \n";
+		std::cout << "\n Give a secret code character by character in UpperCase \n";
 
 
 		
@@ -161,9 +172,9 @@ namespace bulls_and_cows {
 
 				std::cout << "Letter  : ";
 				playerCode[i] = ask_char_or_default(input_stream, 'O');
-				check = checkError(playerCode[i], game_options);
+				check = checkError(playerCode[i], game_options); // regarde si les criteres de l'input sont bien respectes
 
-			} while (check);
+			} while (check); //Tant que les criteres ne sont pas respectes
 
 
 		}
@@ -175,48 +186,48 @@ namespace bulls_and_cows {
 
 		}
 
-		return playerCode;
+		return playerCode; //return le code du joueur 
 
 	}
 
 	//fonction qui permet de compter le nombre de bulls and cows
-	std::vector<int> count_true_false(std::vector <char> secretCode, std::vector <char> playerCode, std::vector<int> counter_bulls_cows)
+	FinalBoard count_true_false(std::vector <char> secretCode, std::vector <char> playerCode, FinalBoard& current_attempt)
 	{
-		int bulls = 0;
-		int cows = 0; 
+		int bulls = 0; //nombre de bulls
+		int cows = 0; //nombre de cows
 
-		for (int i = 0; i<playerCode.size(); i++)
+		for (int i = 0; i < playerCode.size(); i++)
 		{
-			if (secretCode[i] == playerCode[i])
+			if (secretCode[i] == playerCode[i]) // Si les 2 chars sont a la meme position
 			{
-				bulls = bulls + 1; 
+				bulls = bulls + 1;
 			}
-			
+
 			for (int j = 0; j < playerCode.size(); j++)
 			{
-				
+
 				if (secretCode[j] == playerCode[i])
 				{
-					cows = cows + 1; 
+					cows = cows + 1;
 				}
 			}
-			
-		}
-		
-		if (bulls == secretCode.size())
-		{
-			counter_bulls_cows[0] = 1;
-		}
-		else
-		{
-			counter_bulls_cows[0] = 0;
+
 		}
 
-		cows = cows - bulls;
-		counter_bulls_cows[1] = bulls;
-		counter_bulls_cows[2] = cows;
+		if (bulls == secretCode.size()) // si il y a le meme nombre de bulls que la longueur du code secret 
+		{
+			current_attempt.win = true; // alors c'est gagne donc win = true
+		}
+		else //sinon win = faux 
+		{
+			current_attempt.win = false; 
+		}
 
-		return counter_bulls_cows;
+		cows = cows - bulls; //evite de compter les bulls comme des cows
+		current_attempt.bulls = bulls;
+		current_attempt.cows = cows;
+
+		return current_attempt; //return un objet de la Structure FinalBoard 
 
 	}
 
@@ -228,21 +239,11 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        std::cout << " ~~~~~~~~~~~~ USER PLAYS AGAINST COMPUTER ~~~~~~~~~~~~\n";
 
 
 		
-		std::vector <char> secretCode(game_options.number_of_characters_per_code);
-		secretCode = secret_code_init(secretCode, game_options);
+		std::vector <char> secretCode = secret_code_init(game_options);
 		std::vector <char> playerCode(game_options.number_of_characters_per_code);
 		std::vector<int> counter_bowls_cows(3);
 		unsigned int player_attempts = 0;
@@ -250,28 +251,30 @@ namespace bulls_and_cows {
 		
 		std::string secret_code_to_find = conv_vector_to_string(secretCode);
 
-		std::cout << secret_code_to_find;
+		std::cout << "Code to find : " << secret_code_to_find;
 		
 		
 		std::vector <FinalBoard> board_final;
-		board_final.push_back(FinalBoard(secret_code_to_find, 0, 0));
+		board_final.push_back(FinalBoard(secret_code_to_find, 0, 0, false));
 
 
 		do
 		{
-
+			
 			playerCode = secret_code_player(playerCode, game_options);
-			counter_bowls_cows = count_true_false(secretCode, playerCode, counter_bowls_cows);
+			FinalBoard current_attempt = count_true_false(secretCode, playerCode, current_attempt);
 			std::string secret_code_player = conv_vector_to_string(playerCode);
-			board_final.emplace_back(secret_code_player, counter_bowls_cows[1], counter_bowls_cows[2]);
+			board_final.emplace_back(secret_code_player, current_attempt.bulls, current_attempt.cows,current_attempt.win);
+			
 			player_attempts++;
 			std::cout << "\n";
 			display_board(board_final);
 
-			if (counter_bowls_cows[1] == 5)
+			if (current_attempt.win == true)
 			{
 				not_win = false;
 			}
+
 
 
 		} while (not_win && player_attempts < game_options.max_number_of_attempts);
@@ -281,7 +284,6 @@ namespace bulls_and_cows {
 		{
 			std::cout << "\n" << "\n" << "YOU WIN !";
 		}
-
 		else
 		{
 			std::cout << "YOU LOOSE ! ";
