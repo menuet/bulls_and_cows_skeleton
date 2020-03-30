@@ -1,31 +1,27 @@
 
-
 #include "board.hpp"
 #include "random.hpp"
 #include <string>
 using namespace std; // lifehack
 
+//pk utiliser des outpout_stream/input_stream passer en parametre  au lieu d'utiliser tout simplement des cout cin de base?
 namespace bulls_and_cows {
-
+    
     Board create_board(const GameOptions& game_options)
     {
-        Board b; // creer une structure board vide
-        for (size_t i = 0; i < game_options.number_of_characters_per_code;
-             i++) // boucle for qui remplit le code secret d'une taille game_options.number_of_characters_per_code
+        Board b; // créer une structure board vide
+        for (size_t i = 0; i < game_options.number_of_characters_per_code; i++) // boucle for qui remplit le code secret d'une taille game_options.number_of_characters_per_code
         {
             b.secret_code.value += generate_random_character(
                 game_options.minimum_allowed_character,
-                game_options
-                    .maximum_allowed_character); // lettre entre la lettre min et max de l'option passé en parametre
+                game_options.maximum_allowed_character); // lettre entre la lettre min et max de l'option passé en parametre
         }
-
-        // TODO: peut etre initialiser l array de feedback
         return b;
     }
 
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
-        string codex = attempt.value;
+        string codex = attempt.value; //tentative = flux d entrée = input = attempt.value
         if (codex.length() != game_options.number_of_characters_per_code) // verification de la taille du code
         {
             return false;
@@ -33,9 +29,7 @@ namespace bulls_and_cows {
 
         for (int i = 0; i < codex.size(); i++) //  on parcourt de chaque caracter du codex
         {
-            if (codex[i] < game_options.minimum_allowed_character ||
-                codex[i] > game_options.maximum_allowed_character) // si une des lettres est en dehors des bornes fixés
-                                                                   // (genre 'A' et 'H')
+            if (codex[i] < game_options.minimum_allowed_character || codex[i] > game_options.maximum_allowed_character) // si une des lettres est en dehors des bornes fixés alors on retourne false// (genre 'A' et 'H')                                                                
             {
                 return false;
             }
@@ -52,7 +46,7 @@ namespace bulls_and_cows {
         int cows = 0;
         int bulls = 0;
 
-        //on crééer un tableau de boolean
+        //on crééer un tableau de boolean qui permetra de mettre en memoire les charactere en bulls. Ainsi, un bulls ne peut pas être un cows (voir ligne 70)
         vector<bool> bullvector;
         for (int i = 0; i < codex.size(); i++)
         {
@@ -65,7 +59,7 @@ namespace bulls_and_cows {
             if (codex[i] == REALCODE[i]) // si on a trouvé le caractere dans le code
             {
                 bulls++;
-                bullvector[i] = true;
+                bullvector[i] = true;//on sauvegarde la "mémoire"
             }
         }
 
@@ -94,14 +88,14 @@ namespace bulls_and_cows {
         for (int i = 0; i < size(board.attempts_and_feedbacks);
              i++) // on parcourt la liste des attemptes et on regarde si il y en a un similaire au code secret
         {
-            if (board.attempts_and_feedbacks[i].attempt.value == board.secret_code.value)
+            if (board.attempts_and_feedbacks[i].attempt.value == board.secret_code.value) // on aurait aussi put dire if (nbr de bulls == nbr de charactere)
             {
                 return true;
             }
         }
 
         // derniere tentative
-        if (size(board.attempts_and_feedbacks) >= game_options.max_number_of_attempts)
+        if (size(board.attempts_and_feedbacks) >= game_options.max_number_of_attempts) // on aurait put mettre == au lieu de >= mais c est une sécurité
         {
             return true;
         }
@@ -115,13 +109,14 @@ namespace bulls_and_cows {
         {
             return false;
         }
-        if (board.attempts_and_feedbacks[board.attempts_and_feedbacks.size()-1].attempt.value == board.secret_code.value) // on regarde la derniere valeur du tableauc
+        if (board.attempts_and_feedbacks[board.attempts_and_feedbacks.size()-1].attempt.value == board.secret_code.value) // on regarde la derniere valeur du tableau : if ( last attempt = secret code)  (board.attempts_and_feedbacks.size()-1 = index de la derniere valeur du vecteur)
         {
             return true;
         }
         return false;
     }
 
+    //TODO si j'ai  le temps: j'ai pas fait d'affichage dynamique en fonction de la longueur de l'attempt donc si long
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
 
@@ -133,7 +128,7 @@ namespace bulls_and_cows {
                 "-------------------------------------\n";
 
             // Attention!! Il faut prendre en compte les lignes pas encore remplis
-            for (int i = game_options.max_number_of_attempts; i > ((int)board.attempts_and_feedbacks.size())-1; i--)
+            for (int i = game_options.max_number_of_attempts-1; i > ((int)board.attempts_and_feedbacks.size())-1; i--)
             {
                 if (i>8)
                 {
@@ -146,7 +141,7 @@ namespace bulls_and_cows {
                
             }
            
-            for (int i = (int)board.attempts_and_feedbacks.size()-1; i >= 0; i--) //size_t est tjr positif (impossible de faire i-- quand i=0) donc on trick
+            for (int i = (int)board.attempts_and_feedbacks.size()-1; i >= 0; i--) //size_t est tjr positif (impossible de faire i-- quand i=0 car i devient 2^32) donc on trick
             {
                 string numero;
                 if ((i+1)>9)
@@ -162,7 +157,7 @@ namespace bulls_and_cows {
                           to_string(board.attempts_and_feedbacks[i].feedback.cows) + "  |\n";
             }
             showup += "-------------------------------------\n";
-            output_stream << showup; // output_stream a la place de cout pour afficher du text?
+            output_stream << showup; 
         //}
         
     }
