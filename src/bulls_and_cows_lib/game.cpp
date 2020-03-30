@@ -1,10 +1,10 @@
-
 #include "game.hpp"
 #include "board.hpp"
 #include "game_options.hpp"
 #include "game_solver.hpp"
 #include "input.hpp"
 #include "main_menu.hpp"
+#include <bulls_and_cows_lib\random.cpp>
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -12,10 +12,10 @@
 
 // test 4
 namespace bulls_and_cows {
-// test
+    // test
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
+        /*std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
                      "    DO\n"
                      "       Display the board and the list of attempts so far\n"
@@ -24,90 +24,46 @@ namespace bulls_and_cows {
                      "       Add the user's attempt to the list of attempts of the board\n"
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+                     "    Display a message telling if the user won or lost\n";*/
+
+        Board myboard{}; // créer un board 
+        AttemptAndFeedback my_feedback{};
+
+        myboard = create_board(game_options); // stock le board créer
+
+        do // on fait ca tant que ce n'est pas la fin de partie ou la personne gagne
+        {
+            std::cout << "\n";
+            display_board(std::cout, game_options, myboard); // affiché les tentative
+            // std::count <<myboard.secret_code.value<<"\n";
+
+            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard); // stock ask attempt dans un feedback
+
+            while (!validate_attempt(game_options,my_feedback.attempt)) // tant que l'attempt est pas valide 
+            {
+                std::cout << "Your attempt is not valid, try again\n";
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
+            }
+
+            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, myboard.secret_code); // fonction qui comparer l'attempt avec le code secret et qui redonne le nombre de cows et de bulls
+            myboard.attempts_and_feedbacks.push_back(my_feedback); // on insère la nouvelle tentative entière avec (bulls and cows) dans attempts and feedback
+        } while (!(is_end_of_game(game_options, myboard)) && !(is_win(game_options, myboard)));
 
         
+        std::cout << "\n";
+        display_board(std::cout, game_options, myboard);
 
-        // créer une chaine de caractère de 10 lettres aux hasards
-
-        using namespace std;
-        char tt[27]; // créer un tableau de chaque lettre
-
-         // crÃ©er une chaine de caractÃ¨re de 10 lettres aux hasards
-        tt[0] = 'A';
-        tt[1] = 'B';
-        tt[2] = 'C';
-        tt[3] = 'D';
-        tt[4] = 'E';
-        tt[5] = 'F';
-        tt[6] = 'G';
-        tt[7] = 'H';
-        tt[8] = 'I';
-        tt[9] = 'J';
-        tt[10] = 'K';
-        tt[11] = 'L';
-        tt[12] = 'M';
-        tt[13] = 'N';
-        tt[14] = 'O';
-        tt[15] = 'P';
-        tt[16] = 'Q';
-        tt[17] = 'R';
-        tt[18] = 'S';
-        tt[19] = 'T';
-        tt[20] = 'U';
-
-        tt[21] = 'V';
-        tt[22] = 'W';
-        tt[23] = 'X';
-        tt[24] = 'Y';
-        tt[25] = 'Z';
-
-        char tableauCacher[10];
-
-        for (int i = 0; i < 10; i++) 
-        {     
-    
-            int z = 0;        // initialise un nombre z
-
-            z = (rand()%25); // prendre un nombre z aléatoirement compris entre 1-26
-
-            z = (rand()%25); // prendre un nombre z alÃ©atoirement compris entre 1-26
-
-            // cout << tt[z]; // pour chaque chiffre que prendra z on aura une lettre du tableau cout << tt[z]
-            tableauCacher[i] = tt[z];
-            //cout << tableauCacher[i];       
-        }
-
-        // fonction permettant de compter le nombre de pion bien et mal placé (compteur1 et 2 pacé par reference)
-
-        // si une case de ces deux tableaux passe à vrai, alors elle permettent de ne plus revenir dessus (utilisé pour
-        // les éléments deja compté)
-        bool tabCacherValide[10]; 
-        bool tabChoixValide[10];
-        int tabChoix[10];
-        int compteur1 = 0; // compteur de pions bien placer
-
-        // compte ne nombre d'éléments bien placé
-        for (int i = 0; i < 10; i++)
+        if (is_win(game_options, myboard))
         {
-            if (tableauCacher[i] == tabChoix[i])
-            {
-                tabChoixValide[i] = true;
-                tabCacherValide[i] = true;
-                compteur1++;
-            }
-            else
-            {
-                tabChoixValide[i] = false;
-                tabCacherValide[i] = false;
-            }
+            std::cout << "\n"
+                      << "Tu as gagne le code secret est " << myboard.secret_code.value << "\n";
         }
 
-
-       // printf("entrer vos valeurs");
-        //scanf();
-        //char TableauTemp[10];
-        //for ( )
+        else
+        {
+            std::cout << "\n"
+                      << "Tu as perdu le code secret est " << myboard.secret_code.value << "\n";
+        }
 
     }
 
