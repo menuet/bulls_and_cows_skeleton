@@ -88,24 +88,23 @@ namespace bulls_and_cows {
     {
         if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size())
         {
-            std::cout << "END OF THE GAME!!!";
             return true;
         }
-       return false;
+        return false;
     }
 
     // Test if the last attempt is a win
     bool is_win(const GameOptions& game_options, const Board& board)
     {
-       
+
         if (board.attempts_and_feedbacks.empty())
             return false;
         else if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
         {
-            std::cout << "YOU WON!!!";
+            return true;
         }
-
-        return true;
+        else
+            return false;
     }
 
     // Display the scret code and the list of attempts of the board
@@ -114,11 +113,15 @@ namespace bulls_and_cows {
         int unsigned i;
 
         std::string secretmot{};
+        if (!is_end_of_game(game_options, board) && !is_win(game_options, board))
+        {
+            for (i = 0; i < board.secret_code.value.size(); i++)
+                secretmot = secretmot + "*";
+        }
+        else
+            secretmot = board.secret_code.value;
 
-        for (i = 0; i < board.secret_code.value.size(); i++)
-            secretmot = secretmot + "*";
-
-        output_stream << "-----------------------------------------\n";
+            output_stream << "-----------------------------------------\n";
         output_stream << "| Secret       " << secretmot << "     |              |\n";
         output_stream << "-----------------------------------------\n";
         output_stream << "| ATTEMPTS               | BULLS | COWS |\n ";
@@ -140,9 +143,11 @@ namespace bulls_and_cows {
                 const auto& bulls = board.attempts_and_feedbacks[j - 1].feedback.bulls;
                 const auto& cows = board.attempts_and_feedbacks[j - 1].feedback.cows;
                 if (j < 10)
-                    output_stream << "| #0" << j << "          " << ValueMot << " |" << bulls << "|" << cows << "|\n";
+                    output_stream << "| #0" << j << "          " << ValueMot << "     |   " << bulls << "   |   "
+                                  << cows << "  |\n";
                 else
-                    output_stream << "| #" << j << "          " << ValueMot << " |" << bulls << "|" << cows << "|\n";
+                    output_stream << "| #" << j << "          " << ValueMot << "     |   " << bulls << "   |   " << cows
+                                  << "  |\n";
             }
         }
 
@@ -157,8 +162,6 @@ namespace bulls_and_cows {
 
         bool verif = false;
 
-
-
         while (!verif)
         {
             if (board.attempts_and_feedbacks.size() < 10)
@@ -168,14 +171,13 @@ namespace bulls_and_cows {
 
             output_stream << board.attempts_and_feedbacks.size() + 1;
             output_stream << " (" << game_options.number_of_characters_per_code;
-            output_stream << "characters between '" << game_options.minimum_allowed_character << "' and '"
+            output_stream << " characters between '" << game_options.minimum_allowed_character << "' and '"
                           << game_options.maximum_allowed_character << "' )\n?";
 
             input_stream >> code.value;
 
             verif = validate_attempt(game_options, code);
         }
-        
 
         return code;
     }
