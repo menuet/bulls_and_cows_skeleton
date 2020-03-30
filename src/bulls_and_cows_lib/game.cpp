@@ -15,285 +15,45 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
-        char motsecret[5];
-        char motrecuperer[13][5];
-        int i,j;
+
+        /* std::cout << "TODO:\n"
+                      "    Create a board with a randomly generated secret code\n"
+                      "    DO\n"
+                      "       Display the board and the list of attempts so far\n"
+                      "       Ask the user to make another attempt\n"
+                      "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
+                      "       Add the user's attempt to the list of attempts of the board\n"
+                      "    WHILE not end of game\n"
+                      "    Display the board and the list of attempts so far\n"
+                      "    Display a message telling if the user won or lost\n";
+
+        */
+
+        Board board = create_board(game_options);
 
        
-        for (i = 0; i < 5; i++) //Create an array with the secret code 
-        {
-            motsecret[i] = generate_random_character(65, 72 );
-            std::cout << motsecret[i];
-        }
-
-
-         std::cout << "\n\nLets Play!!\n\n"
-                     "-----------------------------------------\n"
-                     "| Secret       * * * * * |              |\n"
-                     "-----------------------------------------\n"
-                     "|ATTEMPTS                | BULLS | COWS |\n"
-                     "-----------------------------------------\n"
-                     "| #12          - - - - - |       |      |\n"
-                     "| #11          - - - - - |       |      |\n"
-                     "| #10          - - - - - |       |      |\n"
-                     "| #9           - - - - - |       |      |\n"
-                     "| #8           - - - - - |       |      |\n"
-                     "| #7           - - - - - |       |      |\n"
-                     "| #6           - - - - - |       |      |\n"
-                     "| #5           - - - - - |       |      |\n"
-                     "| #4           - - - - - |       |      |\n"
-                     "| #3           - - - - - |       |      |\n"
-                     "| #2           - - - - - |       |      |\n"
-                     "| #1           - - - - - |       |      |\n"
-                     "-----------------------------------------\n"
-                     "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
        
-        for (i = 0; i < 12; i++)
-         {
-            for (j = 0; j < 5;j++)
-            {
-                motrecuperer[i][j] = '- ';
-            }
-         }
-         
-         
-         for (i = 0; i < 12; i++)
+       
+       do
         {
-           std::cout << "\n\n"
-                        "-----------------------------------------\n"
-                        "| Secret       * * * * * |              |\n"
-                        "-----------------------------------------\n"
-                        "|ATTEMPTS                | BULLS | COWS |\n"
-                        "-----------------------------------------\n"
-                        "| #12          - - - - - |       |      |\n"
-                        "| #11          - - - - - |       |      |\n"
-                        "| #10          - - - - - |       |      |\n"
-                        "| #9           - - - - - |       |      |\n"
-                        "| #8           - - - - - |       |      |\n"
-                        "| #7           - - - - - |       |      |\n"
-                        "| #6           - - - - - |       |      |\n"
-                        "| #5           - - - - - |       |      |\n"
-                        "| #4           - - - - - |       |      |\n"
-                        "| #3           - - - - - |       |      |\n"
-                        "| #2           - - - - - |       |      |\n"
-                        "| #1           - - - - - |       |      |\n"
-                        "-----------------------------------------\n"
-                        "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
+            display_board(std::cout, game_options, board);
 
-          
-           
-           
-           switch (i)
-           {
-           case 0:
-               std::cout << "\n\n"
-                            "-----------------------------------------\n"
-                            "| Secret       * * * * * |              |\n"
-                            "-----------------------------------------\n"
-                            "|ATTEMPTS                | BULLS | COWS |\n"
-                            "-----------------------------------------\n"
-                            "| #12          - - - - - |       |      |\n"
-                            "| #11          - - - - - |       |      |\n"
-                            "| #10          - - - - - |       |      |\n"
-                            "| #9           - - - - - |       |      |\n"
-                            "| #8           - - - - - |       |      |\n"
-                            "| #7           - - - - - |       |      |\n"
-                            "| #6           - - - - - |       |      |\n"
-                            "| #5           - - - - - |       |      |\n"
-                            "| #4           - - - - - |       |      |\n"
-                            "| #3           - - - - - |       |      |\n"
-                            "| #2           - - - - - |       |      |\n"
-                            "| #1          " +
-                                motrecuperer[i]
-                         << " |       |      |\n"
-                            "-----------------------------------------\n"
-                            "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
-               break;
-           case 1:
-               for (j = 0; j < 5; j++)
-               {
-                  motrecuperer[i][j] = generate_random_character(65, 72);
-               }
+             AttemptAndFeedback att;
+            att.attempt = ask_attempt(std::cout, std::cin, game_options, board);
 
-               std::cout << "\n\n"
-                            "-----------------------------------------\n"
-                            "| Secret       * * * * * |              |\n"
-                            "-----------------------------------------\n"
-                            "|ATTEMPTS                | BULLS | COWS |\n"
-                            "-----------------------------------------\n"
-                            "| #12          - - - - - |       |      |\n"
-                            "| #11          - - - - - |       |      |\n"
-                            "| #10          - - - - - |       |      |\n"
-                            "| #9           - - - - - |       |      |\n"
-                            "| #8           - - - - - |       |      |\n"
-                            "| #7           - - - - - |       |      |\n"
-                            "| #6           - - - - - |       |      |\n"
-                            "| #5           - - - - - |       |      |\n"
-                            "| #4           - - - - - |       |      |\n"
-                            "| #3           - - - - - |       |      |\n"
-                            "| #2          "+motrecuperer[i]<<" |       |      |\n"
-                            "| #1          "+motrecuperer[i-1]<<" |       |      |\n"
-                            "-----------------------------------------\n"
-                            "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
+           att.feedback = compare_attempt_with_secret_code(att.attempt, board.secret_code);
 
-               break;
-           case 2:
-               std::cout << "\n\n"
-                            "-----------------------------------------\n"
-                            "| Secret       * * * * * |              |\n"
-                            "-----------------------------------------\n"
-                            "|ATTEMPTS                | BULLS | COWS |\n"
-                            "-----------------------------------------\n"
-                            "| #12          - - - - - |       |      |\n"
-                            "| #11          - - - - - |       |      |\n"
-                            "| #10          - - - - - |       |      |\n"
-                            "| #9           - - - - - |       |      |\n"
-                            "| #8           - - - - - |       |      |\n"
-                            "| #7           - - - - - |       |      |\n"
-                            "| #6           - - - - - |       |      |\n"
-                            "| #5           - - - - - |       |      |\n"
-                            "| #4           - - - - - |       |      |\n"
-                            "| #3          " +
-                                motrecuperer[i]
-                         << " |       |      |\n"
-                            "| #2          " +
-                                motrecuperer[i-1]
-                         << " |       |      |\n"
-                            "| #1          " +
-                                motrecuperer[i - 2]
-                         << " |       |      |\n"
-                            "-----------------------------------------\n"
-                            "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
-               break;
-           case 3:
-               for (j = 0; j < 5; j++)
-               {
-                   motrecuperer[i][j] = generate_random_character(65, 72);
-               }
-               std::cout << "\n\n"
-                            "-----------------------------------------\n"
-                            "| Secret       * * * * * |              |\n"
-                            "-----------------------------------------\n"
-                            "|ATTEMPTS                | BULLS | COWS |\n"
-                            "-----------------------------------------\n"
-                            "| #12          - - - - - |       |      |\n"
-                            "| #11          - - - - - |       |      |\n"
-                            "| #10          - - - - - |       |      |\n"
-                            "| #9           - - - - - |       |      |\n"
-                            "| #8           - - - - - |       |      |\n"
-                            "| #7           - - - - - |       |      |\n"
-                            "| #6           - - - - - |       |      |\n"
-                            "| #5           - - - - - |       |      |\n"
-                            "| #4          " +
-                                motrecuperer[i]
-                         << "|       |      |\n"
-                            "| #3          " +
-                                motrecuperer[i-1]
-                         << " |       |      |\n"
-                            "| #2          " +
-                                motrecuperer[i - 2]
-                         << " |       |      |\n"
-                            "| #1          " +
-                                motrecuperer[i - 3]
-                         << " |       |      |\n"
-                            "-----------------------------------------\n"
-                            "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
-               break;
-           case 4:
+        } while (!is_end_of_game(game_options, board));
 
-
-               std::cout << "\n\n"
-                            "-----------------------------------------\n"
-                            "| Secret       * * * * * |              |\n"
-                            "-----------------------------------------\n"
-                            "|ATTEMPTS                | BULLS | COWS |\n"
-                            "-----------------------------------------\n"
-                            "| #12          - - - - - |       |      |\n"
-                            "| #11          - - - - - |       |      |\n"
-                            "| #10          - - - - - |       |      |\n"
-                            "| #9           - - - - - |       |      |\n"
-                            "| #8           - - - - - |       |      |\n"
-                            "| #7           - - - - - |       |      |\n"
-                            "| #6           - - - - - |       |      |\n"
-                            "| #5           - - - - - |       |      |\n"
-                            "| #4          " +
-                              motrecuperer[i-1]
-                         << "|       |      |\n"
-                            "| #3          " +
-                                motrecuperer[i - 2]
-                         << " |       |      |\n"
-                            "| #2          " +
-                                motrecuperer[i - 3]
-                         << " |       |      |\n"
-                            "| #1          " +
-                                motrecuperer[i - 4]
-                         << " |       |      |\n"
-                            "-----------------------------------------\n"
-                            "Now is your turn to guess #01(5 characters between 'A' and 'H')\n?";
-
-               break;
-           case 5:
-               for (j = 0; j < 5; j++)
-               {
-                   motrecuperer[i][j] = generate_random_character(65, 72);
-               }
-               break;
-           case 6:
-               break;
-           case 7:
-               for (j = 0; j < 5; j++)
-               {
-                   motrecuperer[i][j] = generate_random_character(65, 72);
-               }
-               break;
-           case 8:
-               break;
-           case 9:
-               for (j = 0; j < 5; j++)
-               {
-                   motrecuperer[i][j] = generate_random_character(65, 72);
-               }
-               break;
-           case 10:
-               break;
-           case 11:
-               for (j = 0; j < 5; j++)
-               {
-                   motrecuperer[i][j] = generate_random_character(65, 72);
-               }
-               break;
-           default:
-               break;
-           }
-           
-           
-           
-           
-        
-
-        }
+        is_end_of_game(game_options, board);
+        is_win(game_options, board);
       
-       
-        
-
-
-       
         
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
+       /* std::cout
             << "TODO:\n"
                "    Create a board with a randomly generated secret code\n"
                "    Generate the list of all the possible codes\n"
@@ -308,7 +68,28 @@ namespace bulls_and_cows {
                "possible codes\n"
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+               "    Display a message telling if the computer won or lost\n";*/
+
+
+      /*  Board board = create_board(game_options);
+         Board compboard;
+     
+
+       do
+       {
+           display_board(std::cout, game_options, board);
+
+           
+           compboard = create_board(game_options);
+           AttemptAndFeedback att;
+           att.attempt = compboard.secret_code;
+           att.feedback = compare_attempt_with_secret_code(att.attempt, board.secret_code);
+
+       } while (!is_end_of_game(game_options, board));
+
+       is_end_of_game(game_options, board);
+       is_win(game_options, board);*/
+
     }
 
     void configure_game_options(GameOptions& game_options)
