@@ -38,37 +38,27 @@ namespace bulls_and_cows {
 
     GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
     {
-		auto user_settings = ask_int_or_default(input_stream, -1);
+		const auto user_settings = ask_int_or_default(input_stream, -1);
         switch (user_settings)
         {
         case -1:
             return GameOptionsMenuChoice::Error;
-            break;
         case 0:
             return GameOptionsMenuChoice::BackToMain;
-            break;
         case 1:
             return GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts;
-            break;
         case 2:
             return GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode;
-            break;
         case 3:
             return GameOptionsMenuChoice::ModifyMinimumAllowedCharacter;
-            break;
         case 4:
             return GameOptionsMenuChoice::ModifyMaximumAllowedCharacter;
-            break;
         case 5:
             return GameOptionsMenuChoice::SaveOptions;
-            break;
         case 6:
             return GameOptionsMenuChoice::LoadOptions;
-            break;
 		default:
 			return GameOptionsMenuChoice::BackToMain;
-			break;
-
         }
     }
 
@@ -84,6 +74,7 @@ namespace bulls_and_cows {
 	//Avoid bugs if wrong manual changes
 	std::string remove_spaces_or_alphanum(std::string str, bool b)
 	{
+		//INT
 		str.erase(remove(str.begin(), str.end(), ' '), str.end());
 		if (b == 0) {
 			for (int i = 0; i < str.size(); i++) {
@@ -92,7 +83,9 @@ namespace bulls_and_cows {
 					i--;
 				}
 			}
+			str.erase(2);
 		}
+		//CHAR
 		if (b == 1) {
 			for (int j = 0; j < str.size(); j++) {
 				if (isdigit(str[j])) {
@@ -115,13 +108,20 @@ namespace bulls_and_cows {
 			std::string token = line.substr(0, delimiter);
 			std::string numb = line.substr(delimiter + 1);
 
-			std::cout << numb;
 			if (token == "max_number_of_attempts") {
 				numb = remove_spaces_or_alphanum(numb, 0);
+				if (std::atoi(numb.c_str()) < 5 || std::atoi(numb.c_str()) > 20) {
+					std::cout << "\nFile isn't in a correct form\n";
+					return false;
+				}
 				game_options.max_number_of_attempts = std::atoi(numb.c_str());
 			}
 			else if (token == "number_of_characters_per_code") {
 				numb = remove_spaces_or_alphanum(numb, 0);
+				if (std::atoi(numb.c_str()) < 3 || std::atoi(numb.c_str()) > 10) {
+					std::cout << "\nFile isn't in a correct form\n";
+					return false;
+				}
 				game_options.number_of_characters_per_code = std::atoi(numb.c_str());
 			}
 			else if (token == "minimum_allowed_character") {
@@ -131,6 +131,10 @@ namespace bulls_and_cows {
 			else if (token == "maximum_allowed_character") {
 				numb = remove_spaces_or_alphanum(numb, 1);
 				game_options.maximum_allowed_character = numb[0];
+			}
+			else{
+				std::cout << "\nFile isn't in a correct form.\n";
+				return false;
 			}
         }
         return true;

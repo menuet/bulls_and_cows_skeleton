@@ -15,27 +15,18 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-       
-		//CREATING BOARD using functions we implemented
 		Board myboard = bulls_and_cows::create_board(game_options);
-
-		//While the user didn't win or reached max attempt number, while loop 
 
 		while (!bulls_and_cows::is_end_of_game(game_options, myboard) && !bulls_and_cows::is_win(game_options, myboard))
 		{
-			// First display of the empty board
 			bulls_and_cows::display_board(std::cout, game_options, myboard);
 
-			// Asking attemp to the user
 			AttemptAndFeedback new_attempt;
 			new_attempt.attempt = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
 
-			if (bulls_and_cows::validate_attempt(game_options, new_attempt.attempt) == CodeValidity::Valid){
-				
-				new_attempt.feedback = bulls_and_cows::compare_attempt_with_secret_code(new_attempt.attempt, myboard.secret_code);
+			new_attempt.feedback = bulls_and_cows::compare_attempt_with_secret_code(new_attempt.attempt, myboard.secret_code);
 
-				myboard.attempts_and_feedbacks.push_back(new_attempt);
-			}
+			myboard.attempts_and_feedbacks.push_back(new_attempt);
 		}
     }
 
@@ -71,7 +62,6 @@ namespace bulls_and_cows {
 			display_game_options(std::cout, game_options);
 			display_game_options_menu(std::cout);
 			const auto user_choice = ask_game_options_menu_choice(std::cin);
-			std::ifstream in{ "game_options.txt" };
 
 			switch (user_choice)
 			{
@@ -94,9 +84,11 @@ namespace bulls_and_cows {
 				std::cout << "Enter the number of character per code:";
 				game_options.number_of_characters_per_code = ask_uint_or_default(std::cin, game_options.number_of_characters_per_code);
 				break;
-			case GameOptionsMenuChoice::LoadOptions:
+			case GameOptionsMenuChoice::LoadOptions:{
+				std::ifstream in{ "game_options.txt" };
 				load_game_options(in, game_options);
 				break;
+			}
 			case GameOptionsMenuChoice::SaveOptions:
 				std::ofstream out{ "game_options.txt" };
 				save_game_options(out, game_options);

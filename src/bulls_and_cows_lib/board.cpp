@@ -24,8 +24,7 @@ namespace bulls_and_cows {
 		{
 			for (const char& c : attempt.value)
 			{
-				//From A to D for example
-				if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+				if ((c < game_options.minimum_allowed_character) || (c > game_options.maximum_allowed_character))
 				{
 					return CodeValidity::ForbiddenCharacter;
 				}
@@ -73,11 +72,11 @@ namespace bulls_and_cows {
 	{
 		if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size())
 		{
-			std::cout << "You lost, snif !";
+			std::cout << "You lost, snif !\n";
+			std::cout << (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size());
+			return true;
 		}
-
-		return (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size());
-
+		return false;
 	}
 
 
@@ -89,13 +88,12 @@ namespace bulls_and_cows {
 
 		else if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
 		{
-			if (board.attempts_and_feedbacks.size() < (game_options.max_number_of_attempts - 3))
-				std::cout << "You won on your " << board.attempts_and_feedbacks.size() << " attempt. Well played !";
-			else if (board.attempts_and_feedbacks.size() > (game_options.max_number_of_attempts - 3))
-				std::cout << "You won on your " << board.attempts_and_feedbacks.size() << " attempt. Close one !";
+			std::string win = "You won on your " + std::to_string(board.attempts_and_feedbacks.size()) + " attempt. Well played !\n";
+			std::string close = "You won on your " + std::to_string(board.attempts_and_feedbacks.size()) + " attempt. Close one !\n";
+			(board.attempts_and_feedbacks.size() < (game_options.max_number_of_attempts - 3)) ? std::cout << win : std::cout << close;
+			return true;
 		}
-
-		return (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value);
+		return false;
 	}
 
 	Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
@@ -116,27 +114,14 @@ namespace bulls_and_cows {
 			valueformat = true;
 
 			input_stream >> incode.value;
-			if (incode.value.size() != game_options.number_of_characters_per_code)
+
+			CodeValidity code_verif = validate_attempt(game_options, incode);
+
+			if (code_verif == CodeValidity::LengthError || code_verif == CodeValidity::ForbiddenCharacter)
 			{
 				valueformat = false;
 				output_stream
-					<< "Your guess has an invalid length or contains non-allowed characters, please try again\n";
-				break;
-			}
-
-			else
-			{
-				for (char& c : incode.value)
-				{
-					if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
-					{
-						valueformat = false;
-
-						output_stream << "Your guess has an invalid length or contains non-allowed characters, "
-							"please try again\n";
-						break;
-					}
-				}
+					<< "\nYour guess has an invalid length or contains non-allowed characters, please try again\n\n";
 			}
 		}
 		return incode;
@@ -165,13 +150,18 @@ namespace bulls_and_cows {
 		return atpt_spaces;
 	}
 
-	//SUPER GENERIC AND OPTIMIZED FUNCTION, I SWEATED. FINALLY.
-	//OBLIGED TO SET VARIABLES, IT DOESNT WORK DIRECTLY IN OUTPUTS.
-	void display_zero(const GameOptions& game_options, std::ostream& output_stream, size_t i, std::string at, unsigned int b, unsigned int c) {
-		std::string s = (i >= 10) ? "" : "0", s2 = (at == " ") ? special_char(game_options.number_of_characters_per_code, ". ") : display_current_attempt(at), s3 = (c != NULL || c == 0) ? "|   " : "",
-			s4 = (c != NULL || c == 0) ? std::to_string(b) : "|       |       |\n", s5= (c != NULL || c == 0) ? "   |   " : "", s6 = (c != NULL || c==0) ? std::to_string(c) : "", s7= (c != NULL || c == 0) ? "   |\n" : "";
+
+	void display_board_content(const GameOptions& game_options, std::ostream& output_stream, size_t nb_attempts, std::string at, unsigned int bulls, unsigned int cows) {
+		std::string s = (nb_attempts >= 10) ? "" : "0";
+		std::string s2 = (at == " ") ? special_char(game_options.number_of_characters_per_code, ". ") : display_current_attempt(at);
+		std::string s3 = (cows != 0) ? "|   " : "";
+		std::string s4 = (cows != 0) ? std::to_string(bulls) : "|       |       |\n";
+		std::string s5 = (cows != 0) ? "   |   " : "";
+		std::string s6 = (cows != 0) ? std::to_string(cows) : "";
+		std::string s7 = (cows != 0) ? "   |\n" : "";
+
 		output_stream << "| #" << s;
-		output_stream << i << "      ";
+		output_stream << nb_attempts << "      ";
 		output_stream << s2;
 		output_stream << s3;
 		output_stream << s4;
@@ -193,7 +183,7 @@ namespace bulls_and_cows {
 		int number_of_attemps = game_options.max_number_of_attempts;
 		for (size_t i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
 		{
-			display_zero(game_options, output_stream, i, " ", NULL, NULL);
+			display_board_content(game_options, output_stream, i, " ", NULL, NULL);
 		}
 		if (!board.attempts_and_feedbacks.empty())
 		{
@@ -203,7 +193,7 @@ namespace bulls_and_cows {
 				const auto& attempt = attempt_and_feedback.attempt;
 				const auto& feedback = attempt_and_feedback.feedback;
 				
-				display_zero(game_options, output_stream, index, attempt.value, feedback.bulls, feedback.cows);
+				display_board_content(game_options, output_stream, index, attempt.value, feedback.bulls, feedback.cows);
 			}
 		}
 
