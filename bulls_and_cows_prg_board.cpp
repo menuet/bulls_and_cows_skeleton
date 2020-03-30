@@ -6,9 +6,7 @@
 #include <vector>
 
 
-
-
-using namespace bulls_and_cows {
+namespace bulls_and_cows {
    
     //test avec des valeurs prédéfinis de game_options et GameOptions
 
@@ -19,13 +17,13 @@ using namespace bulls_and_cows {
         std::vector<char> filling_code;
         for (auto i = game_options.minimum_filling_code_character; i <= game_options.maximum_filling_code_character; i++) 
         {
-            filling_code.append(i);
+            filling_code.push_back(i);
         }
 
         unsigned int i = 0; 
         //unsigned pour avoir des valeurs positives de i
  
-        while (i != game_options.haracters_per_code)
+        while (i != game_options.characters_per_code)
         {
             char tim = generate_random_character(filling_code.front(),filling_code.back()); 
             // on selectionne les valeurs aléatoires
@@ -35,7 +33,7 @@ using namespace bulls_and_cows {
                 	// on supprime et ajoute avec erase et ajoute à la string hiddenCode
                 {
                     filling_code.erase(filling_code.begin() +j); // supprimer le caractère du vecteur contenant les caractères autorisés
-                    board.hiddenCode.value.append(tim); // ajouter à le string hiddenCode value
+                    board.hiddenCode.value.push_back(tim); // ajouter à le string hiddenCode value
                     i++;
                 }
             }
