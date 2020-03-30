@@ -24,42 +24,45 @@ namespace bulls_and_cows {
 
    bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
     {
-       string Path;
+       string Path; //contient le chemin jusqu'au fichier de sauvegarde
        cout << "Choisissez le chemin de sauvegarde du fichier" << endl;
        cin >> Path;
 
        string Data = "max_number_of_attempts=" + to_string(game_options.max_number_of_attempts) + "\n";
        Data += "number_of_characters_per_code=" + to_string(game_options.number_of_characters_per_code) + "\n";
        Data += "minimum_allowed_character=" + to_string(game_options.minimum_allowed_character) + "\n";
-       Data += "maximum_allowed_character=" + to_string(game_options.maximum_allowed_character) + "\n";
+       Data += "maximum_allowed_character=" + to_string(game_options.maximum_allowed_character) + "\n"; //contient la data de la game_option
 
        output_file_stream << Data; // pour valider le test
+
+       //code pour ecrire dans un fichier (copier colle stackoverflow)
        ofstream myfile;
        myfile.open(Path);
        myfile << Data;
        myfile.close();
 
-       return true;
+       return true; //function doit retourner un bool donc voila
    }
 
       bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
    {
-          string Path;
+          string Path; //contient le chemin jusqu'au fichier de sauvegarde
           cout << "Choisissez le chemin du fichier a importer" << endl;
           cin >> Path;
 
           ifstream inFile;
-          inFile.open(Path);
+          inFile.open(Path); // on ouvre le fichier 
 
-          if (!inFile)
+          if (!inFile) //verification qu il s est bien ouvert
           {
               cerr << "Impossible d'ouvrir ce fichier";
               return false;
           }
-          string str;
-              while (getline(inFile, str))
+          string str; //va contenire chaque ligne 
+              while (getline(inFile, str)) // on parcours les lignes 1 par 1
           {
               vector<string> tokens = split(str, '=');
+              //on remplit le game_options en fonctions des valeurs du fichier
               if (tokens[0] == "max_number_of_attempts")
               {
                   game_options.max_number_of_attempts = stoi(tokens[1]);
