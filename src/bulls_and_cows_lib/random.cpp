@@ -1,4 +1,3 @@
-
 #include "random.hpp"
 #include <random>
 

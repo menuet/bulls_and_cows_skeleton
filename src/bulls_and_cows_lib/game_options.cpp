@@ -8,23 +8,24 @@ namespace bulls_and_cows {
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
+        output_stream << "Voici les options actuelles :\n" << std::endl;
         output_stream << "Le nombre maximum de tentatives est actuellement de " << game_options.max_number_of_attempts
                       << "." << std::endl;
-        output_stream << "Le code secret est constitué de " << game_options.number_of_characters_per_code
-                      << " caractères." << std::endl;
-        output_stream << "Les lettres autorisées pour la création du code secret se situent entre "
-                      << game_options.minimum_allowed_character << " et " << game_options.minimum_allowed_character
-                      << "inclus." << std::endl;
+        output_stream << "Le code secret est constitue de " << game_options.number_of_characters_per_code
+                      << " caracteres." << std::endl;
+        output_stream << "Les lettres autorisees pour la creation du code secret se situent entre "
+                      << game_options.minimum_allowed_character << " et " << game_options.maximum_allowed_character
+                      << " inclus." << std::endl;
     }
 
     void display_game_options_menu(std::ostream& output_stream)
     {
         output_stream << "Configurer les options " << std::endl;
         output_stream << "0) Retour au menu principal " << std::endl;
-        output_stream << "1) Modifier le nombre maximum de tentatives autorisées pour une partie " << std::endl;
-        output_stream << "2) Modifier le nombre de caractères présent dans le code secret " << std::endl;
-        output_stream << "3) Modifier le caractères minimum autorisé " << std::endl;
-        output_stream << "4) Modifier le caractères maximum autorisé " << std::endl;
+        output_stream << "1) Modifier le nombre maximum de tentatives autorisees pour une partie " << std::endl;
+        output_stream << "2) Modifier le nombre de caracteres present dans le code secret " << std::endl;
+        output_stream << "3) Modifier le caracteres minimum autorise " << std::endl;
+        output_stream << "4) Modifier le caracteres maximum autorise " << std::endl;
         output_stream << "5) Sauvegarder les options " << std::endl;
         output_stream << "6) Charger les options " << std::endl;
         output_stream << "Que souhaitez-vous faire ? " << std::endl;
@@ -32,7 +33,7 @@ namespace bulls_and_cows {
 
     GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
     {
-        const int user_choice = ask_int_or_default(input_stream, -1); // si aucun choix renvoie -1 donc erreur
+        const int user_choice = ask_int_or_default(input_stream, -1);
         switch (user_choice)
         {
         case 0:
@@ -54,7 +55,7 @@ namespace bulls_and_cows {
         return GameOptionsMenuChoice::Error;
     }
 
-    bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options) // fichier virtuel
+    bool save_game_options(std::ofstream& output_file_stream, const GameOptions& game_options)
     {
         if (output_file_stream)
         {
@@ -68,14 +69,14 @@ namespace bulls_and_cows {
         return false;
     }
 
-    bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
+    bool load_game_options(std::ifstream& input_file_stream, GameOptions& game_options)
     {
         if (input_file_stream)
         {
             std::string ligne{};
 
-            std::getline(input_file_stream, ligne); // getline pour la premiere ligne du fichier
-            unsigned int nb_attempt = std::stoi(ligne); // stoi = convertir string en int
+            std::getline(input_file_stream, ligne);
+            unsigned int nb_attempt = std::stoi(ligne);
             game_options.max_number_of_attempts = nb_attempt;
 
             std::getline(input_file_stream, ligne);
@@ -83,12 +84,10 @@ namespace bulls_and_cows {
             game_options.number_of_characters_per_code = nb_character;
 
             std::getline(input_file_stream, ligne);
-            char min_character = ligne[0];
-            game_options.minimum_allowed_character = min_character;
+            game_options.minimum_allowed_character = ligne[0];
 
             std::getline(input_file_stream, ligne);
-            char max_character = ligne[0];
-            game_options.maximum_allowed_character = max_character;
+            game_options.maximum_allowed_character = ligne[0];
 
             return true;
         }

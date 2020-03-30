@@ -2,15 +2,15 @@
 #include "random.hpp"
 
 namespace bulls_and_cows {
-    Board create_board(const GameOptions& game_options) // Return Board
+    Board create_board(const GameOptions& game_options)
     {
-        Board board;        // Creation board
-        std::string code{}; // Chaine de caracteres vide
+        Board board;
+        std::string code{};
 
         for (unsigned i = 0; i < game_options.number_of_characters_per_code; i++)
         {
             code += generate_random_character(game_options.minimum_allowed_character,
-                                              game_options.maximum_allowed_character); // Creation code secret
+                                              game_options.maximum_allowed_character);
         }
 
         board.secret_code.value = code;
@@ -24,7 +24,7 @@ namespace bulls_and_cows {
             return false;
         }
 
-        for (auto a : attempt.value) // for remplacer par range for / auto comme pointeur - prend la valeur de chaque lettre une par une
+        for (auto a : attempt.value)
         {
             if (a < game_options.minimum_allowed_character || a > game_options.maximum_allowed_character)
             {
@@ -35,30 +35,29 @@ namespace bulls_and_cows {
         return true;
     }
 
-    Feedback compare_attempt_with_secret_code(Code attempt, Code secret_code) // const pour pouvoir modifier la vlauer d'une copie qu'on créé (supprimer const crer une coopie)
+    Feedback compare_attempt_with_secret_code(Code attempt, Code secret_code)
     {
         Feedback feedback;
 
         for (unsigned i = 0; i < attempt.value.size(); i++)
         {
             if (attempt.value[i] ==
-                secret_code.value[i]) // Si la lettre de la tentative est égale a une lettre du code secret et a la memem place
+                secret_code.value[i])
             {
                 feedback.bulls++;
-                secret_code.value.replace(i, 1, "?"); // ? quand on a triter un truc
-                attempt.value.replace(i, 1, "!"); // pour pa retraiter on met un ! quand s'est deja traiter
+                secret_code.value.replace(i, 1, "?");
+                attempt.value.replace(i, 1, "!");
             }
         }
 
         for (auto a : attempt.value)
         {
-            auto iter = std::find(secret_code.value.begin(), secret_code.value.end(), a); // fonction find debut et fin d'un string et un caractere dedans / renvoie un pointeur vers l'emplacement de la lettre si elle y est
-            // si pas d'eleme se met a la fin de la liste
-            // iter stock le pointeur
-            if (iter != secret_code.value.end()) // si fin pas la lettre donc osef mais is lettre on augmente cows
+            auto iter = std::find(secret_code.value.begin(), secret_code.value.end(), a);
+
+            if (iter != secret_code.value.end())
             {
                 feedback.cows++;
-                *iter = '?'; // comme en haut / * => pour acceder la a valeur de iter
+                *iter = '?';
             }
         }
 
@@ -78,14 +77,12 @@ namespace bulls_and_cows {
     bool is_win(const GameOptions& game_options, const Board& board)
     {
 
-        if (board.attempts_and_feedbacks.empty()) // si liste d'essai vide = pas gagner donc faux
+        if (board.attempts_and_feedbacks.empty())
         {
             return false;
         }
 
-        if (board.attempts_and_feedbacks.back().attempt.value ==
-            board.secret_code.value) // attributs - attempsfeedback = tentatives + feedback du coup juste attempt pour
-                                     // les tentatives .attempt - accéder a un string = .value pour avoir la valeur
+        if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
         {
             return true;
         }
@@ -95,22 +92,55 @@ namespace bulls_and_cows {
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
-        output_stream << "-------------------------------------\n"
-                      << "| SECRET   * * * * * |              |\n"
-                      << "-------------------------------------\n"
-                      << "| ATTEMPTS           | BULLS | COWS |\n"
-                      << "-------------------------------------\n";
+
+        if (is_win(game_options, board) || is_end_of_game(game_options, board))
+        {
+            output_stream << "-------------------------------------\n"
+                          << "| SECRET   ";
+
+            for (auto charcode : board.secret_code.value)
+            {
+                output_stream << charcode;
+                output_stream << " ";
+            }
+        }
+        else
+        {
+
+            output_stream << "-------------------------------------\n"
+                          << "| SECRET   ";
+
+            for (unsigned j = 0; j < game_options.number_of_characters_per_code; j++)
+            {
+                output_stream << "* ";
+            }
+        }
+        output_stream << "|              |\n-------------------------------------\n"
+                      << "| ATTEMPTS ";
+
+        for (unsigned l = 0; l < game_options.number_of_characters_per_code; l++)
+        {
+            output_stream << "  ";
+        }
+        output_stream << "| BULLS | COWS |\n "
+                      << "------------------------------------\n";
 
         for (unsigned i = game_options.max_number_of_attempts; i > 0; i--)
         {
+            std::string points{};
+
+            for (unsigned k = 0; k < game_options.number_of_characters_per_code; k++)
+            {
+                points += ". ";
+            }
+
             if (board.attempts_and_feedbacks.size() < i)
             {
                 if (i < 10)
                     output_stream << "| #0";
                 else
                     output_stream << "| #";
-
-                output_stream << i << "      . . . . . |       |      |\n";
+                output_stream << i << "      " << points << "|       |      |\n";
             }
 
             else
@@ -119,12 +149,17 @@ namespace bulls_and_cows {
                     output_stream << "| #0";
                 else
                     output_stream << "| #";
-
-                output_stream << i << "       " << board.attempts_and_feedbacks.at(i - 1).attempt.value << " |   "
-                              << board.attempts_and_feedbacks.at(i - 1).feedback.bulls << "   |  "
-                              << board.attempts_and_feedbacks.at(i - 1).feedback.cows << "   |\n"; //at = indice
+                output_stream << i << "      ";
+                for (auto charbychar : board.attempts_and_feedbacks.at(i - 1).attempt.value)
+                {
+                    output_stream << charbychar;
+                    output_stream << " ";
+                }
+                output_stream << "|   " << board.attempts_and_feedbacks.at(i - 1).feedback.bulls << "   |  "
+                              << board.attempts_and_feedbacks.at(i - 1).feedback.cows << "   |\n";
             }
         }
+
         output_stream << "-------------------------------------\n";
     }
 
@@ -134,16 +169,16 @@ namespace bulls_and_cows {
         Code attempt;
 
         output_stream << "Rentrez un premier code (" << game_options.number_of_characters_per_code
-                      << " caractères entre '" << game_options.minimum_allowed_character << "' et '"
+                      << " caracteres entre '" << game_options.minimum_allowed_character << "' et '"
                       << game_options.maximum_allowed_character << "')" << std::endl;
 
         input_stream >> attempt.value;
 
         while (!validate_attempt(game_options, attempt))
         {
-            output_stream << "Votre supposition de code a une longueur incorrecte ou contient des caractères non-autorisés, veuillez réessayer\n"
+            output_stream << "Votre supposition de code a une longueur incorrecte ou contient des caracteres non-autorises, veuillez reessayer\n"
                           << "Rentrez un premier code (" << game_options.number_of_characters_per_code
-                          << " caractères entre '" << game_options.minimum_allowed_character << "' et '"
+                          << " caracteres entre '" << game_options.minimum_allowed_character << "' et '"
                           << game_options.maximum_allowed_character << "')" << std::endl;
 
             input_stream >> attempt.value;

@@ -1,4 +1,3 @@
-
 #include "game_solver.hpp"
 
 namespace bulls_and_cows {

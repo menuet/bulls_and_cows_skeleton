@@ -1,4 +1,3 @@
-
 #pragma once
 
 namespace bulls_and_cows {
