@@ -27,7 +27,7 @@ namespace bulls_and_cows {
             std::cout << "\n";
             display_board(std::cout, game_options, board);
 
-            feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+            feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);//cin est notre paramètre d'entrée au clavier
 
             while (!validate_attempt(game_options,feedback.attempt))
             {
