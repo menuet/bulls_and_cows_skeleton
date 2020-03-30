@@ -9,25 +9,25 @@ namespace bulls_and_cows {
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
-        output_stream << " Here are the current game_options : " << std::endl;
-        output_stream << "Maximum number of attempt per game " << game_options.max_number_of_attempts << std::endl;
-        output_stream << "Number of characters in a code is " << game_options.number_of_characters_per_code
+        output_stream << "Here are the current game options:" << std::endl;
+        output_stream << "Maximum number of attempts per game: " << game_options.max_number_of_attempts << std::endl;
+        output_stream << "Number of characters in a code: " << game_options.number_of_characters_per_code
                       << std::endl;
-        output_stream << "The characters can take any letter from" << game_options.minimum_allowed_character << " to "
-                      << game_options.maximum_allowed_character << std::endl;
+        output_stream << "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '"
+                      << game_options.maximum_allowed_character << "'" << std::endl;
     }
 
     void display_game_options_menu(std::ostream& output_stream)
     {
         output_stream << "Configure Options" << std::endl;
         output_stream << "0 - Back to main menu" << std::endl;
-        output_stream << "1 - Modify maximum number of attempts per game" << std::endl;
-        output_stream << "2 - Modify number of characters in a code" << std::endl;
-        output_stream << "3 - Modify minimum allowed character" << std::endl;
-        output_stream << "4 - Modify maximum allowed character" << std::endl;
+        output_stream << "1 - Modify Maximum number of attempts per game" << std::endl;
+        output_stream << "2 - Modify Number of characters in a code" << std::endl;
+        output_stream << "3 - Modify Minimum allowed character" << std::endl;
+        output_stream << "4 - Modify Maximum allowed character" << std::endl;
         output_stream << "5 - Save options" << std::endl;
         output_stream << "6 - Load options" << std::endl;
-        output_stream << "What is your choice ? " << std::endl;
+        output_stream << "What is your choice ? " ;
     }
 
     GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
@@ -53,35 +53,45 @@ namespace bulls_and_cows {
         return GameOptionsMenuChoice::Error;
     }
 
-    bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
+    bool save_game_options(std::ofstream& output_file_stream, const GameOptions& game_options)
     {
-        std::string options{};
-        options = std::to_string(game_options.max_number_of_attempts) + "\n" +
-                  std::to_string(game_options.number_of_characters_per_code) + "\n" +
-                  std::to_string(game_options.minimum_allowed_character) + "\n" +
-                  std::to_string(game_options.maximum_allowed_character);
         if (output_file_stream)
         {
-            output_file_stream << options;
+            output_file_stream << game_options.max_number_of_attempts << "\n"
+                               << game_options.number_of_characters_per_code << "\n"
+                               << game_options.minimum_allowed_character << "\n"
+                               << game_options.maximum_allowed_character << std::endl;
             return true;
         }
 
         return false;
     }
 
-    /*
     bool load_game_options(std::ifstream& input_file_stream, GameOptions& game_options)
     {
         if (input_file_stream)
         {
             std::string ligne{};
-            game_options.max_number_of_attempts = getline(input_file_stream, ligne);
-            game_options.number_of_characters_per_code = std::getline(input_file_stream, ligne);
-            game_options.minimum_allowed_character = std::getline(input_file_stream, ligne);
-            game_options.maximum_allowed_character = std::getline(input_file_stream, ligne);
+
+            std::getline(input_file_stream, ligne);
+            unsigned int nb_attempt = std::stoi(ligne);
+            game_options.max_number_of_attempts = nb_attempt;
+
+            std::getline(input_file_stream, ligne);
+            unsigned int nb_character = std::stoi(ligne);
+            game_options.number_of_characters_per_code = nb_character;
+
+            std::getline(input_file_stream, ligne);
+            char min_character = ligne[0];
+            game_options.minimum_allowed_character = min_character;
+
+            std::getline(input_file_stream, ligne);
+            char max_character = ligne[0];
+            game_options.maximum_allowed_character = max_character;
+
             return true;
         }
 
         return false;
-    }*/
+    }
 } // namespace bulls_and_cows

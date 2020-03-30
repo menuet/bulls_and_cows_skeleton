@@ -15,22 +15,23 @@ namespace bulls_and_cows {
     void user_plays_against_computer(const GameOptions& game_options)
     {
 
-        Board board=create_board(game_options);
+        Board board = create_board(game_options);
         AttemptAndFeedback attempt_and_feedback;
         do
         {
             display_board(std::cout, game_options, board);
-            
-            attempt_and_feedback.attempt = ask_attempt(std::cout,std::cin, game_options, board);
 
-            attempt_and_feedback.feedback = compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+            attempt_and_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+
+            attempt_and_feedback.feedback =
+                compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
 
             board.attempts_and_feedbacks.push_back(attempt_and_feedback);
 
         } while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
 
         display_board(std::cout, game_options, board);
-        
+
         if (is_win(game_options, board))
         {
             std::cout << "Congratulations ! You won" << std::endl;
@@ -40,7 +41,6 @@ namespace bulls_and_cows {
         {
             std::cout << "T'es nul" << std::endl;
         }
-            
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -65,39 +65,72 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        display_game_options(std::cout,game_options);
-        display_game_options_menu(std::cout);
-        /*do
+        std::string path = "./save.txt";
+        std::ofstream save_file;
+        std::ifstream load_file(path);
+        GameOptionsMenuChoice op;
+        do
         {
-            const GameOptionsMenuChoice choice = ask_game_options_menu_choice(std::cin);
+            std::cout << "\n#################################\n";
+            display_game_options(std::cout, game_options);
+            std::cout << "\n#################################\n";
+            display_game_options_menu(std::cout);
+            GameOptionsMenuChoice choice = ask_game_options_menu_choice(std::cin);
+            op = choice;
             switch (choice)
             {
-            case choice == GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
-                std::cout << "\nBye bye!\n";
-                return;
-            case 2:
-                ;
+            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
+                std::cout << "\nEnter the Maximum number of attempts :";
+                game_options.max_number_of_attempts = ask_int_or_default(std::cin, game_options.max_number_of_attempts);
                 break;
-            case 3:
-                ;
+            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
+                std::cout << "\nEnter the Number of character per code :";
+                game_options.number_of_characters_per_code =
+                    ask_int_or_default(std::cin, game_options.number_of_characters_per_code);
                 break;
-            case 4:
-                ;
+            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
+                std::cout << "\nEnter the Minimum allowed character :";
+                char min;
+                min = ask_char_or_default(std::cin, game_options.minimum_allowed_character);
+                if (min >= game_options.maximum_allowed_character)
+                {
+                    std::cout << "Minimum character cannot be superior compared to maximum character";
+                }
+                else
+                    game_options.minimum_allowed_character = min;
                 break;
-            case 5:
-                save_game_options(std::cout, game_options);
+            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
+                std::cout << "\nEnter the Maximum allowed character :";
+                char max;
+                max = ask_char_or_default(std::cin, game_options.maximum_allowed_character);
+                if (max <= game_options.minimum_allowed_character)
+                {
+                    std::cout << "Maximum character cannot be inferior compared to maximum character";
+                }
+                else
+                    game_options.maximum_allowed_character = max;
                 break;
-            case 6:
-                load_game_options(std:cin,game_options);
+            case GameOptionsMenuChoice::SaveOptions:
+                save_file.open(path);
+                if (!save_game_options(save_file, game_options))
+                {
+                    std::cout << "Erreur avec le fichier en écriture";
+                }
+                save_file.close();
                 break;
-            case -1::Error:
+            case GameOptionsMenuChoice::LoadOptions:
+                load_file.seekg(0, std::ios::beg);
+                if (!load_game_options(load_file, game_options))
+                {
+                    std::cout << "Erreur avec le fichier de lecture";
+                }
+                break;
+            case GameOptionsMenuChoice ::Error:
                 std::cout << "\nYou did not enter a valid choice, please try again\n";
                 break;
             }
-        while (choice != GameOptionsMenuChoice::BackToMain);
+        } while (op != GameOptionsMenuChoice::BackToMain);
         display_main_menu(std::cout);
-        }*/
-
     }
 
     void play_game()

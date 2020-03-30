@@ -6,8 +6,8 @@
 // Examples of unit tests for the functions declared in game_options.hpp
 // These unit tests are disabled because you first need to define the tested functions in game_options.cpp
 
-/*
 
+/*
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
     // ARRANGE
@@ -20,7 +20,7 @@ TEST_CASE("TEST bulls_and_cows::display_game_options")
     // ASSERT
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
-            "Here are the current game_options:\n"
+            "Here are the current game options:\n"
             "Maximum number of attempts per game: 12\n"
             "Number of characters in a code: 5\n"
             "Range of allowed characters: from 'A' to 'H'\n");
@@ -73,10 +73,10 @@ TEST_CASE("TEST bulls_and_cows::save_game_options")
     REQUIRE(result);
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
-            "max_number_of_attempts=12\n"
-            "number_of_characters_per_code=5\n"
-            "minimum_allowed_character=A\n"
-            "maximum_allowed_character=H\n");
+            "12\n"
+            "5\n"
+            "A\n"
+            "H\n");
 }
 
 TEST_CASE("TEST bulls_and_cows::load_game_options")
@@ -84,10 +84,10 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     // ARRANGE
     bulls_and_cows::GameOptions game_options{};
     std::stringstream input_stream{
-        "max_number_of_attempts=5\n"
-        "number_of_characters_per_code=3\n"
-        "minimum_allowed_character=1\n"
-        "maximum_allowed_character=8\n"};
+        "5\n"
+        "3\n"
+        "A\n"
+        "G\n"};
 
     // ACT
     const bool result = bulls_and_cows::load_game_options(input_stream, game_options);
@@ -96,8 +96,9 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(result);
     REQUIRE(game_options.max_number_of_attempts == 5);
     REQUIRE(game_options.number_of_characters_per_code == 3);
-    REQUIRE(game_options.minimum_allowed_character == '1');
-    REQUIRE(game_options.maximum_allowed_character == '8');
+    REQUIRE(game_options.minimum_allowed_character == 'A');
+    REQUIRE(game_options.maximum_allowed_character == 'G');
 }
+
 
 */
