@@ -43,6 +43,9 @@ namespace bulls_and_cows {
     // Validate that a user-entered code contains proper number of allowed characters
     bool validate_attempt(const GameOptions& game_options, const Code& attempt);
 
+    // Create a secret code composed of allowed characters proposed by the user
+    std ::string create_attempt(const GameOptions& game_options, std::istream& input_stream);
+
     // Compare a user-entered code with the secret code and give the corresponding number of bulls and cows
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code);
 
@@ -51,9 +54,6 @@ namespace bulls_and_cows {
 
     // Test if the last attempt is a win
     bool is_win(const GameOptions& game_options, const Board& board);
-
-    // Display the scret code and the list of attempts of the board
-    void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board);
 
     // Ask the user to provide another attempt
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
