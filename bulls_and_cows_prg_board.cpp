@@ -59,7 +59,7 @@ using namespace bulls_and_cows {
             }
         }
 
-            Feedback compare_attempt_with_hiddenCode(const Code& attempt, const Code& hiddenCode)
+   Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& hiddenCode)
     {
     	//Dans le cas de la tentative on incrémente si le caractère vérifie la bonne place et le bon terme
         Feedback feedback{};
