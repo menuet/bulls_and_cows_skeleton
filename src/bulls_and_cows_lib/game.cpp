@@ -48,7 +48,76 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        display_game_options_menu(std::cout);
+        /*display_game_options_menu(std::cout);*/
+        while (true)
+
+        {
+
+            display_game_options(std::cout, game_options);
+
+            display_game_options_menu(std::cout);
+
+            GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(std::cin);
+
+            switch ((int)user_choice) // require int type
+
+            {
+
+            case 0:
+
+                false;
+
+                break;
+
+            case 1:
+
+                std::cout << " modify max attempt\n";
+
+                std::cin >> game_options.max_number_of_attempts;
+
+                break;
+
+            case 2:
+
+                std::cout << " modfiy number of characters \n";
+
+                std::cin >> game_options.number_of_characters_per_code;
+
+                break;
+
+            case 3:
+
+                std::cout << " modfiy min allowed \n";
+
+                std::cin >> game_options.minimum_allowed_character;
+
+                break;
+
+            case 4:
+
+                std::cout << " modfiy max allowed \n";
+
+                std::cin >> game_options.maximum_allowed_character;
+
+                break;
+
+            case 5:
+
+                save_game_options(std::cout, game_options);
+
+                break;
+
+            case 6:
+
+                load_game_options(std::cin, game_options);
+
+                break;
+
+            default:
+
+                break;
+            }
+        }
     }
 
     void play_game()
