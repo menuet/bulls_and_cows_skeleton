@@ -55,6 +55,7 @@ namespace bulls_and_cows {
             default:
                 break;
             }
+
         }
 
         std::cout << "TODO:\n"
