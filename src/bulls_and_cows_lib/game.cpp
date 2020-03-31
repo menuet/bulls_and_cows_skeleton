@@ -26,11 +26,9 @@ namespace bulls_and_cows {
             a.attempt = result;
             a.feedback = f;
             gameboard.attempts_and_feedbacks.push_back(a);// insert the value into the vector at the end
+          
         }
-        //display if is the end of fame or is the user won
-        
-         cout <<(is_win(game_options, gameboard)? " YOU WIN ! CONGRATULATION" : "");
-         cout << (is_end_of_game(game_options, gameboard) ?" THE TIME IS OVER ! RETRY ? " :"");
+
         
     }
 
@@ -73,23 +71,59 @@ namespace bulls_and_cows {
             switch ((int)user_choice) // require int type
             {
             case 0:
-                false;
+                true;
                 break;
-            case 1:
-                cout << " modify max attempt\n";
-                cin >> game_options.max_number_of_attempts;
+            case 1: {
+
+                cout << "Modify the max number attempt\n";
+                unsigned int modif = ask_int_or_default(cin, game_options.max_number_of_attempts);
+                while (modif < game_options.max_number_of_attempts)
+                {
+                    modif = game_options.max_number_of_attempts;
+                }
+                break; 
+            }
+                
+            case 2: {
+
+                cout << "Modfiy the number of characters \n";
+                unsigned int nb_char = ask_int_or_default(cin, game_options.number_of_characters_per_code);
+                if (nb_char <= 5)
+                {
+                    nb_char = game_options.number_of_characters_per_code;
+                }
+                else
+                {
+                    cout << "error";
+                }
+                
                 break;
-            case 2:
-                cout << " modfiy number of characters \n";
-                cin >> game_options.number_of_characters_per_code;
+            }
+            case 3: {
+                cout << "Modify the minimum letter";
+                char const min_char = ask_char_or_default(cin, game_options.minimum_allowed_character);
+                if (min_char > game_options.maximum_allowed_character)
+                {
+                    cout << "error";
+                    
+                }
+                else
+                {
+                    min_char == game_options.minimum_allowed_character;
+                }
                 break;
-            case 3:
-                cout << " modfiy min allowed \n";
-                cin >> game_options.minimum_allowed_character;
-                break;
+            }
             case 4:
-                cout << " modfiy max allowed \n";
-                cin >> game_options.maximum_allowed_character;
+                cout << "Modfiy max allowed \n";
+                char const max_char = ask_char_or_default(cin, game_options.maximum_allowed_character);
+                if (max_char < game_options.minimum_allowed_character)
+                {
+                    cout << "error";
+                }
+                else
+                {
+                    max_char == game_options.maximum_allowed_character;
+                }
                 break;
             case 5:
                 save_game_options(cout, game_options);

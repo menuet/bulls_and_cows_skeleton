@@ -91,7 +91,7 @@ namespace bulls_and_cows {
            {
                if (token == "max_number_of_attempts")
                {
-                   game_options.max_number_of_attempts = std::atoi(tok.c_str());
+                   game_options.max_number_of_attempts = std::atoi(tok.c_str()); //Convert string to integer
                }
                else if (token == "number_of_characters_per_code")
                {
@@ -108,7 +108,7 @@ namespace bulls_and_cows {
            }
        }
        return true;
-        return true;
+       
     }
        
 }// namespace bulls_and_cows

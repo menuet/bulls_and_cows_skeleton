@@ -70,8 +70,7 @@ namespace bulls_and_cows {
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
 
-        if (board.attempts_and_feedbacks.size() ==
-            game_options.maximum_allowed_character) // the space for attempts is full
+        if (board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts) // the number of attempts is reached
         {
             std::cout << " GAME OVER ! Is the end of game ... \n";
             return true;
