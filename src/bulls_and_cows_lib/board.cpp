@@ -1,8 +1,8 @@
-
+#include "random.hpp"
 #include "board.hpp"
 
 namespace bulls_and_cows {
-
+    
     // TODO: define the body of the functions declared in board.cpp
     Board create_board(const GameOptions& game_options)
 
@@ -99,5 +99,5 @@ namespace bulls_and_cows {
 
         return feedback;
     }
-
+    
 } // namespace bulls_and_cows

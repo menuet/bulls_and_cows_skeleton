@@ -14,34 +14,26 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        
     
     Board board = bulls_and_cows::create_board(game_options);
 
-        AttemptAndFeedback newattemp;
+        AttemptAndFeedback newattemp{};
 
-        while (!is_end_of_game(game_options, board) && !is_win(game_options, board))
-        {
+        //Méthodes implémentées mais is_end_of_game et is_win restes à implémenter donc l'appel est impossible 
+       /* while (!bulls_and_cows::is_end_of_game(game_options, board) && !bulls_and_cows::is_win(game_options, board))
+        { 
+           
+            bulls_and_cows::display_board(std::cout, game_options, board);
 
-            display_board(std::cout, game_options, board);
+            newattemp.attempt = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, board);
 
-            newattemp.attempt = ask_attempt(std::cout, std::cin, game_options, board);
-
-            newattemp.feedback = compare_attempt_with_secret_code(newattemp.attempt, board.secret_code);
+            newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(newattemp.attempt, board.secret_code);
 
             board.attempts_and_feedbacks.push_back(newattemp);
         }
 
-        if (is_win(game_options, board))
+        if (bulls_and_cows::is_win(game_options, board))
         {
 
             std::cout << "you won" << std::endl;
@@ -49,14 +41,14 @@ namespace bulls_and_cows {
 
         else
 
-            std::cout << "Try again" << std::endl;
+            std::cout << "Try again" << std::endl;*/
     }
     
     
-    }
+    
 
-
-
+    
+    
     void computer_plays_against_computer(const GameOptions& game_options)
     {
         std::cout
