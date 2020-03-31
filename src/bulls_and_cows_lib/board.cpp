@@ -47,7 +47,7 @@ namespace bulls_and_cows
         unsigned k = 0;
         std::string strcode = secret_code.value;
         std::string stratt = attempt.value;
-        std::cout << secret_code.value[5];
+
         while (i < attempt.value.size())
         {
             if (stratt[i] == strcode[i])
@@ -72,7 +72,7 @@ namespace bulls_and_cows
                 k++;
             }
             i++;
-            k = i;
+            k = 0;
         }
         return feedback;
     }
@@ -111,31 +111,54 @@ namespace bulls_and_cows
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
-        unsigned i = 0;
+        size_t i = game_options.max_number_of_attempts;
         output_stream << "-------------------------------------\n"
                       << "| SECRET   * * * * * |              |\n"
                       << "-------------------------------------\n"
                       << "| ATTEMPTS           | BULLS | COWS |\n"
                       << "-------------------------------------\n";
-
-        while (i < game_options.max_number_of_attempts)
+        while (i > board.attempts_and_feedbacks.size())
         {
-            if (i < 3)
+            // int bull = board.attempts_and_feedbacks[i].feedback.bulls;
+            //unsigned int cow = board.attempts_and_feedbacks[i].feedback.cows;
+            if (i > 9)
             {
-                output_stream << "| #" << game_options.max_number_of_attempts - i
-                              << "      . . . . . |       |      |\n";
+                output_stream << "| #" << i << "      . . . . . |  " <<"     |   "  "   |\n";
                 
             }
 
             else
             {
-                output_stream << "| #0" << game_options.max_number_of_attempts - i
+                output_stream << "| #0" << i
                               << "      . . . . . |       |      |\n";
             }
-            i++;
+            i--;
         }
         output_stream << "-------------------------------------\n";
 
 
     }
+    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
+                     const Board& board)
+    {
+        Code code;
+        bool validattempt = validate_attempt(game_options, code);
+        while (validattempt == false)
+        {
+            output_stream << "What is your guess (" << game_options.number_of_characters_per_code
+                          << " characters between '" << game_options.minimum_allowed_character << "' and '"
+                          << game_options.maximum_allowed_character << "')\n? ";
+            input_stream >> code.value;
+
+            validattempt = validate_attempt(game_options, code);
+
+            if (validattempt == false)
+            {
+                output_stream
+                    << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
+            }
+        }
+        return code;
+    }
+
 }
