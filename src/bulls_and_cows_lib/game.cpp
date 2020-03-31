@@ -30,7 +30,7 @@ namespace bulls_and_cows {
             Charact = generate_random_character(g1.minimum_allowed_character,
                                                      g1.maximum_allowed_character);
            
-            // ajoute le caractere généré de facon random dans le string code (condition si le nombre de caractere atteint celui du game option)
+            // ajoute le caractere gÃ©nÃ©rÃ© de facon random dans le string code (condition si le nombre de caractere atteint celui du game option)
             code_secret.push_back(Charact);
         }
         return code_secret;
@@ -47,7 +47,7 @@ namespace bulls_and_cows {
             if (code_secret[i] == code_test[i])
             {
                 n++;
-                // on note les characteres utilisées
+                // on note les characteres utilisÃ©es
                 secret_charact_used[i] = true;
                 test_charact_used[i] = true;
             }
@@ -66,14 +66,14 @@ namespace bulls_and_cows {
         {
             for (int j = 0; j < 5; j++)
             {
-                // ne pas utiliser un charatere deja utilisé
+                // ne pas utiliser un charatere deja utilisÃ©
                 if (secret_charact_used[i] || test_charact_used[j])
                     continue;
 
                 if (code_secret[i] == code_test[j])
                 {
                     n++;
-                    // on note les characteres utilisées
+                    // on note les characteres utilisÃ©es
                     secret_charact_used[i] = true;
                     test_charact_used[j] = true;
                 }
@@ -83,7 +83,7 @@ namespace bulls_and_cows {
         return n;
     }
 
-    bool secure_saisie(std::string const& code, const GameOptions& g1) //retourne un bouleen en fonction de la validité de la saisie
+    bool secure_saisie(std::string const& code, const GameOptions& g1) //retourne un bouleen en fonction de la validitÃ© de la saisie
     {
         
 
@@ -126,7 +126,7 @@ namespace bulls_and_cows {
             'A', // low range
             'H' // max range
         };
-        //generation du code aléatoire
+        //generation du code alÃ©atoire
         std::string code_ordi = create_code(g1);
         //std::cout << code_ordi << std::endl; 
       
@@ -166,7 +166,7 @@ namespace bulls_and_cows {
         }
 
         // defaite
-        std::cout << "Perdu... " << std::endl;
+        std::cout << "Perdu.... " << std::endl;
         std::cout << "Le code secret est " << code_ordi << std::endl;
 
         
