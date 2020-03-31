@@ -219,17 +219,18 @@ namespace bulls_and_cows {
         solutions.codes.erase(
             std::remove_if(solutions.codes.begin(), solutions.codes.end(),
                            [attempt_bulls_cows](const Code code) {
-                               if (count_cow(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.cows)
+                               if (count_cow(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.cows &&
+                                   count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
                                {
                                    return true;
                                }
-                               else
+                              /* else
                                {
                                    if (count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
                                    {
                                        return true;
                                    }
-                               }
+                               }*/
                                return false;
                            }),
             solutions.codes.end());
