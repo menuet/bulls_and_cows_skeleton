@@ -37,11 +37,11 @@ namespace bulls_and_cows {
 
         if (attempt.value.size == game_options.number_of_characters_per_code ){
             att = true;
-            std::cout << "proper number of allowed character" << endl;
+            std::cout << "proper number of allowed character" << std::endl;
         }
         else{
-            att= false
-            std::cout << " no proper number of allowed character" << endl;
+            att= false;
+            std::cout << " no proper number of allowed character" << std::endl;
            // std::cout << "number of allowed character is "+ game_options.number_of_characters_per_code << endl;
         }
         return att;
@@ -54,7 +54,7 @@ namespace bulls_and_cows {
 
         int i = 0;
         while (att2 ==true &&  i < game_options.number_of_characters_per_code){
-             att2= (attempt.value[i] > game_options.minimum_allowed_character && attempt.value[i]< game_options.maximum_allowed_character ){
+             att2= (attempt.value[i] > game_options.minimum_allowed_character && attempt.value[i]< game_options.maximum_allowed_character );
              i++; 
             
          }
@@ -83,10 +83,10 @@ namespace bulls_and_cows {
                         f.cows++;
                     }  
                     
-                    else{
+                    //else{
                         // si le charactere ne fait pas partie du code
-                        return 0;
-                    }
+                     //   return 0;
+                    //}
                 }
                 
             }
