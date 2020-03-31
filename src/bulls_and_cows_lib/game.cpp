@@ -19,8 +19,8 @@ namespace bulls_and_cows {
     {
         Code code = generate_secret_code(game_options);
         
-        AttemptBullsCows attempt_bulls_cows;
-        Historic historic;
+        AttemptBullsCows attempt_bulls_cows{};
+        Historic historic{};
         do
         {
             std::cout << "\nEnter your new attempt (length of " << game_options.number_of_characters_per_code
@@ -116,8 +116,7 @@ namespace bulls_and_cows {
             {
                 int random_integer = generate_random_integer(0,static_cast<int>(std::size(dictionary))-1);
                 code.value.push_back(dictionary[random_integer]);
-                dictionary[random_integer] = dictionary[std::size(dictionary)-1];
-                dictionary.pop_back();
+                dictionary.erase(dictionary.begin() + random_integer);
             }
         }
         
@@ -215,9 +214,41 @@ namespace bulls_and_cows {
         return true;
     }
 
+    void erase_invalid_solutions(PossibleSolutions& solutions,const AttemptBullsCows& attempt_bulls_cows)
+    {
+        solutions.codes.erase(
+            std::remove_if(solutions.codes.begin(), solutions.codes.end(),
+                           [attempt_bulls_cows](const Code code) {
+                               if (count_cow(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.cows)
+                               {
+                                   return true;
+                               }
+                               else
+                               {
+                                   if (count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
+                                   {
+                                       return true;
+                                   }
+                               }
+                               return false;
+                           }),
+            solutions.codes.end());
+    }
+
+    Code computer_attempt(const GameOptions& game_options,PossibleSolutions& solutions)
+    {
+        Code attempt{};
+        const int random_solution = generate_random_integer(0, static_cast<int> (solutions.codes.size()-1));
+        attempt = solutions.codes[random_solution];
+        solutions.codes.erase(solutions.codes.begin() + random_solution);
+        
+        return attempt;
+    }
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
+        PossibleSolutions solutions = generate_all_possible_codes(game_options);
+
         Code code = generate_secret_code(game_options);
 
         AttemptBullsCows attempt_bulls_cows;
@@ -225,18 +256,22 @@ namespace bulls_and_cows {
 
         do
         {
-            do
-            {
-                attempt_bulls_cows.attempt = generate_secret_code(game_options);
-            } while (!check_attempt(attempt_bulls_cows.attempt, historic));
+            std::cout << "There are " << solutions.codes.size() << " possible solutions\n";
+
+            attempt_bulls_cows.attempt = computer_attempt(game_options,solutions);
 
             attempt_bulls_cows.bulls = count_bull(attempt_bulls_cows.attempt, code);
             attempt_bulls_cows.cows = count_cow(attempt_bulls_cows.attempt, code);
 
+            if (attempt_bulls_cows.bulls != game_options.number_of_characters_per_code && solutions.codes.size()!=1)
+            {
+                erase_invalid_solutions(solutions,attempt_bulls_cows);
+            }
+            
             historic.value.push_back(attempt_bulls_cows);
 
             display_board(historic, game_options);
-            std::this_thread::sleep_for(std::chrono::milliseconds(0));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         } while (historic.value.size() < game_options.max_number_of_attempts &&
                  !(attempt_bulls_cows.bulls == game_options.number_of_characters_per_code));
         // The game keep going while the computer has not reach the maximum number of attempts or has find the good code

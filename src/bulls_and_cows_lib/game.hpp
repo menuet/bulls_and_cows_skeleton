@@ -4,6 +4,7 @@
 #include "game_options.hpp"
 
 
+
 namespace bulls_and_cows {
 
     struct Code
@@ -39,5 +40,6 @@ namespace bulls_and_cows {
     bool check_duplicates(std::string code);
     CheckInput check_input(std::string const& attempt, const GameOptions& game_options);
     bool check_attempt(Code const& attempt, Historic const& historic);
+
 
 } // namespace bulls_and_cows
