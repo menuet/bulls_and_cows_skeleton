@@ -53,21 +53,41 @@ namespace bulls_and_cows {
     }
 
     //Supprime toutes les possibilités incorrects
-    void deleteIncorrectPoissibilities(std::vector<std::string>& allPossibilities, const std::string& codeComputer, const unsigned int bulls, const unsigned int cows)
+    void deleteIncorrectPoissibilities(std::vector<std::string>& allPossibilities, const std::string& codeComputer,
+                                       const unsigned int bulls, const unsigned int cows,
+                                       const GameOptions& game_options)
     {
         allPossibilities.erase(std::remove_if(allPossibilities.begin(), allPossibilities.end(),
-                                              [codeComputer, bulls, cows](std::string code) 
+                                              [codeComputer, bulls, cows, game_options](std::string code) 
                                               {
-                                                    //permet de supprimer toutes les possiblités qui ont des bulls et cows différents du codeComputer
-                                                    if (giveBullsNumber(codeComputer, code) != bulls &&
-                                                      giveCowsNumber(codeComputer, code) != cows)
-                                                    {
-                                                        return true;
-                                                    }
-                                                    else
-                                                    {
-                                                        return false;
-                                                    }
+                                                  if (game_options.accept_doublons == true)
+                                                  {
+                                                      // permet de supprimer toutes les possiblités qui ont des bulls et
+                                                      // cows différents du codeComputer
+
+                                                      if (giveBullsNumber(codeComputer, code) != bulls &&
+                                                          giveCowsNumber(codeComputer, code) != cows)
+                                                      {
+                                                          return true;
+                                                      }
+                                                      else
+                                                      {
+                                                          return false;
+                                                      }
+                                                  }
+                                                  else
+                                                  {
+                                                      if (giveBullsNumber(codeComputer, code) != bulls ||
+                                                          giveCowsNumber(codeComputer, code) != cows)
+                                                      {
+                                                          return true;
+                                                      }
+                                                      else
+                                                      {
+                                                          return false;
+                                                      }
+                                                  }
+                                                    
                                               }), allPossibilities.end());
     }
 } // namespace bulls_and_cows

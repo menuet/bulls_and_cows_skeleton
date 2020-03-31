@@ -15,8 +15,8 @@ namespace bulls_and_cows {
     std::string randomInPossibilities(const std::vector<std::string>& allPossibilities);
 
         void deleteIncorrectPoissibilities(std::vector<std::string>& allPossibilities, const std::string& codeComputer,
-                                       unsigned int bulls, unsigned int cows);
-
+                                       const unsigned int bulls, const unsigned int cows,
+                                       const GameOptions& game_options);
 
 
 } // namespace bulls_and_cows

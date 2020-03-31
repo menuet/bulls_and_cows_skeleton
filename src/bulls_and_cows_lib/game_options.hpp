@@ -11,7 +11,7 @@ namespace bulls_and_cows {
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
-        bool accept_doublons{false};
+        bool accept_doublons{true};
         bool save_game{false};
     };
 
