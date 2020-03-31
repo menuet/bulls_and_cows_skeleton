@@ -47,10 +47,10 @@ namespace bulls_and_cows {
         int bulls = 0;
 
         //on crééer un tableau de boolean qui permetra de mettre en memoire les charactere en bulls. Ainsi, un bulls ne peut pas être un cows (voir ligne 70)
-        vector<bool> bullvector;
+        vector<bool> already_used_secret_code_characters;
         for (int i = 0; i < codex.size(); i++)
         {
-            bullvector.push_back(false);
+            already_used_secret_code_characters.push_back(false);
         }
 
         // on compte les bulls
@@ -59,7 +59,7 @@ namespace bulls_and_cows {
             if (codex[i] == REALCODE[i]) // si on a trouvé le caractere dans le code
             {
                 bulls++;
-                bullvector[i] = true;//on sauvegarde la "mémoire"
+                already_used_secret_code_characters[i] = true; // on sauvegarde la "mémoire"
             }
         }
 
@@ -68,7 +68,8 @@ namespace bulls_and_cows {
         // alors on a 2 cows. <- FAUX
         for (int i = 0; i < codex.size(); i++) // on parcourt de chaque caracter du codex
         {
-            if (REALCODE.find(codex[i]) != string::npos && codex[i] != REALCODE[i] && !bullvector[REALCODE.find(codex[i])]) // si on a trouvé le caractere dans le code et ce n'est pas un bulls alors ok
+            size_t found_realcode_char_index = REALCODE.find(codex[i]);
+            if (found_realcode_char_index != string::npos && codex[i] != REALCODE[i] && !already_used_secret_code_characters[found_realcode_char_index] && found_realcode_char_index != i) // si on a trouvé le caractere dans le code et ce n'est pas un bulls alors ok
             {
                 cows++;
             }
@@ -150,7 +151,7 @@ namespace bulls_and_cows {
                 }
                 else
                 {
-                    numero = "| #0" + to_string(i + 1);
+                    numero = "| #0" + to_string(i + 1); //ici, si j utilise size_t ou unsigned int, si i<0, alors il y a undépassement de capacité
                 }
                 showup += numero + "          "+ board.attempts_and_feedbacks[i].attempt.value + " |   " +
                           to_string(board.attempts_and_feedbacks[i].feedback.bulls) + "   |   " +
