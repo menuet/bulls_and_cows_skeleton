@@ -113,8 +113,6 @@ namespace bulls_and_cows {
                {
                    tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
                    myfeed.cows++;
-                   //std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
-                            // << "\n";
                }
            }
 
@@ -227,7 +225,7 @@ namespace bulls_and_cows {
            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
                          << "---------------\n";
            output_stream << "| ATTEMPTS " << moins_function(game_options.number_of_characters_per_code, "  ") << "| "
-                         << " BULLS | COWS |\n";
+                         << "BULLS | COWS  |\n";
            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
                          << "---------------\n";
            //...
@@ -326,18 +324,6 @@ namespace bulls_and_cows {
                }
            }
            return incode;
-       }
-
-
-       std::vector<Code> generate_attempts(const GameOptions& game_options)
-       {
-           std::vector<Code> tentatives;
-           
-
-
-
-
-           return tentatives;
        }
 
 

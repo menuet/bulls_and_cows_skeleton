@@ -45,7 +45,7 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
+        /*std::cout
             << "TODO:\n"
                "    Create a board with a randomly generated secret code\n"
                "    Generate the list of all the possible codes\n"
@@ -60,7 +60,15 @@ namespace bulls_and_cows {
                "possible codes\n"
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+               "    Display a message telling if the computer won or lost\n";*/
+
+
+        PossibleSolutions yeet =generate_all_possible_codes(game_options);
+        for (unsigned int i = 0U; i < yeet.codes.size(); i++)
+        {
+            std::cout << yeet.codes[i].value << "\n";
+        }
+        std::cout << "la taille c'est " << yeet.codes.size() << " a peu pres bg\n";
     }
 
     void configure_game_options(GameOptions& game_options)
