@@ -69,8 +69,6 @@ namespace bulls_and_cows {
     {
         Code codeRandom{};
         int codeSize = static_cast<int>(possible_solutions.codes.size() - 1);
-
-        // int indexRandom = rand() % possible_solutions.codes.size();
         int indexRandom = generate_random_integer(0, codeSize);
 
         codeRandom = possible_solutions.codes[indexRandom];
@@ -80,50 +78,16 @@ namespace bulls_and_cows {
         return codeRandom;
     }
 
-    bool is_different_feedback(Feedback& feed, AttemptAndFeedback& attempt_and_feedback,PossibleSolutions& possible_solutions)
+    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,PossibleSolutions& possible_solutions)
     {
-        if ((feed.bulls != attempt_and_feedback.feedback.bulls) || (feed.cows != attempt_and_feedback.feedback.cows))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
-                                                           PossibleSolutions& possible_solutions)
-    {
-        Feedback feed;
-        size_t size = possible_solutions.codes.size();
-
-        for (int i = 0; i < size; i++)
-        {
-            size = possible_solutions.codes.size();
-            feed = compare_attempt_with_secret_code(attempt_and_feedback.attempt, possible_solutions.codes[i]);
-
-            /*if ((feed.bulls != attempt_and_feedback.feedback.bulls) ||
-                (feed.cows != attempt_and_feedback.feedback.cows))
-            {
-
-                possible_solutions.codes.erase(std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(),
-                                   [](Code& c) { return c; }),
-                                               possible_solutions.codes.end());
-
-
-            }*/
-            
-            if ((feed.bulls != attempt_and_feedback.feedback.bulls) ||
-                (feed.cows != attempt_and_feedback.feedback.cows))
-            {
-                if (i == size - 1) // if it is the last element
-                {
-                    possible_solutions.codes.erase(possible_solutions.codes.end()-1);
-                }
-                else
-                {
-                    possible_solutions.codes.erase(possible_solutions.codes.begin() + i,possible_solutions.codes.begin() + i + 1); i--;
-                }
-
-            }
-        }
+        possible_solutions.codes.erase(std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(),
+                                   [&](Code& code )
+                                        {Feedback feed = compare_attempt_with_secret_code(attempt_and_feedback.attempt, code);
+                                            if ((feed.bulls != attempt_and_feedback.feedback.bulls) ||
+                                                (feed.cows != attempt_and_feedback.feedback.cows))
+                                            {
+                                                return true;
+                                            }
+                                            return false; }),possible_solutions.codes.end());
     }
 } // namespace bulls_and_cows
