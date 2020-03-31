@@ -26,24 +26,6 @@ TEST_CASE("TEST bulls_and_cows::printOptions")
             "accept_doublons=0\n");
 }
 
-TEST_CASE("TEST bulls_and_cows::modifOptions")
-{
-    // ARRANGE
-    bulls_and_cows::GameOptions game_options{};
-    //option a rentrer : B / H / 4 / 8 / F / T
-
-    // ASK
-    bulls_and_cows::modifOptions(game_options);
-
-    // ASSERT
-    REQUIRE(game_options.minimum_allowed_character == 'B');
-    REQUIRE(game_options.maximum_allowed_character == 'H');
-    REQUIRE(game_options.number_of_characters_per_code == 4);
-    REQUIRE(game_options.max_number_of_attempts == 8);
-    REQUIRE(game_options.save_game == false);
-    REQUIRE(game_options.accept_doublons == true);
-}
-
 TEST_CASE("TEST bulls_and_cows::loadGame_options")
 {
     // ARRANGE

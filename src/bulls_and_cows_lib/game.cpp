@@ -229,6 +229,7 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
+        std::vector<std::string> allPossibilities = createAllPossibilities(game_options);
         std::string secretCodeComputer =
             giveCode(game_options); // nous générons un code aléatoire avec les paramètres demandés dans game_options
         printCode(secretCodeComputer); // permet d'afficher un code, ici le secret code pour débugger
@@ -241,16 +242,18 @@ namespace bulls_and_cows {
         do
         {
             std::string code;
-            code = askCodeComputer(game_options, finalBoards);
-
+            code = randomInPossibilities(allPossibilities);
             unsigned int bulls = giveBullsNumber(secretCodeComputer, code);
             unsigned int cows = giveCowsNumber(secretCodeComputer, code);
 
             finalBoards.emplace_back(code, bulls, cows);
-
             boardGame(finalBoards, game_options, std::cout);
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            deleteIncorrectPoissibilities(allPossibilities, code, bulls, cows);
+
+            std::cout << "nombre de possibilités restantes : " << allPossibilities.size() << "\n";
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
             if (checkWin(secretCodeComputer, code))
             {
@@ -262,6 +265,7 @@ namespace bulls_and_cows {
                 win = GameStatus::Lose;
                 std::cout << "you lose \n";
             }
+
         } while (win == GameStatus::Continue);
 
         if (game_options.save_game == true)
@@ -277,42 +281,43 @@ namespace bulls_and_cows {
     void configure_game_options(GameOptions& game_options)
     {
         int menu{0};
-         
-            std::cout << "\nVoici les options : \n";
-            std::cout << "1- Afficher les options du jeu : \n";
-            std::cout << "2- Modifier les options du jeu : \n";
-            std::cout << "3- Sauvegarder les options du jeu en cours : \n";
-            std::cout << "4- Chargé les options deja sauvegarder dans un fichier : \n";
-            std::cout << "4- Quitter : \n";
-            std::cout << "Choix de menu : \n";
-            std::cin >> menu;
 
-            //utilisation de if au lieu de switch, pour initialiser la variable monFlux seulement lors du print dans le fichier.
-            if (menu == 1)
+        std::cout << "\nVoici les options : \n";
+        std::cout << "1- Afficher les options du jeu : \n";
+        std::cout << "2- Modifier les options du jeu : \n";
+        std::cout << "3- Sauvegarder les options du jeu en cours : \n";
+        std::cout << "4- Chargé les options deja sauvegarder dans un fichier : \n";
+        std::cout << "5- Quitter : \n";
+        std::cout << "Choix de menu : \n";
+        std::cin >> menu;
+
+        // utilisation de if au lieu de switch, pour initialiser la variable monFlux seulement lors du print dans le
+        // fichier.
+        if (menu == 1)
+        {
+            printOptions(game_options, std::cout);
+        }
+        else if (menu == 2)
+        {
+            modifOptions(game_options);
+        }
+        else if (menu == 3)
+        {
+            std::ofstream monFlux("C:/C++/PROJECTS/bulls_and_cows_skeleton/game_options.txt");
+            if (monFlux)
             {
-                printOptions(game_options, std::cout);
-            }
-            else if (menu == 2)
-            {
-                modifOptions(game_options);
-            }
-            else if (menu == 3)
-            {
-                std::ofstream monFlux("C:/C++/PROJECTS/bulls_and_cows_skeleton/game_options.txt");
-                if (monFlux)
-                {
-                    printOptions(game_options, monFlux);
-                    std::cout << "Options bien enregistre\n";
-                }
-                else
-                    std::cout << "fichier introuvable\n";
-            }
-            else if (menu == 4)
-            {
-                loadGame_options(game_options);
+                printOptions(game_options, monFlux);
+                std::cout << "Options bien enregistre\n";
             }
             else
-                std::cout << "retour vers le menu";
+                std::cout << "fichier introuvable\n";
+        }
+        else if (menu == 4)
+        {
+            loadGame_options(game_options);
+        }
+        else
+            std::cout << "retour vers le menu";
     }
 
     void play_game()
