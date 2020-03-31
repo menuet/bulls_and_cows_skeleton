@@ -46,6 +46,7 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
+        bulls_and_cows::generate_all_possible_codes(game_options);
         std::cout
             << "TODO:\n"
                "    Create a board with a randomly generated secret code\n"

@@ -10,16 +10,10 @@ namespace bulls_and_cows {
 
         for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
         {
-
-            // Choice between Character and Int code, here i took the character one ...
-
+            //Génération du code secret en character 
                 myboard.secret_code.value = myboard.secret_code.value + bulls_and_cows::generate_random_character(
                                                                             game_options.minimum_allowed_character,
                                                                             game_options.maximum_allowed_character);
-
-                //myboard.secret_code.value = myboard.secret_code.value + (char)bulls_and_cows::generate_random_integer(
-                //                                                            game_options.minimum_allowed_character,
-                //                                                            game_options.maximum_allowed_character);
         }
         //std::cout << "Le code secret est le suivant :" << myboard.secret_code.value;
         return myboard;
@@ -28,21 +22,18 @@ namespace bulls_and_cows {
 
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
+        //Valide si le nombre de char est le bon et qu'ils sont compris entre le min et max ...
         if (game_options.number_of_characters_per_code == attempt.value.size())
         {
             for (const char& c : attempt.value)
             {
                 if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
-                {
                     return false;
-                }
             }
             return true;
         }
         else
-        {
             return false;
-        }
     }
 
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
@@ -56,8 +47,6 @@ namespace bulls_and_cows {
         {
             if (tmp_secret_code[i] == tmp_attempt[i])
             {
-                //std::cout << tmp_secret_code << "\n";
-                //std::cout << tmp_attempt << "\n";
                 tmp_attempt.erase(i, 1);
                 tmp_secret_code.erase(i, 1);
                 myfeed.bulls++;
@@ -73,14 +62,13 @@ namespace bulls_and_cows {
             {
                 tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
                 myfeed.cows++;
-                //std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
-                //          << "\n";
             }
         }
 
         return myfeed;
     }
 
+    // Retourne true si le joueur a atteint le max number of attempts
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
         if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size())
@@ -173,6 +161,7 @@ namespace bulls_and_cows {
             }
         }
 
+        //Fonction visant à optimiser l'affichage du jeu
         void optiif(std::ostream& output_stream, const GameOptions& game_options, bool dotoratt, size_t number, AttemptAndFeedback att)
         {
             std::string space = moins_function(7, " ");
@@ -195,7 +184,7 @@ namespace bulls_and_cows {
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
         {
-            // HEAD ...
+            // HEAD ... Ne change jamais
             output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"<< "---------------\n";
             output_stream << "| SECRET   " << moins_function(game_options.number_of_characters_per_code, "* ") << "| "<< "              |\n";
             output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"<< "---------------\n";
@@ -203,7 +192,7 @@ namespace bulls_and_cows {
             output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"<< "---------------\n";
             //...
 
-            // BODY ...
+            // BODY ... 
             AttemptAndFeedback atte{};
             int number_of_attemps = game_options.max_number_of_attempts;
             for (unsigned int i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
