@@ -71,7 +71,7 @@ namespace bulls_and_cows {
 
             case 1:
 
-                std::cout << " modify max attempt\n";
+                std::cout << " 1 - Modify maximum number of attemps per game\n";
 
                 std::cin >> game_options.max_number_of_attempts;
 
@@ -79,7 +79,7 @@ namespace bulls_and_cows {
 
             case 2:
 
-                std::cout << " modfiy number of characters \n";
+                std::cout << " 2 - Modify number of character in a code \n";
 
                 std::cin >> game_options.number_of_characters_per_code;
 
@@ -87,7 +87,7 @@ namespace bulls_and_cows {
 
             case 3:
 
-                std::cout << " modfiy min allowed \n";
+                std::cout << "3 - Modify Minimun allowed character\n";
 
                 std::cin >> game_options.minimum_allowed_character;
 
@@ -95,13 +95,14 @@ namespace bulls_and_cows {
 
             case 4:
 
-                std::cout << " modfiy max allowed \n";
+                std::cout << "4 - Modify Maximum allowed character \n";
 
                 std::cin >> game_options.maximum_allowed_character;
 
                 break;
 
             case 5:
+
 
                 save_game_options(std::cout, game_options);
 
