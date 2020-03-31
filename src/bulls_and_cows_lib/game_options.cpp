@@ -9,7 +9,8 @@ namespace bulls_and_cows {
         output_stream << "\nHere are the current game_options :\n";
         output_stream << "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n";
         output_stream << "Number of characters in a code: " << game_options.number_of_characters_per_code << "\n";
-        output_stream << "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '" << game_options.maximum_allowed_character << "'\n";
+        output_stream << "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '"
+                      << game_options.maximum_allowed_character << "'\n";
     }
 
     void display_game_options_menu(std::ostream& output_stream)
@@ -96,14 +97,16 @@ namespace bulls_and_cows {
         auto max = game_options.maximum_allowed_character;
         auto nb_char = game_options.number_of_characters_per_code;
 
-        output_stream << "\nEnter the minimum allowed character (must be < to maximum allowed charcter & maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
+        output_stream << "\nEnter the minimum allowed character (must be < to maximum allowed charcter & "
+                         "maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
         new_minimum = ask_char_or_default(input_stream, -1);
         unsigned int diff = max - new_minimum + 1;
 
         while (new_minimum == -1 || new_minimum >= max || diff < nb_char)
         {
             output_stream << "Incorrect input, try again !\n";
-            output_stream << "Enter the minimum allowed character (must be < to maximum allowed charcter & maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
+            output_stream << "Enter the minimum allowed character (must be < to maximum allowed charcter & "
+                             "maxi_allowed_char - min_allowed_char must be >= nb character per code) : ";
             new_minimum = ask_char_or_default(input_stream, -1);
             diff = max - new_minimum + 1;
         }
@@ -124,7 +127,7 @@ namespace bulls_and_cows {
         new_maximum = ask_char_or_default(input_stream, -1);
         unsigned int diff = new_maximum - min + 1;
 
-        while (new_maximum == -1 || ( new_maximum <= min) || (diff < nb_char) )
+        while (new_maximum == -1 || (new_maximum <= min) || (diff < nb_char))
         {
             output_stream << "Incorrect input, try again !\n";
             output_stream << "Enter the maximum allowed character (must be > to minimum allowed character & "
@@ -135,6 +138,55 @@ namespace bulls_and_cows {
 
         game_options.maximum_allowed_character = new_maximum;
         output_stream << "Maximum allowed character has been modified succefully\n";
+    }
+
+    bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
+    {
+        if (output_file_stream)
+        {
+            output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts
+                               << "\n"
+                                  "number_of_characters_per_code="
+                               << game_options.number_of_characters_per_code
+                               << "\n"
+                                  "minimum_allowed_character="
+                               << game_options.minimum_allowed_character
+                               << "\n"
+                                  "maximum_allowed_character="
+                               << game_options.maximum_allowed_character << "\n";
+
+            std::cout << "\nYour options have been saved succefully\n";
+
+            return true;
+        }
+
+        return false;         
+    }
+
+    bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
+    {
+        std::string line;
+
+        while (std::getline(input_file_stream, line)) // on lit ligne par ligne
+        {
+            std::size_t delimiter = line.find("=");
+            std::string token = line.substr(0, delimiter);
+            std::string numb = line.substr(delimiter + 1);
+
+            if (token == "max_number_of_attempts")
+                game_options.max_number_of_attempts = std::atoi(numb.c_str());
+
+            else if (token == "number_of_characters_per_code")
+                game_options.number_of_characters_per_code = std::atoi(numb.c_str());
+
+            else if (token == "minimum_allowed_character")
+                game_options.minimum_allowed_character = numb[0];
+
+            else if (token == "maximum_allowed_character")
+                game_options.maximum_allowed_character = numb[0];
+        }
+
+        return true;
     }
 
 } // namespace bulls_and_cows

@@ -75,9 +75,14 @@ namespace bulls_and_cows {
     void configure_game_options(GameOptions& game_options)
     {
         bool back_to_main = false;
+        std::string path = "C:/DEVCPP/PROJECTS/bulls_and_cows_skeleton/game_options.txt";
+        std::ofstream save;
+        std::ifstream load(path);
+
 
         while (!back_to_main)
         {
+
             display_game_options(std::cout, game_options);
             display_game_options_menu(std::cout);
             const auto choice = ask_game_options_menu_choice(std::cin);
@@ -100,13 +105,15 @@ namespace bulls_and_cows {
                 modify_maximum_allowed_characters(game_options, std::cout, std::cin);
                 break;
             case GameOptionsMenuChoice::SaveOptions:
-                //
+                save.open(path);
+                save_game_options(save, game_options);
+                save.close();
                 break;
             case GameOptionsMenuChoice::LoadOptions:
-                //
+                load_game_options(load, game_options);
                 break;
             case GameOptionsMenuChoice::Error:
-                std::cout << "\nYou did not enter a valid choice, please try again\n"; // problem
+                std::cout << "\nYou did not enter a valid choice, please try again\n";
                 break;
             }
         }
