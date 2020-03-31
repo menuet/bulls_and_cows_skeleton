@@ -3,25 +3,49 @@
 #include "random.hpp"
 
 namespace bulls_and_cows {
-    // TODO: define the body of the functions declared in game_solver.cpp
+
+     // TODO: define the body of the functions declared in game_solver.cpp
+
+    void recursif(int num, int max, const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabeat,
+                  Code codes)
+    {
+        for (char temp : used_alphabeat)
+        {
+            if (num <= max)
+            {
+                codes.value.push_back(temp);
+                num++;
+
+                recursif(num, max, game_options, pls, used_alphabeat, codes);
+                codes.value.pop_back();
+            }
+            else if (num > max)
+            {
+                pls.codes.push_back(codes);
+                std::cout << "Vecteur suivant ajouté : " << codes.value << "\n";
+                num--;
+                break;
+            }
+            num--;
+        }
+    }
+
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options)
     {
-        PossibleSolutions pls{}; // Comme l'état de mon cerveau pour faire cette fonction
+        PossibleSolutions avc{}; // Comme l'état de mon cerveau pour faire cette fonction
         std::string used_alphabeat;
         //Génération de la chaine avec toutes les lettres du min a la max
         for (char c = game_options.minimum_allowed_character; c <= game_options.maximum_allowed_character; c++)
         {
            used_alphabeat.push_back(c);
         }
-
-        //for (char temp : used_alphabeat)
-        //{
-
-        //}
+        Code codes; 
+        recursif(1, game_options.number_of_characters_per_code, game_options, avc, used_alphabeat, codes);
 
         std::cout << "char from min to max : " << used_alphabeat <<"\n";
-        return pls;
+        return avc;
     }
+
 
     Code pick_random_attempt(const PossibleSolutions& possible_solutions)
     {
