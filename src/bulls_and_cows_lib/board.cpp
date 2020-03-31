@@ -52,17 +52,9 @@ namespace bulls_and_cows
         {
             if (stratt[i] == strcode[i])
             {
-                std::cout << stratt;
-                std::cout << " ";
-                std::cout << strcode;
-                std::cout << " ";
                 feedback.bulls++;
                 stratt = stratt.replace(i, 1, ":");
                 strcode = strcode.replace(i, 1, ".");
-                std::cout << stratt;
-                std::cout << " ";
-                std::cout << strcode;
-                std::cout << " ";
             }
             i++;
         }
@@ -73,19 +65,9 @@ namespace bulls_and_cows
             {
                 if (stratt[i] == strcode[k])
                 {
-
-                    std::cout << stratt;
-                    std::cout << " ";
-                    std::cout << strcode;
-                    std::cout << " ";
                     feedback.cows++;
                     stratt.replace(i, 1, "/");
                     strcode.replace(k, 1, "#");
-
-                    std::cout << stratt;
-                    std::cout << " ";
-                    std::cout << strcode;
-                    std::cout << " ";
                 }
                 k++;
             }
@@ -94,6 +76,10 @@ namespace bulls_and_cows
         }
         return feedback;
     }
+    //Un message d'erreur apparait néanmoins, après plusieurs tests j'ai l'impression que cela vient du test unitaire et non de mon code
+    // Testant les 75/76 et s'attendant au résultat des lignes 68/69
+    // Mais je me trompe surement
+
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
         if (board.attempts_and_feedbacks.size() ==
@@ -107,6 +93,24 @@ namespace bulls_and_cows
             return false;
         }
     }
-    // TODO: define the body of the functions declared in board.cpp
- // namespace bulls_and_cows
+
+    bool is_win(const GameOptions& game_options, const Board& board)
+    {
+        if (board.attempts_and_feedbacks.empty())
+        {
+            return false;
+        }
+
+        if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
+    {
+
+    }
 }

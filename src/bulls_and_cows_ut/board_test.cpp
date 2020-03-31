@@ -124,7 +124,7 @@ TEST_CASE("TEST bulls_and_cows::compare_attempt_with_secret_code WHEN 0 bulls an
     REQUIRE(feedback.bulls == 0);
     REQUIRE(feedback.cows == 0);
 }
-/*
+
 TEST_CASE("TEST bulls_and_cows::is_end_of_game WHEN not yet the end")
 {
     // ARRANGE
@@ -137,7 +137,6 @@ TEST_CASE("TEST bulls_and_cows::is_end_of_game WHEN not yet the end")
     // ASSERT
     REQUIRE(!result);
 }
-
 TEST_CASE("TEST bulls_and_cows::is_win WHEN codebreaker is not yet winning")
 {
     // ARRANGE
@@ -183,7 +182,7 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
             "| #01      . . . . . |       |      |\n"
             "-------------------------------------\n");
 }
-
+/*
 TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
 {
     // ARRANGE
