@@ -111,6 +111,31 @@ namespace bulls_and_cows
 
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
+        unsigned i = 0;
+        output_stream << "-------------------------------------\n"
+                      << "| SECRET   * * * * * |              |\n"
+                      << "-------------------------------------\n"
+                      << "| ATTEMPTS           | BULLS | COWS |\n"
+                      << "-------------------------------------\n";
+
+        while (i < game_options.max_number_of_attempts)
+        {
+            if (i < 3)
+            {
+                output_stream << "| #" << game_options.max_number_of_attempts - i
+                              << "      . . . . . |       |      |\n";
+                
+            }
+
+            else
+            {
+                output_stream << "| #0" << game_options.max_number_of_attempts - i
+                              << "      . . . . . |       |      |\n";
+            }
+            i++;
+        }
+        output_stream << "-------------------------------------\n";
+
 
     }
 }
