@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-
+// Marc Belleperche m'a aidé pour ce TP pour gameoption et son implémentation dans configure_game_options
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
