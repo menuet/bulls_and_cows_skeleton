@@ -155,14 +155,25 @@ namespace bulls_and_cows
             {
                 if (i > 9)
                 {
-                    output_stream << "| #" << i << "      . . . . . |  "
-                                    << board.attempts_and_feedbacks[i].feedback.bulls << "    |   "
-                                    << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
+                    output_stream << "| #" << i << "      ";
+                    for (unsigned h = 0; h < game_options.number_of_characters_per_code; h++)
+                    {
+                        output_stream << board.attempts_and_feedbacks[i - 1].attempt.value[h] << " ";
+                    }
+                    output_stream << "|  " << board.attempts_and_feedbacks[i - 1].feedback.bulls << "    |  "
+                                  << board.attempts_and_feedbacks[i - 1].feedback.cows << "   |\n";
                 }
 
                 else
                 {
-                    output_stream << "| #0" << i << "      . . . . . |       |      |\n";
+                    output_stream << "| #0" << i << "      ";
+                    for (unsigned h = 0; h < game_options.number_of_characters_per_code; h++)
+                    {
+                        output_stream << board.attempts_and_feedbacks[i - 1].attempt.value[h] << " ";
+                    }                        
+                     output_stream<< "|  "
+                                  << board.attempts_and_feedbacks[i - 1].feedback.bulls << "    |  "
+                                  << board.attempts_and_feedbacks[i - 1].feedback.cows << "   |\n";
                 }
             }
             
