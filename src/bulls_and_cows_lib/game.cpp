@@ -9,16 +9,17 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-// Marc Belleperche m'a aidé pour ce TP pour gameoption et son implémentation dans configure_game_options
+// Marc Belleperche m'a aidé pour ce TP pour l'implémentation de quelques fonction (dans game.cpp ET game_option.cpp)
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
         Board board = bulls_and_cows::create_board(game_options);
+        bulls_and_cows::display_board(std::cout, game_options, board);
 
         while (bulls_and_cows::is_end_of_game(game_options, board) == false && bulls_and_cows::is_win(game_options, board) == false)
         {
-            bulls_and_cows::display_board(std::cout, game_options, board);
+            
             Code askattempt = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, board);
 
             if (bulls_and_cows::validate_attempt(game_options, askattempt))
@@ -30,7 +31,9 @@ namespace bulls_and_cows {
 
                 board.attempts_and_feedbacks.push_back(new_askattempt);
             }
+            bulls_and_cows::display_board(std::cout, game_options, board);
         }
+        
     }
 
 
