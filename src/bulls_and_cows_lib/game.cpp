@@ -46,14 +46,36 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        bulls_and_cows::generate_all_possible_codes(game_options);
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
+        //bulls_and_cows::generate_all_possible_codes(game_options);
+
+
+        PossibleSolutions myavc = bulls_and_cows::generate_all_possible_codes(game_options);
+        std::cout << "Solution generated with " << myavc.codes.size() << " solutions\n";
+        Board myavcboard = bulls_and_cows::create_board(game_options);
+
+        //while (!bulls_and_cows::is_end_of_game(game_options, myavcboard) && !bulls_and_cows::is_win(game_options, myavcboard))
+        //{
+            // First display of the empty board
+            bulls_and_cows::display_board(std::cout, game_options, myavcboard);
+            std::cout << "Solutions still are " << myavc.codes.size() << " solutions\n";
+
+            // Asking attemp the computer to choose a random possibilitie
+            Code avctemp = bulls_and_cows::pick_random_attempt(myavc);
+            std::cout << "Choosen code is " << avctemp.value << "\n";
+
+                AttemptAndFeedback newattemp;
+                newattemp.attempt = avctemp;
+                newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(avctemp, myavcboard.secret_code);
+                myavcboard.attempts_and_feedbacks.push_back(newattemp);
+
+        //}
+
+        std::cout<< "TODO:\n"
+               "    Create a board with a randomly generated secret code\n" //DONE
+               "    Generate the list of all the possible codes\n" //DONE
                "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
+               "       Display the board and the list of attempts so far\n" //DONE
+               "       Display the number of remaining possible codes so far\n" //DONE
                "       Wait for 2 seconds\n"
                "       Pick a random attempt among in the list of remaining possible codes\n"
                "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"

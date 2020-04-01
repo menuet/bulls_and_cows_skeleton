@@ -22,8 +22,8 @@ namespace bulls_and_cows {
             else if (num > max)
             {
                 pls.codes.push_back(codes);
-                std::cout << "Vecteur suivant ajouté : " << codes.value << "\n";
-                num--;
+                //std::cout << "Vecteur suivant ajouté : " << codes.value << "\n";
+                //num--;
                 break;
             }
             num--;
@@ -55,4 +55,14 @@ namespace bulls_and_cows {
         //Pas tester mais techniquement ca retourne un attempt aléatoire entre 0 et la taille max du tableau
     }
 
+
+    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback, PossibleSolutions& possible_solutions)
+    {
+        for (Code codes : possible_solutions.codes)
+        {
+            AttemptAndFeedback tempattemp{};
+            tempattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(codes, ???);
+
+        }
+    }
 } // namespace bulls_and_cows
