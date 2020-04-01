@@ -66,9 +66,9 @@ namespace bulls_and_cows {
             display_game_options(std::cout, game_options);
             display_game_options_menu(std::cout);
             std::cin.clear();
-            const auto user_choice = ask_game_options_menu_choice(std::cin);
+            const auto choice = ask_game_options_menu_choice(std::cin);
 
-            switch (user_choice)
+            switch (choice)
             {
             case GameOptionsMenuChoice::BackToMain:
                 get_out = true;
