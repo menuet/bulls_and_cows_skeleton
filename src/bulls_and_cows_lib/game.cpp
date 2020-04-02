@@ -20,8 +20,8 @@ namespace bulls_and_cows {
 
         AttemptAndFeedback newattemp{};
 
-        //Méthodes implémentées mais is_end_of_game et is_win restes à implémenter donc l'appel est impossible 
-       /* while (!bulls_and_cows::is_end_of_game(game_options, board) && !bulls_and_cows::is_win(game_options, board))
+        
+        while (!bulls_and_cows::is_end_of_game(game_options, board) && !bulls_and_cows::is_win(game_options, board))
         { 
            
             bulls_and_cows::display_board(std::cout, game_options, board);
@@ -41,7 +41,7 @@ namespace bulls_and_cows {
 
         else
 
-            std::cout << "Try again" << std::endl;*/
+            std::cout << "Try again" << std::endl;
     }
     
     
