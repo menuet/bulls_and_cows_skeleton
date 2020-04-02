@@ -26,7 +26,7 @@ namespace bulls_and_cows {
            
             bulls_and_cows::display_board(std::cout, game_options, board);
 
-            newattemp.attempt = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, board);
+           
 
             newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(newattemp.attempt, board.secret_code);
 

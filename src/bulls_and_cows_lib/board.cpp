@@ -64,9 +64,9 @@ namespace bulls_and_cows {
 
         Feedback feedback;
 
-        unsigned i = 0;
+        unsigned int i = 0;
 
-        unsigned k = 0;
+        unsigned int k = 0;
 
         while (i < attempt.value.size())
 
@@ -163,7 +163,7 @@ namespace bulls_and_cows {
 
             if (i > 9)
 
-                for (unsigned a = 0; a < game_options.number_of_characters_per_code; a++)
+                for (unsigned int a = 0; a < game_options.number_of_characters_per_code; a++)
 
                 {
 
@@ -174,7 +174,7 @@ namespace bulls_and_cows {
 
                           << "| SECRET   ";
 
-            for (unsigned b = 0; b < game_options.number_of_characters_per_code; b++)
+            for (unsigned int b = 0; b < game_options.number_of_characters_per_code; b++)
 
             {
 
@@ -183,7 +183,7 @@ namespace bulls_and_cows {
 
             output_stream << "|              |\n---------------------------";
 
-            for (unsigned c = 0; c < game_options.number_of_characters_per_code; c++)
+            for (unsigned int c = 0; c < game_options.number_of_characters_per_code; c++)
 
             {
 
@@ -194,7 +194,7 @@ namespace bulls_and_cows {
 
                              "| ATTEMPTS ";
 
-            for (unsigned d = 0; d < game_options.number_of_characters_per_code; d++)
+            for (unsigned int d = 0; d < game_options.number_of_characters_per_code; d++)
 
             {
 
@@ -203,7 +203,7 @@ namespace bulls_and_cows {
 
             output_stream << "| BULLS | COWS |\n";
 
-            for (unsigned e = 0; e < game_options.number_of_characters_per_code; e++)
+            for (unsigned int e = 0; e < game_options.number_of_characters_per_code; e++)
 
             {
 
@@ -212,17 +212,17 @@ namespace bulls_and_cows {
 
             output_stream << "---------------------------\n";
 
-            for (unsigned i = game_options.max_number_of_attempts; i > 0; i--)
+            for (unsigned int j = game_options.max_number_of_attempts; j > 0; j--)
 
             {
 
                 std::string nb_points{};
 
-                for (unsigned f = 0; f < game_options.number_of_characters_per_code; f++)
+                for (unsigned int f = 0; f < game_options.number_of_characters_per_code; f++)
 
                 {
 
-                    output_stream << "| #" << i << "      . . . . . |  "
+                    output_stream << "| #" << j << "      . . . . . |  "
 
                                   << "     |   "
 
@@ -231,30 +231,30 @@ namespace bulls_and_cows {
                     nb_points += ". ";
                 }
 
-                if (board.attempts_and_feedbacks.size() < i)
+                if (board.attempts_and_feedbacks.size() < j)
 
                 {
 
-                    if (i > 9)
+                    if (j > 9)
 
-                        output_stream << "| #" << i << "      " << nb_points << "|       |      |\n";
+                        output_stream << "| #" << j << "      " << nb_points << "|       |      |\n";
 
                     else
 
-                        output_stream << "| #0" << i << "      " << nb_points << "|       |      |\n";
+                        output_stream << "| #0" << j << "      " << nb_points << "|       |      |\n";
                 }
 
                 else
 
                 {
 
-                    output_stream << "| #0" << i << "      . . . . . |       |      |\n";
+                    output_stream << "| #0" << j << "      . . . . . |       |      |\n";
 
-                    if (i > 9)
+                    if (j > 9)
 
                     {
 
-                        output_stream << "| #" << i << "      . . . . . |  "
+                        output_stream << "| #" << j << "      . . . . . |  "
 
                                       << board.attempts_and_feedbacks[i].feedback.bulls << "    |   "
 
@@ -265,11 +265,11 @@ namespace bulls_and_cows {
 
                     {
 
-                        output_stream << "| #0" << i << "      . . . . . |       |      |\n";
+                        output_stream << "| #0" << j << "      . . . . . |       |      |\n";
                     }
                 }
 
-                i--;
+                j--;
             }
 
             output_stream << "-------------------------------------\n";
