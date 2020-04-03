@@ -68,6 +68,21 @@ TEST_CASE("TEST bulls_and_cows::count_cow WHEN 1 cows and duplicates with 2 bull
     REQUIRE(result == 1);
 }
 
+TEST_CASE("TEST bulls_and_cows::count_cow WHEN 0 cows and duplicates with 3 bulls")
+{
+    // ARRANGE
+    bulls_and_cows::Code attempt;
+    bulls_and_cows::Code code;
+    attempt.value = "EEDC";
+    code.value = "DEDC";
+
+    // ACT
+    const unsigned int result = bulls_and_cows::count_cow(attempt, code);
+
+    // ASSERT
+    REQUIRE(result == 0);
+}
+
 TEST_CASE("TEST bulls_and_cows::check_duplicates WHEN there are duplicates")
 {
     //ARRANGE
