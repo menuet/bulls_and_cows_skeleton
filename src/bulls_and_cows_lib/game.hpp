@@ -20,14 +20,13 @@ namespace bulls_and_cows {
         Win=1,
         Lose=2,
     };
-
     bool checkSameCharInString(std::string const& code, char const charCode);
     std::string giveCode(const GameOptions& game_options);
     void printCode(std::string const& code);
     bool checkDoublonsString(std::string const& code);
     bool checkErrorAttemps(std::string const& code, const GameOptions& game_options);
     std::string askCodeUser(const GameOptions& game_options);
-    unsigned int giveCowsNumber(std::string const& secretCodeComputer, std::string const& code);
+    unsigned int giveCowsNumber(std::string const& secretCodeComputer, std::string code);
     unsigned int giveBullsNumber(std::string const& secretCodeComputer, std::string const& code);
     bool checkWin(std::string const& secretCodeComputer, std::string const& code);
     std::string askCodeComputer(const GameOptions& game_options, std::vector<FinalBoard> const& finalBoard);

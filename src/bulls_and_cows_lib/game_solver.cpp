@@ -60,23 +60,6 @@ namespace bulls_and_cows {
         allPossibilities.erase(std::remove_if(allPossibilities.begin(), allPossibilities.end(),
                                               [codeComputer, bulls, cows, game_options](std::string code) 
                                               {
-                                                  if (game_options.accept_doublons == true)
-                                                  {
-                                                      // permet de supprimer toutes les possiblités qui ont des bulls et
-                                                      // cows différents du codeComputer
-
-                                                      if (giveBullsNumber(codeComputer, code) != bulls &&
-                                                          giveCowsNumber(codeComputer, code) != cows)
-                                                      {
-                                                          return true;
-                                                      }
-                                                      else
-                                                      {
-                                                          return false;
-                                                      }
-                                                  }
-                                                  else
-                                                  {
                                                       if (giveBullsNumber(codeComputer, code) != bulls ||
                                                           giveCowsNumber(codeComputer, code) != cows)
                                                       {
@@ -86,8 +69,6 @@ namespace bulls_and_cows {
                                                       {
                                                           return false;
                                                       }
-                                                  }
-                                                    
                                               }), allPossibilities.end());
     }
 } // namespace bulls_and_cows

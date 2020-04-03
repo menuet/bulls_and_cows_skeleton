@@ -112,7 +112,7 @@ namespace bulls_and_cows {
 
     // La methode giveCowsNumber permet de checker si le code du user possède des similitudes avec le code secret et
     // retourne ce nombre.
-    unsigned int giveCowsNumber(std::string const& secretCodeComputer, std::string const& code)
+    unsigned int giveCowsNumber(std::string const& secretCodeComputer, std::string code)
     {
         std::string codeTemp = secretCodeComputer;
         // on cherche les bulls pour les enlever afin de ne pas les compter dans le calcul de cows.
@@ -120,6 +120,7 @@ namespace bulls_and_cows {
         {
             if (secretCodeComputer[i] == code[i])
             {
+                code[i] = '1';
                 codeTemp[i] = '0';
             }
         }
@@ -132,6 +133,7 @@ namespace bulls_and_cows {
                 {
                     count++;
                     // lorsque l'on a compté une cow alors on l'enlève du code pour ne pas la compter une seconde fois.
+                    code[i] = '1';
                     codeTemp[j] = '0';
                 }
             }
@@ -241,15 +243,15 @@ namespace bulls_and_cows {
         GameStatus win = GameStatus::Continue;
         do
         {
-            std::string code;
-            code = randomInPossibilities(allPossibilities);
+            std::string code = randomInPossibilities(allPossibilities);
+            
             unsigned int bulls = giveBullsNumber(secretCodeComputer, code);
             unsigned int cows = giveCowsNumber(secretCodeComputer, code);
 
             finalBoards.emplace_back(code, bulls, cows);
             boardGame(finalBoards, game_options, std::cout);
 
-            deleteIncorrectPoissibilities(allPossibilities, code, bulls, cows,game_options);
+            deleteIncorrectPoissibilities(allPossibilities, code, bulls, cows, game_options);
 
             std::cout << "nombre de possibilités restantes : " << allPossibilities.size() << "\n";
 
