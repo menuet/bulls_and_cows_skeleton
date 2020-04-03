@@ -64,26 +64,28 @@ namespace bulls_and_cows {
     }
 
     // Count and return the number of cows in the attempt
-    unsigned int count_cow(Code attempt_variable, Code const& code)
+    unsigned int count_cow(Code attempt_variable, Code code_variable)
     {
         //We need to retreive the bulls to avoid counting them as cows when there are duplicates
-        for (int i = 0; i < code.value.size(); i++)
+        for (int i = 0; i < code_variable.value.size(); i++)
         {
-            if (attempt_variable.value[i] == code.value[i])
+            if (attempt_variable.value[i] == code_variable.value[i])
             {
-                attempt_variable.value[i]='0';
+                attempt_variable.value[i]='1';
+                code_variable.value[i] = '0';
             }
         }
 
         unsigned int cow = 0;
-        for (int i = 0; i < code.value.size(); i++)
+        for (int i = 0; i < code_variable.value.size(); i++)
         {
             for (int j = 0; j < attempt_variable.value.size(); j++)
             {
-                if (attempt_variable.value[j] == code.value[i] && i != j)
+                if (attempt_variable.value[j] == code_variable.value[i])
                 {
-                    //To count each character only 1 time, we change their value to a forbidden character
-                    attempt_variable.value[j]='0';
+                    //To count each character of the attempt only 1 time, we change their value to a forbidden character
+                    attempt_variable.value[j]='1';
+                    code_variable.value[i] = '0';
                     cow++;
                 }
 
@@ -214,37 +216,16 @@ namespace bulls_and_cows {
         return true;
     }
 
-    void erase_invalid_solutions(const GameOptions& game_options, PossibleSolutions& solutions,
+    void erase_invalid_solutions(PossibleSolutions& solutions,
                                  const AttemptBullsCows& attempt_bulls_cows)
     {
         solutions.codes.erase(
             std::remove_if(solutions.codes.begin(), solutions.codes.end(),
-                           [attempt_bulls_cows,game_options](const Code code) {
-                                
-                                if (game_options.allow_duplicate)
-                                {
-                                   if (count_cow(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.cows &&
-                                       count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
-                                   {
-                                       return true;
-                                   }
-                                   else
-                                   {
-                                       if (count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
-                                       {
-                                           return true;
-                                       }
-                                   }
-                                }
-                                else
-                                {
-                                    if (count_cow(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.cows ||
-                                        count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
-                                    {
-                                        return true;
-                                    }
-                                }
-                               
+                           [attempt_bulls_cows](const Code code) {
+                                 if (count_cow(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.cows || count_bull(code, attempt_bulls_cows.attempt) != attempt_bulls_cows.bulls)
+                                 {
+                                    return true;
+                                 }
                                return false;
                            }),
             solutions.codes.end());
@@ -280,7 +261,7 @@ namespace bulls_and_cows {
 
             if (attempt_bulls_cows.bulls != game_options.number_of_characters_per_code && solutions.codes.size()!=1)
             {
-                erase_invalid_solutions(game_options, solutions,attempt_bulls_cows);
+                erase_invalid_solutions(solutions,attempt_bulls_cows);
             }
             
             historic.value.push_back(attempt_bulls_cows);
