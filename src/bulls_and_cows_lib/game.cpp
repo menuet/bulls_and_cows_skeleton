@@ -10,11 +10,12 @@
 #include <iostream>
 #include <thread>
 
-namespace bulls_and_cows {
+namespace bulls_and_cows 
+{
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
+           std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
                      "    DO\n"
                      "       Display the board and the list of attempts so far\n"
@@ -24,8 +25,45 @@ namespace bulls_and_cows {
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
                      "    Display a message telling if the user won or lost\n";
-    }
+        Board board{};
+        AttemptAndFeedback feedback{};
 
+        board = create_board(game_options);
+
+        do
+        {
+            std::cout << "\n";
+            display_board(std::cout, game_options, board);
+
+            feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+
+            while (!validate_attempt(game_options,feedback.attempt))
+            {
+                std::cout << "Your attempt is not valid, try again\n";
+                feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+            }
+
+            feedback.feedback = compare_attempt_with_secret_code(feedback.attempt, board.secret_code);
+
+            board.attempts_and_feedbacks.push_back(feedback);
+        } while (!(is_end_of_game(game_options, board)) && !(is_win(game_options, board)));
+
+        
+        std::cout << "\n";
+        display_board(std::cout, game_options, board);
+
+        if (is_win(game_options, board))
+        {
+            std::cout << "\n"
+                      << "You won !the hidden code was: " << board.secret_code.value << "\n";
+        }
+
+        else
+        {
+            std::cout << "\n"
+                      << "You've lost, the hidden code was: " << board.secret_code.value << "\n";
+        }
+        }
     void computer_plays_against_computer(const GameOptions& game_options)
     {
         std::cout
