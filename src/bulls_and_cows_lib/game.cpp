@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-
+#include <windows.h>
 #include "random.hpp"
 #include <vector>
 
@@ -53,8 +53,8 @@ namespace bulls_and_cows {
         std::cout << "Solution generated with " << myavc.codes.size() << " solutions\n";
         Board myavcboard = bulls_and_cows::create_board(game_options);
 
-        //while (!bulls_and_cows::is_end_of_game(game_options, myavcboard) && !bulls_and_cows::is_win(game_options, myavcboard))
-        //{
+        while (!bulls_and_cows::is_end_of_game(game_options, myavcboard) && !bulls_and_cows::is_win(game_options, myavcboard))
+        {
             // First display of the empty board
             bulls_and_cows::display_board(std::cout, game_options, myavcboard);
             std::cout << "Solutions still are " << myavc.codes.size() << " solutions\n";
@@ -63,28 +63,18 @@ namespace bulls_and_cows {
             Code avctemp = bulls_and_cows::pick_random_attempt(myavc);
             std::cout << "Choosen code is " << avctemp.value << "\n";
 
-                AttemptAndFeedback newattemp;
-                newattemp.attempt = avctemp;
-                newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(avctemp, myavcboard.secret_code);
-                myavcboard.attempts_and_feedbacks.push_back(newattemp);
-
-        //}
-
-        std::cout<< "TODO:\n"
-               "    Create a board with a randomly generated secret code\n" //DONE
-               "    Generate the list of all the possible codes\n" //DONE
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n" //DONE
-               "       Display the number of remaining possible codes so far\n" //DONE
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+            AttemptAndFeedback newattemp;
+            newattemp.attempt = avctemp;
+            newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(avctemp, myavcboard.secret_code);
+            std::cout << "Bulls : " << newattemp.feedback.bulls << "Cows : " << newattemp.feedback.cows<<"\n";
+            myavcboard.attempts_and_feedbacks.push_back(newattemp);
+            std::cout << "Secret code is : " << myavcboard.secret_code.value << "\n";
+            bulls_and_cows::remove_incompatible_codes_from_possible_solutions(newattemp, myavc);
+            std::cout << "Solutions still after remove are " << myavc.codes.size() << " solutions\n";
+            if (myavc.codes.size() == 0)
+                break;
+            Sleep(2000);
+        }
     }
 
     void configure_game_options(GameOptions & game_options)
