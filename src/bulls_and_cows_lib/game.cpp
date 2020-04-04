@@ -24,8 +24,8 @@ namespace bulls_and_cows {
                      "    >Press 2 ...\n"
                      "What is your choice ? \n -> ";
                     
-        auto user_choice = ask_main_random_or_typed(std::cin);
-        bool stop= false;
+        auto user_choice = ask_main_random_or_typed(std::cin); //proposition de jouer contre un code aleatoire ou soi-même (plus facile pour les tests)
+        bool stop = false;
         while (stop == false)
         {
             switch (user_choice)
@@ -50,7 +50,6 @@ namespace bulls_and_cows {
             }
         }
 
-        //display_board(game_options, Board);
         std ::cout << "Code secret utilise " << Board.secret_code.value << "\n";
         display_board(game_options, Board);
         bool end = false;
@@ -58,9 +57,9 @@ namespace bulls_and_cows {
         Code Code;
         Feedback feedback;
         AttemptAndFeedback test;
-        while (!end && !win)
+        while (!end && !win)        //tant qu'on a pas trouve le bon code ou atteint la limite 
         {
-            Code.value = create_attempt(game_options, std::cin);
+            Code.value = create_attempt(game_options, std::cin); 
             test.attempt = Code;
             test.feedback = compare_attempt_with_secret_code(Code , Board.secret_code);
             Board.attempts_and_feedbacks.push_back(test);
@@ -85,33 +84,86 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        std::cout   
+            << "IA VS IA Qui gagnera ? J'ai mon idee :\n";
+        Board Board;
+        Board.secret_code.value = create_secret_randomly(game_options, std ::cin); //creation du code secret
+        PossibleSolutions Codes = generate_all_possible_codes2(game_options);      //generation de tous les codes possibles
+        std ::cout << "Code secret utilise " << Board.secret_code.value << "\n";
+        bool end = false;
+        bool win = false;
+        Code Code;
+        Feedback feedback;
+        AttemptAndFeedback test;
+        int result = 0;             //result stockera le nombre de combinaisons encore possible
+        while (!end && !win)
+        {   
+            Code = pick_random_attempt(Codes);
+            std ::cout << "Code test utilise " << Code.value << "\n";
+            test.attempt = Code;
+            test.feedback = compare_attempt_with_secret_code(Code, Board.secret_code);
+            Board.attempts_and_feedbacks.push_back(test);
+            display_board(game_options, Board);
+            win = is_win(game_options, Board);
+            end = is_end_of_game(game_options, Board);
+            result = remove_incompatible_codes_from_possible_solutions(test, Codes);
+            if (result == 1)
+            {
+                win = true;
+            }
+        }
+        if (win)
+        {
+            std::cout << "\n '*'*'*'*' Congratulations '*'*'*'*' \n  "
+                         "      You found the code with only "
+                      << Board.attempts_and_feedbacks.size() << " attempts\n";
+        }
+        if (end && !win)
+        {
+            std::cout << "\n '*'*'*'*' You lost '*'*'*'*' \n  "
+                         " Even with "
+                      << game_options.max_number_of_attempts << " attempts you can't find this god damn code\n";
+        }
+
     }
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        std::cout << "\n#################################\n";
+        display_game_options_menu(std::cout);
+        const auto user_choice = ask_games_options_choice(std::cin);
+        switch (user_choice)
+        {
+        case GameOptionsMenuChoice::BackToMain:
+            std::cout << "\nHere we go again\n";
+            play_game();
+            break;
+        case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
+            std::cout << "\nWill arrive soon\n";
+            play_game();
+            break;
+        case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
+            std::cout << "\nWill arrive soon\n";
+            play_game();
+            break;
+        case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
+            std::cout << "\nWill arrive soon\n";
+            play_game();
+            break;
+        case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
+            std::cout << "\nWill arrive soon\n";
+            play_game();
+            break;
+        case GameOptionsMenuChoice::SaveOptions:
+            std::cout << "\nWill arrive soon\n";
+            play_game();
+            break;
+        case GameOptionsMenuChoice::LoadOptions:
+            std::cout << "\nWill arrive soon\n";
+            play_game();
+            break;
+        }
+        
     }
 
     void play_game()

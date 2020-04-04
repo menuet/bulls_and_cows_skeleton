@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include "input.hpp"
 #include <iostream>
 
 namespace bulls_and_cows {
@@ -10,7 +10,7 @@ namespace bulls_and_cows {
         unsigned int max_number_of_attempts{12};
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
-        char maximum_allowed_character{'H'};
+        char maximum_allowed_character{'C'};
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
@@ -30,7 +30,7 @@ namespace bulls_and_cows {
     };
 
     // Ask the user to select an option of the menu
-    GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream);
+    GameOptionsMenuChoice ask_games_options_choice(std::istream& input_stream);
 
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options);
 
