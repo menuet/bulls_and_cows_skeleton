@@ -10,6 +10,8 @@
 #include <iostream>
 #include <sstream>
 #include <thread>
+#include <windows.h>
+
 using namespace std; // lifehack
 
 namespace bulls_and_cows {
@@ -84,7 +86,7 @@ namespace bulls_and_cows {
         */
 
         Board board = create_board(game_options);
-        // std::cout << " le mot de passe est : " << board.secret_code.value << std::endl;
+        std::cout << " le mot de passe est : " << board.secret_code.value << std::endl;
         while (!is_end_of_game(game_options, board))
         {
             display_board(std::cout, game_options, board); // bug
@@ -114,7 +116,7 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
+        /*std::cout
             << "TODO:\n"
                "    Create a board with a randomly generated secret code\n"
                "    Generate the list of all the possible codes\n"
@@ -129,7 +131,38 @@ namespace bulls_and_cows {
                "possible codes\n"
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+               "    Display a message telling if the computer won or lost\n";*/
+
+        Board board = create_board(game_options);
+        //   Initialisation de toute les combinaisons possible
+        PossibleSolutions combination = generate_all_possible_codes(game_options);
+        
+        
+
+        cout << " le mot de passe est : " << board.secret_code.value << std::endl;
+        while (!is_end_of_game(game_options, board))
+        {
+            display_board(cout, game_options, board); 
+            cout << " nombre de possibilités restante = " << combination.codes.size() << endl; // affichage du nombre de possibilitée restante
+            Sleep(1000); //on atend 1s
+            Code attempt = pick_random_attempt(combination); //on choisit un essai aléatoire
+            Feedback feedback = compare_attempt_with_secret_code(attempt, board.secret_code); //on regarde le résultat
+            AttemptAndFeedback aaf;
+            aaf.attempt = attempt;
+            aaf.feedback = feedback;
+            board.attempts_and_feedbacks.push_back(aaf); //on ajoute le feedback au board
+            remove_incompatible_codes_from_possible_solutions(aaf, combination); //Remove all the codes that are incompatible with the attempt's feedback from the list of possible codes
+        }
+        display_board(std::cout, game_options, board);
+        std::cout << "FINI" << std::endl;
+        if (is_win(game_options, board))
+        {
+            std::cout << " bien joue, l'ordi as gagne!" << std::endl;
+        }
+        else
+        {
+            std::cout << " dommage, l'ordi as perdu! le bon code est : " << board.secret_code.value << std::endl;
+        }
     }
 
     void play_game()
