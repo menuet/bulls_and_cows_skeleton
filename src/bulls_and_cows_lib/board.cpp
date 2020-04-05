@@ -178,120 +178,6 @@ namespace bulls_and_cows {
         //...
     }
 
-
-    /* void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
-    {
-        if ((board.attempts_and_feedbacks.empty())) // printing if player hasn't played already
-        {
-            output_stream << "-------------------------------------\n"
-                             "| SECRET   * * * * * |              |\n"
-                             "-------------------------------------\n"
-                             "| ATTEMPTS           | BULLS | COWS |\n"
-                             "-------------------------------------\n"
-                             "| #12      . . . . . |       |      |\n"
-                             "| #11      . . . . . |       |      |\n"
-                             "| #10      . . . . . |       |      |\n"
-                             "| #09      . . . . . |       |      |\n"
-                             "| #08      . . . . . |       |      |\n"
-                             "| #07      . . . . . |       |      |\n"
-                             "| #06      . . . . . |       |      |\n"
-                             "| #05      . . . . . |       |      |\n"
-                             "| #04      . . . . . |       |      |\n"
-                             "| #03      . . . . . |       |      |\n"
-                             "| #02      . . . . . |       |      |\n"
-                             "| #01      . . . . . |       |      |\n"
-                             "-------------------------------------\n";
-        }
-
-        if (!board.attempts_and_feedbacks.empty()) // printing if player has already played
-        {
-            int sz = (int)board.attempts_and_feedbacks.size();
-
-            // start of head printing
-            int anssize = game_options.number_of_characters_per_code;
-            std::string espaces = "";
-            std::string moins = "---------------------------";
-            std::string etoiles = "";
-            std::string points = "";
-            for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
-            {
-                points = points + ". ";
-            }
-            for (int j = 0; j < anssize; j++)
-            {
-                etoiles = etoiles + "* ";
-                espaces = espaces + "  ";
-                moins = moins + "--";
-            }
-            moins = moins + "\n";
-
-            output_stream << moins << "| SECRET  " << etoiles << "|              |\n"
-                          << moins << "| ATTEMPTS" << espaces << "| BULLS | COWS |\n"
-                          << moins;
-            // end of head printing
-
-            for (unsigned int i = 0U; i < game_options.max_number_of_attempts; i++) // for all attempts
-            {
-                // board.attempts_and_feedbacks[sz - i];
-                if (i < game_options.max_number_of_attempts - sz) // writting the empty attempts
-                {
-
-                    if (game_options.max_number_of_attempts - i < 10)
-                    {
-                        output_stream << "| #" << '0' << game_options.max_number_of_attempts - i << '   ' << '   '
-                                      << points << "|"
-                                      << "   "
-                                      << " "
-                                      << "   "
-                                      << "|"
-                                      << "  " << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
-                    }
-                    // two different cases to put the 0 digit in case of need
-                    else
-                    {
-                        output_stream << "| #" << game_options.max_number_of_attempts - i << '   ' << '   ' << points
-                                      << "|"
-                                      << "   "
-                                      << " "
-                                      << "   "
-                                      << "|"
-                                      << "  "
-                                      << " "
-                                      << "   |\n";
-                    }
-                }
-
-                else
-                { // writting played attempts
-                    std::string codeout;
-                    for (unsigned int k = 0U; k < game_options.number_of_characters_per_code; k++)
-                    {
-                        codeout = codeout + board.attempts_and_feedbacks[i].attempt.value + " ";
-                    }
-                    if (game_options.max_number_of_attempts - i < 10)
-                    {
-                        output_stream << "| #" << '0' << game_options.max_number_of_attempts - i << '   ' << '   '
-                                      << codeout + "|"
-                                      << "   " << board.attempts_and_feedbacks[i].feedback.bulls << "   "
-                                      << "|"
-                                      << "  " << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
-                    }
-
-                    else
-                    {
-                        output_stream << "| #" << game_options.max_number_of_attempts - i << '   ' << '   '
-                                      << codeout + "|"
-                                      << "   " << board.attempts_and_feedbacks[i].feedback.bulls << "   "
-                                      << "|"
-                                      << "  " << board.attempts_and_feedbacks[i].feedback.cows << "   |\n";
-                    }
-                }
-            }
-
-            output_stream << moins;
-        }
-    }
-    */
     void whats_your_guess(std::ostream& output_stream, const GameOptions& game_options, std::string s,
                           int current_attempt, unsigned int number_of_characters_per_code,
                           char minimum_allowed_character, char maximum_allowed_character)
@@ -329,7 +215,7 @@ namespace bulls_and_cows {
             {
                 valueformat = false;
                 output_stream
-                    << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
+                    << "Your guess has an invalid length, please try again\n";
             }
 
             else
@@ -340,7 +226,7 @@ namespace bulls_and_cows {
                     {
                         valueformat = false;
 
-                        output_stream << "Your guess has an invalid length or contains non-allowed characters, "
+                        output_stream << "Your guess contains non-allowed characters, "
                                          "please try again\n";
                     }
                 }
@@ -348,7 +234,7 @@ namespace bulls_and_cows {
         }
    
 
-   return incode;
+        return incode;
    }
 
 } // namespace bulls_and_cows
