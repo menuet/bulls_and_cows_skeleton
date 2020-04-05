@@ -19,7 +19,7 @@ TEST_CASE("TEST bulls_and_cows::count_true_false WHEN 1 bull and 2 cows")
 
 	// ACT
 	std::vector<int> counter_bowls_cows(3);
-	bulls_and_cows::FinalBoard current_attempt = bulls_and_cows::count_true_false(secretCode, playerCode, current_attempt);
+	bulls_and_cows::FinalBoard current_attempt = bulls_and_cows::count_bulls_cows_without_double(secretCode, playerCode, current_attempt);
 
 	// ASSERT
 	REQUIRE(current_attempt.bulls == 1);
@@ -100,7 +100,7 @@ TEST_CASE("TEST bulls_and_cows::secret_code_init size")
 
 	//ACT
 
-	const std::vector<char> test = secret_code_init(game_options);
+	const std::vector<char> test = secret_code_init_without_double(game_options);
 
 
 	//ASSERT

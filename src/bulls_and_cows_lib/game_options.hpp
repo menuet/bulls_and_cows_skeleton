@@ -10,7 +10,7 @@ namespace bulls_and_cows {
         unsigned int max_number_of_attempts{12};
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
-        char maximum_allowed_character{'H'};
+        char maximum_allowed_character{'C'};
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
@@ -35,5 +35,13 @@ namespace bulls_and_cows {
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options);
 
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options);
+
+	void save_option_file(const GameOptions& game_options);
+	void read_file(const GameOptions& game_options);
+	void load_option_file(GameOptions& game_options);
+	void display_current_game_options(const GameOptions& game_options);
+	void change_Number_Characters(GameOptions& game_options);
+	void change_Char_Min(GameOptions& game_options);
+	void change_Char_Max(GameOptions& game_options);
 
 } // namespace bulls_and_cows

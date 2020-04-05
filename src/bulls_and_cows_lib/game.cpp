@@ -96,7 +96,7 @@ namespace bulls_and_cows {
 
 
 	//Function to initialize secret code 
-	std::vector<char> secret_code_init(const GameOptions& option)
+	std::vector<char> secret_code_init_without_double(const GameOptions& option)
 	{
 
 		std::vector <char> secretCode(option.number_of_characters_per_code);
@@ -121,6 +121,24 @@ namespace bulls_and_cows {
 
 
 			}
+			l++;
+		}
+
+		return secretCode;
+	}
+
+	std::vector<char> secret_code_init_with_double(const GameOptions& option)
+	{
+		std::vector <char> secretCode(option.number_of_characters_per_code);
+		const char min = option.minimum_allowed_character;
+		const char max = option.maximum_allowed_character;
+		char rand = generate_random_character(min, max);
+		int l = 0;
+
+		while (l < secretCode.size())
+		{
+			rand = generate_random_character(min, max);
+			secretCode[l] = rand;
 			l++;
 		}
 
@@ -190,8 +208,8 @@ namespace bulls_and_cows {
 
 	}
 
-	//fonction qui permet de compter le nombre de bulls and cows
-	FinalBoard count_true_false(std::vector <char> secretCode, std::vector <char> playerCode, FinalBoard& current_attempt)
+	//fonction qui permet de compter le nombre de bulls and cows pour des codes sans doublon
+	FinalBoard count_bulls_cows_without_double(std::vector <char> secretCode, std::vector <char> playerCode, FinalBoard& current_attempt)
 	{
 		int bulls = 0; //nombre de bulls
 		int cows = 0; //nombre de cows
@@ -231,10 +249,74 @@ namespace bulls_and_cows {
 
 	}
 
+	//fonction qui permet de compter le nombre de bulls and cows pour des codes avec doublons
+	FinalBoard count_bulls_cows_with_double(std::string secretCode, std::string playerCode, FinalBoard& current_attempt)
+	{
+		int bulls = 0; //nombre de bulls
+		int cows = 0; //nombre de cows
+
+		std::string clone_player = playerCode;
+		std::string clone_secret_code = secretCode;
+
+		for (int i = 0; i < playerCode.size(); i++)
+		{
+			if (secretCode[i] == playerCode[i]) // Si les 2 chars sont a la meme position
+			{
+				bulls = bulls + 1;
+				clone_player[i] = '0';
+				clone_secret_code[i] = '1';
+			}
+		}
+
+		for (int i = 0; i < playerCode.size(); i++)
+		{
+
+
+			for (int j = 0; j < playerCode.size(); j++)
+			{
+
+				if (clone_secret_code[j] == clone_player[i])
+				{
+					cows = cows + 1;
+					clone_player[i] = '0';
+					clone_secret_code[j] = '1';
+				}
+			}
+
+		}
+
+		if (bulls == secretCode.size()) // si il y a le meme nombre de bulls que la longueur du code secret 
+		{
+			current_attempt.win = true; // alors c'est gagne donc win = true
+		}
+		else //sinon win = faux 
+		{
+			current_attempt.win = false;
+		}
+
+		//cows = cows - bulls; //evite de compter les bulls comme des cows
+		current_attempt.bulls = bulls;
+		current_attempt.cows = cows;
+
+		return current_attempt; //return un objet de la Structure FinalBoard 
+
+	}
+
 	//fonction qui converti un vector de char en string 
 	std::string conv_vector_to_string(std::vector <char> vector_to_convert)
 	{
 		return std::string{ vector_to_convert.begin(), vector_to_convert.end() };
+	}
+	std::vector<char> conv_string_to_vector(std::string string_to_convert)
+	{
+		std::vector<char> new_vector;
+
+		for (int i = 0; i < string_to_convert.size(); i++)
+		{
+			new_vector.push_back(string_to_convert[i]);
+		}
+		return new_vector;
+
 	}
 
     void user_plays_against_computer(const GameOptions& game_options)
@@ -243,7 +325,7 @@ namespace bulls_and_cows {
 
 
 		
-		std::vector <char> secretCode = secret_code_init(game_options);
+		std::vector <char> secretCode = secret_code_init_without_double(game_options);
 		std::vector <char> playerCode(game_options.number_of_characters_per_code);
 		std::vector<int> counter_bowls_cows(3);
 		unsigned int player_attempts = 0;
@@ -262,7 +344,7 @@ namespace bulls_and_cows {
 		{
 			
 			playerCode = secret_code_player(playerCode, game_options);
-			FinalBoard current_attempt = count_true_false(secretCode, playerCode, current_attempt);
+			FinalBoard current_attempt = count_bulls_cows_without_double(secretCode, playerCode, current_attempt);
 			std::string secret_code_player = conv_vector_to_string(playerCode);
 			board_final.emplace_back(secret_code_player, current_attempt.bulls, current_attempt.cows,current_attempt.win);
 			
@@ -282,7 +364,7 @@ namespace bulls_and_cows {
 
 		if (not_win == false)
 		{
-			std::cout << "\n" << "\n" << "YOU WIN !";
+			std::cout << "\n" << "\n" << "YOU WON !";
 		}
 		else
 		{
@@ -291,182 +373,57 @@ namespace bulls_and_cows {
 
 
     }
-
-	//Pas encore implementer
+	
+		
     void computer_plays_against_computer(const GameOptions& game_options)
     {
         std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+            << " Computer plays against computer \n";
+		PossibleSolutions dico_all_codes{};
+		dico_all_codes = bulls_and_cows::generate_all_codes(game_options); // Computer2 creates a collection of all the possible codes
+
+		std::vector <char> secretCode = secret_code_init_with_double(game_options); //Computer1 creates a randomly - generated secret code
+		std::string secret_code = conv_vector_to_string(secretCode);
+		bool not_win = true;
+		unsigned int ai_attempts = 0;
+		std::vector <FinalBoard> board_final;
+		board_final.push_back(FinalBoard(secret_code, 0, 0, false));
+
+		do 
+		{
+			int index = generate_random_integer(0, static_cast<int> (dico_all_codes.codes.size()-1)); //Random index pour choisir dans la liste des possibilités
+			
+			// dico_all_codes.codes[index] est le code choisi par le Computer 2 
+			FinalBoard current_attempt = count_bulls_cows_with_double(secret_code, dico_all_codes.codes[index], current_attempt);
+			
+			board_final.emplace_back(dico_all_codes.codes[index], current_attempt.bulls, current_attempt.cows, current_attempt.win);
+			
+			display_board(board_final);
+
+			if (current_attempt.win == true)
+			{
+				not_win = false;
+			}
+			dico_all_codes = remove_impossible_codes(dico_all_codes, current_attempt, dico_all_codes.codes[index]);
+			std::cout << "Number of codes in dico : \n" << dico_all_codes.codes.size();
+			
+			ai_attempts++;
+				
+
+		} while (not_win && ai_attempts < game_options.max_number_of_attempts);
+		
+		if (not_win == false)
+		{
+			std::cout << "\n" << "\n" << "Computer 2 WON !";
+		}
+		else
+		{
+			std::cout << "IA not enough strong ! " << "\n";
+		}
+
+		
     }
-
-	// Save option functions 
-	void save_option_file(const GameOptions& game_options)
-	{
-		const std::string path = "C:/DEVCPP/PROJECTS/bulls_and_cows_skeleton/out/save_option.txt";
-		std::ofstream monFlux(path.c_str());
-
-		if (monFlux)
-		{
-		
-			
-			monFlux << game_options.number_of_characters_per_code << std::endl;
-			monFlux << game_options.minimum_allowed_character << std::endl;
-			monFlux << game_options.maximum_allowed_character << std::endl;
-		
-		}
-		else
-		{
-			std::cout << "Error \n" << std::endl;
-		}
-
-	}
-
-	// Fonction de lecture dans un txt 
-	void read_file(const GameOptions& game_options)
-	{
-		const std::string path = "C:/DEVCPP/PROJECTS/bulls_and_cows_skeleton/out/save_option.txt";
-
-		std::ifstream file(path);
-		
-		if (file)
-		{
-			std::string line;
-			int count_line = 1;
-			std::cout <<"Game options : \n ";
-			while (getline(file, line)) 
-			{
-				
-				if (count_line == 1)
-				{
-					std::cout << "Number of characters per code : " << line << std::endl;
-				}
-
-				if (count_line == 2)
-				{
-					std::cout << "Character min " << line << std::endl;
-				}
-				
-				if (count_line == 3)
-				{
-					std::cout << "Character max " << line << std::endl;
-				}
-				count_line++;
-			}
-		}
-		else
-		{
-			std::cout << "Impossible to open the file" << std::endl;
-		}
-
-
-
-	}
-
-	//Fonction qui va charger les options sauvergardées à partir d'un fichier txt 
-	void load_option_file(GameOptions& game_options)
-	{
-
-		const std::string path = "C:/DEVCPP/PROJECTS/bulls_and_cows_skeleton/out/save_option.txt";
-
-		std::ifstream file(path);
-
-		if (file)
-		{
-			std::string line;
-			int count_line = 1;
-			
-			while (getline(file, line))
-			{
-
-				if (count_line == 1)
-				{
-					std::cout << "Number of characters per code : " << line << std::endl;
-					game_options.number_of_characters_per_code = std::abs(atoi(line.c_str())); // sorry for this cast I do not know how to do in other way 
-				}
-
-				if (count_line == 2)
-				{
-					std::cout << "Character min " << line << std::endl;
-					game_options.minimum_allowed_character = *line.c_str();
-				}
-
-				if (count_line == 3)
-				{
-					std::cout << "Character max " << line << std::endl;
-					game_options.maximum_allowed_character = *line.c_str();
-				}
-				count_line++;
-			}
-		}
-		else
-		{
-			std::cout << "Impossible to open the file" << std::endl;
-		}
-
-
-	}
-
-	//Fonction qui va afficher les games options en affichant les attributs de la structure GameOptions
-	void display_current_game_options(const GameOptions& game_options)
-	{
-		std::cout << "Game options : \n ";
-		std::cout << " Number of characters per code : " << game_options.number_of_characters_per_code;
-		std::cout << " \n Character min " << game_options.minimum_allowed_character;
-		std::cout << "\n Character max " << game_options.maximum_allowed_character;
-
-	}
-
-	//Fonction qui va attribuer une nouvelle valeur à l'attribut number_of_characters_per_code de la structure GameOptions
-	void change_Number_Characters(GameOptions& game_options)
-	{
-		
-		std::cout << "How many characters do you want ? ";
-		const unsigned int numberC = ask_int_or_default(std::cin, -1);
-		game_options.number_of_characters_per_code = numberC;
-
-		std::cout << "Updated ! \n";
-
-		
-	}
-
-	//Fonction qui va attribuer une nouvelle valeur à l'attribut minimum_allowed_character de la structure GameOptions
-	void change_Char_Min(GameOptions& game_options)
-	{
-
-		std::cout << "Which characters do you want to have as min character ? \n";
-		const char char_min = ask_char_or_default(std::cin, -1);
-		game_options.minimum_allowed_character = char_min;
-		std::cout << "Updated ! \n";
-
-		
-	}
-
-	//Fonction qui va attribuer une nouvelle valeur à l'attribut maximum_allowed_character de la structure GameOptions
-	void change_Char_Max(GameOptions& game_options)
-	{
-
-		std::cout << "Which characters do you want to have as max character ? \n";
-		const char char_max = ask_char_or_default(std::cin, -1);
-		game_options.maximum_allowed_character = char_max;
-		std::cout << "Updated ! \n";
-
-
-	}
-
+	   
 	// Menu pour savoir quel attribut changer 
 	void  modify_game_options_menu(GameOptions& game_options)
 	{

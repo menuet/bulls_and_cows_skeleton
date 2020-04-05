@@ -59,11 +59,13 @@ namespace bulls_and_cows {
 	bool isContainedIn(char rand, const std::vector <char>& secretCode);
 	bool checkError(char carac, const GameOptions& game_options);
 
-	FinalBoard count_true_false(std::vector <char> secretCode, std::vector <char> playerCode, FinalBoard& current_attempt);
-	std::vector<char> secret_code_init(const GameOptions& option);
+	FinalBoard count_bulls_cows_without_double(std::vector <char> secretCode, std::vector <char> playerCode, FinalBoard& current_attempt);
+	std::vector<char> secret_code_init_with_double(const GameOptions& option);
+	std::vector<char> secret_code_init_without_double(const GameOptions& option);
 	std::vector<char> secret_code_player(std::vector <char> playerCode, const GameOptions& game_options);
 	std::string conv_vector_to_string(std::vector <char> vector_to_convert);
 	OptionMenuChoice ask_option_menu_choice(std::istream& input_stream);
 	ConfigureOptions ask_configuration_menu_choice(std::istream& input_stream);
+	FinalBoard count_bulls_cows_with_double(std::string secretCode, std::string playerCode, FinalBoard& current_attempt);
 	
 } // namespace bulls_and_cow
