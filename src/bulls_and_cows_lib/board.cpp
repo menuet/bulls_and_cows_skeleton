@@ -2,6 +2,8 @@
 #include "board.hpp"
 #include "random.hpp"
 #include <string>
+#include <map>
+
 using namespace std; // lifehack
 
 //pk utiliser des outpout_stream/input_stream passer en parametre  au lieu d'utiliser tout simplement des cout cin de base?
@@ -72,6 +74,20 @@ namespace bulls_and_cows {
             if (found_realcode_char_index != string::npos && codex[i] != REALCODE[i] && !already_used_secret_code_characters[found_realcode_char_index] && found_realcode_char_index != i) // si on a trouvé le caractere dans le code et ce n'est pas un bulls alors ok
             {
                 cows++;
+                already_used_secret_code_characters[found_realcode_char_index] = true;//MODIFICATION Réalisée pour éviter d'avoir plusieurs cows sur le meme caractère du secret code 
+            
+             //AVANT MODIF
+            // secret code :A B A C D
+            // code rentré :A B F A A 
+            // 1 Bull et 2 cows
+
+            //APRES MODIF
+                // secret code :A B A C D
+                // code rentré :A B F A A
+                // 1 Bull et 1 cow
+            
+            
+            
             }
         }
 
@@ -81,6 +97,8 @@ namespace bulls_and_cows {
         f.bulls = bulls;
 
         return f;
+        
+
     }
 
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
