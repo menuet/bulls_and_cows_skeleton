@@ -70,9 +70,13 @@ namespace bulls_and_cows {
             myavcboard.attempts_and_feedbacks.push_back(newattemp);
             std::cout << "Secret code is : " << myavcboard.secret_code.value << "\n";
             bulls_and_cows::remove_incompatible_codes_from_possible_solutions(newattemp, myavc);
-            std::cout << "Solutions still after remove are " << myavc.codes.size() << " solutions\n";
-            if (myavc.codes.size() == 0)
+            //std::cout << "Solutions still after remove are " << myavc.codes.size() << " solutions\n";
+            //Temporary condition don't why the loop doesn't always loop ...
+            if (myavc.codes.size() == 1)
+            {
+                std::cout << "The secret code was : " << myavc.codes[0].value << " Well done, YOU WON.\n";
                 break;
+            }
             Sleep(2000);
         }
     }
