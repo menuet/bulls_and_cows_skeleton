@@ -44,25 +44,28 @@ namespace bulls_and_cows {
     {
         string secret = secret_code.value;
         string result = attempt.value;
-        Feedback feed;
-        unsigned COWS = 0, BULLS = 0;
-
-        for (int i = 0; i < result.size(); i++)
+        size_t has_already_pos;
+        Feedback feed{};
+       
+        //For BULLS
+        for (int i = 0; i < result.size(); i++) 
         {
-            if (result[i] == secret[i]) //If the code entered by the user corresponds to secret code
+            if (result[i] == secret[i])//If the user-entered code correspond to the secret code
             {
-                BULLS++;   //So count the bulls points
+                result.erase(i, 1); //We remove the digits that are already checked to avoid repetitions
+                feed.bulls++;
             }
         }
+        //For COWS
         for (int i = 0; i < result.size(); i++)
         {
-            if (secret.find(result[i]) != string::npos && result[i] != secret[i])//if the user-entered code or its position is different
+            has_already_pos = secret.find(result[i]); //stock in found_pos when the position of secret correspond to attempt
+            if (has_already_pos != string::npos) 
             {
-                COWS++; //increment the cows points
+                feed.cows++;
             }
         }
-        feed.cows = COWS; // Displays the cows score
-        feed.bulls = BULLS;  // Displays the bulls score
+        //display score for cows and bulls for each attempt
         return feed;
 
     }
@@ -87,14 +90,13 @@ namespace bulls_and_cows {
         {
             return false;
         }
-        else if (board.attempts_and_feedbacks.back().attempt.value ==board.secret_code.value) //"back.() -->reference to the last element entered "
+        if (board.attempts_and_feedbacks.back().attempt.value ==board.secret_code.value) //"back.() -->reference to the last element entered "
         {
-            std::cout << "############################ \n";
             std::cout << "           YOU WON !         \n";
-            std::cout << "############################ \n";
+            return true;
            
         }
-        return true;
+        return false;
         
     }
 
@@ -102,25 +104,26 @@ namespace bulls_and_cows {
     {
 
         output_stream <<
-            "-------------------------------------\n"
-            "| SECRET   * * * * * |              |\n"
-            "-------------------------------------\n"
-            "| ATTEMPTS           | BULLS | COWS |\n"
-            "-------------------------------------\n";
+            "------------------------------------------------\n"
+            "| SECRET   * * * * *   |                       |\n"
+            "------------------------------------------------\n"
+            "| ATTEMPTS             | BULLS      | COWS     |\n"
+            "------------------------------------------------\n";
        
         for (unsigned int i = 0; i != board.attempts_and_feedbacks.size(); ++i)
         {
             const auto& attempt_and_feedback = board.attempts_and_feedbacks[i];
-            output_stream << " ATTEMPTS #" << (i + 1) << " : " << attempt_and_feedback.attempt.value
+            output_stream << "| ATTEMPTS #" << (i + 1) << " : " << attempt_and_feedback.attempt.value
                           << "  | BULLS = " << attempt_and_feedback.feedback.bulls
-                          << "  | COWS = " << attempt_and_feedback.feedback.cows << "\n";
+                          << "  | COWS = " << attempt_and_feedback.feedback.cows << " | \n"
+                          <<"------------------------------------------------\n";
         }
     }
 
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
                      const Board& board)
     {
-        output_stream << "Enter your attempt to discover the secret code" << "\n";
+        output_stream << "Enter an attempt to discover the secret code" << "\n";
         Code attempt;
         input_stream >> attempt.value;
 

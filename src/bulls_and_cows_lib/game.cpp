@@ -6,8 +6,8 @@
 #include "input.hpp"
 #include "main_menu.hpp"
 #include <chrono>
-#include <fstream>
-#include <iostream>
+#include <fstream> //flux vers les fichiers
+#include <iostream> //flux entrées/sorties
 #include <thread>
 using namespace std;
 
@@ -62,77 +62,77 @@ namespace bulls_and_cows {
                      "       Treat the user's choice\n"
                      "    UNTIL user's choice is to go back to main menu\n";
         
-        while (true)
+        bool flag = false;
+        while (!flag)
         {
-           
+
             display_game_options(cout, game_options);
             display_game_options_menu(cout);
             GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(cin);
             switch ((int)user_choice) // require int type
             {
             case 0:
-                true;
+                flag = true;
                 break;
-            case 1: {
+            case 1:
 
-                cout << "Modify the max number attempt\n";
-                unsigned int modif = ask_int_or_default(cin, game_options.max_number_of_attempts);
-                while (modif < game_options.max_number_of_attempts)
-                {
-                    modif = game_options.max_number_of_attempts;
-                }
-                break; 
-            }
-                
-            case 2: {
-
-                cout << "Modfiy the number of characters \n";
-                unsigned int nb_char = ask_int_or_default(cin, game_options.number_of_characters_per_code);
-                if (nb_char <= 5)
-                {
-                    nb_char = game_options.number_of_characters_per_code;
-                }
-                else
-                {
-                    cout << "error";
-                }
-                
+               {
+                    cout << "Modify the max number attempt\n";
+                    game_options.max_number_of_attempts =
+                    ask_int_or_default(cin, game_options.max_number_of_attempts);
+                   
+                    /*unsigned int modif = ask_int_or_default(cin, game_options.max_number_of_attempts);
+                    while (modif < game_options.max_number_of_attempts)
+                    {
+                        modif = game_options.max_number_of_attempts;
+                    }*/
+               }
                 break;
-            }
-            case 3: {
+
+            case 2:
+
+                {
+                    cout << "Modify the number of characters \n";
+                    game_options.number_of_characters_per_code =
+                            ask_int_or_default(cin, game_options.number_of_characters_per_code);
+                  
+                }
+
+                break;
+
+            case 3: 
+            {
                 cout << "Modify the minimum letter";
-                char const min_char = ask_char_or_default(cin, game_options.minimum_allowed_character);
-                if (min_char > game_options.maximum_allowed_character)
-                {
-                    cout << "error";
-                    
-                }
-                else
-                {
-                    min_char == game_options.minimum_allowed_character;
-                }
+                game_options.minimum_allowed_character =
+                        ask_char_or_default(cin, game_options.minimum_allowed_character);
+                
+            }
+            break;
+
+            case 4: {
+                cout << "Modify max allowed \n";
+                game_options.maximum_allowed_character =
+                        ask_char_or_default(cin, game_options.maximum_allowed_character);
+                
+            }
+                break;
+            case 5: 
+            {
+                
+                //ofstream fileout_stream{"C:/DEVCPP/PROJECTS/bulls_and_cows_skeleton/game_option_save.txt"};
+                string const myfile("game_option.txt");
+                ofstream fileout_stream(myfile.c_str(), ios::app);// display a string so it's better to use c_str()
+                save_game_options(fileout_stream, game_options);
+                
+            }
+                break;
+            case 6: {
+                ifstream filein_stream{"game_option.txt"};
+                load_game_options(filein_stream, game_options);
                 break;
             }
-            case 4:
-                cout << "Modfiy max allowed \n";
-                char const max_char = ask_char_or_default(cin, game_options.maximum_allowed_character);
-                if (max_char < game_options.minimum_allowed_character)
-                {
-                    cout << "error";
-                }
-                else
-                {
-                    max_char == game_options.maximum_allowed_character;
-                }
-                break;
-            case 5:
-                save_game_options(cout, game_options);
-                break;
-            case 6:
-                load_game_options(cin, game_options);
-                break;
             default:
-                break;
+                    cout << " invalid entry " << endl;
             }
         }
     }
