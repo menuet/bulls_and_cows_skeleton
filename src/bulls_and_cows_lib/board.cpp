@@ -1,10 +1,11 @@
-#include "random.hpp"
 #include "board.hpp"
+
+#include "random.hpp"
+
 #include <iostream>
 
 namespace bulls_and_cows {
-    
-    // TODO: define the body of the functions declared in board.cpp
+
     Board create_board(const GameOptions& game_options)
 
     {
@@ -35,11 +36,11 @@ namespace bulls_and_cows {
 
         {
 
-            for (const char& c : attempt.value)
+            for (const char& a : attempt.value)
 
             {
 
-                if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+                if ((a < game_options.minimum_allowed_character) | (a > game_options.maximum_allowed_character))
 
                 {
 
@@ -47,15 +48,15 @@ namespace bulls_and_cows {
                 }
             }
 
-            return true;
+            
         }
+     return true;
+        /* else
 
-        else
+         {
 
-        {
-
-            return false;
-        }
+             return false;
+         }*/
     }
 
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
@@ -64,9 +65,9 @@ namespace bulls_and_cows {
 
         Feedback feedback;
 
-        unsigned int i = 0;
+        unsigned i = 0;
 
-        unsigned int k = 0;
+        unsigned k = 0;
 
         while (i < attempt.value.size())
 
@@ -101,9 +102,6 @@ namespace bulls_and_cows {
         return feedback;
     }
 
-    
-
-
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
 
     {
@@ -136,7 +134,6 @@ namespace bulls_and_cows {
         return false;
     }
 
-    
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
 
     {
@@ -222,7 +219,7 @@ namespace bulls_and_cows {
 
                 {
 
-                    output_stream << "| #" << j << "      . . . . . |  "
+                    output_stream << "| #" << i << "      . . . . . |  "
 
                                   << "     |   "
 
@@ -231,30 +228,30 @@ namespace bulls_and_cows {
                     nb_points += ". ";
                 }
 
-                if (board.attempts_and_feedbacks.size() < j)
+                if (board.attempts_and_feedbacks.size() < i)
 
                 {
 
-                    if (j > 9)
+                    if (i > 9)
 
-                        output_stream << "| #" << j << "      " << nb_points << "|       |      |\n";
+                        output_stream << "| #" << i << "      " << nb_points << "|       |      |\n";
 
                     else
 
-                        output_stream << "| #0" << j << "      " << nb_points << "|       |      |\n";
+                        output_stream << "| #0" << i << "      " << nb_points << "|       |      |\n";
                 }
 
                 else
 
                 {
 
-                    output_stream << "| #0" << j << "      . . . . . |       |      |\n";
+                    output_stream << "| #0" << i << "      . . . . . |       |      |\n";
 
-                    if (j > 9)
+                    if (i > 9)
 
                     {
 
-                        output_stream << "| #" << j << "      . . . . . |  "
+                        output_stream << "| #" << i << "      . . . . . |  "
 
                                       << board.attempts_and_feedbacks[i].feedback.bulls << "    |   "
 
@@ -265,16 +262,63 @@ namespace bulls_and_cows {
 
                     {
 
-                        output_stream << "| #0" << j << "      . . . . . |       |      |\n";
+                        output_stream << "| #0" << i << "      . . . . . |       |      |\n";
                     }
                 }
 
-                j--;
+                i--;
             }
 
             output_stream << "-------------------------------------\n";
         }
-
     }
-    
+
+    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
+                     const Board& board)
+    {
+        output_stream << "entrez code"
+                      << "\n";
+        Code tempt;
+
+        input_stream >> tempt.value;
+
+        // J'ai laissé en commentaires mes tentatives de code
+        //bool checkflag = false;
+
+        /*while (!checkflag)
+
+        
+            if (tempt.value.size() != game_options.number_of_characters_per_code)
+
+            {
+                checkflag = false;
+
+                output_stream << "repeter"
+                              << "\n";
+            }
+
+            else*/
+            
+       while (!validate_attempt(game_options, tempt))
+                {
+                    output_stream << "";
+                    input_stream >> tempt.value;
+                }
+                
+                /*for (char V : tempt.value)
+                {
+                
+                if (V < game_options.minimum_allowed_character && V > game_options.maximum_allowed_character)
+                    
+                    {
+                    checkflag = false;
+                    }
+                }*/
+            
+
+        
+
+        return tempt;
+    }
+
 } // namespace bulls_and_cows
