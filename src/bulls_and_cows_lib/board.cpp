@@ -172,5 +172,28 @@ namespace bulls_and_cows {
             output_stream << "-------------------------------------\n";
         }
     }
+
+     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options, const Board& board)
+     {
+        Code code;
+        bool validattempt = validate_attempt(game_options, code);
+        while (validattempt == false)
+        {
+            output_stream << "What is your guess (" << game_options.number_of_characters_per_code
+                          << " characters between '" << game_options.minimum_allowed_character << "' and '"
+                          << game_options.maximum_allowed_character << "')\n? ";
+            input_stream >> code.value;
+            validattempt = validate_attempt(game_options, code);
+            if (validattempt == false)
+            {
+                output_stream
+                    << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
+            }
+        }
+        return code;
+     }
+
+
+
 } // namespace bulls_and_cows
 
