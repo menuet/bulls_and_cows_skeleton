@@ -7,7 +7,7 @@
 
 
 
-TEST_CASE("TEST bulls_and_cows::count_true_false WHEN 1 bull and 2 cows")
+TEST_CASE("TEST bulls_and_cows::count_bulls_cows_without_double WHEN 1 bull and 2 cows")
 {
 	// ARRANGE
 	
@@ -26,6 +26,24 @@ TEST_CASE("TEST bulls_and_cows::count_true_false WHEN 1 bull and 2 cows")
 	REQUIRE(current_attempt.cows == 2);
 }
 
+TEST_CASE("TEST bulls_and_cows::count_bulls_cows_with_double WHEN 1 bull and 1 cow")
+{
+	// ARRANGE
+
+	const std::string secretCode = { 'A', 'A', 'A', 'D', 'E' };
+	const std::string playerCode = { 'H', 'A', 'C', 'E', 'B' };
+
+
+	// ACT
+
+	bulls_and_cows::FinalBoard current_attempt = bulls_and_cows::count_bulls_cows_with_double(secretCode, playerCode, current_attempt);
+
+	// ASSERT
+	REQUIRE(current_attempt.bulls == 1);
+	REQUIRE(current_attempt.cows == 1);
+}
+
+
 TEST_CASE("TEST bulls_and_cows::conv_vector_to_string")
 {
 
@@ -41,6 +59,7 @@ TEST_CASE("TEST bulls_and_cows::conv_vector_to_string")
 
 }
 
+
 TEST_CASE("TEST bulls_and_cows::isContainedIn WHEN Char A is already in SecretCode vector")
 {
 
@@ -55,6 +74,7 @@ TEST_CASE("TEST bulls_and_cows::isContainedIn WHEN Char A is already in SecretCo
 	REQUIRE(test == true);
 
 }
+
 
 TEST_CASE("TEST bulls_and_cows::checkError WHEN carac = Z")
 {
@@ -72,41 +92,25 @@ TEST_CASE("TEST bulls_and_cows::checkError WHEN carac = Z")
 
 }
 
-/* //Je ne sais pas si on a le droit d'avoir des inputs utilisateurs dans des tests unitaires 
-TEST_CASE("TEST bulls_and_cows::secret_code_player WHEN size = 5")
-{
 
-	//ARRANGE
-	bulls_and_cows::GameOptions game_options;
-	const std::vector <char> playerCode = { 'H', 'F', 'C', 'A', 'B' };
-
-	//ACT
-	
-	const std::vector<char> test = secret_code_player(playerCode, game_options);
-
-
-	//ASSERT
-	REQUIRE(test.size() == 5);
-
-}
-*/
 
 TEST_CASE("TEST bulls_and_cows::secret_code_init size")
 {
 
 	//ARRANGE
 	bulls_and_cows::GameOptions game_options;
-	const std::vector <char> secretCode (5);
+	const std::vector <char> secretCode (game_options.number_of_characters_per_code);
 
 	//ACT
 
-	const std::vector<char> test = secret_code_init_without_double(game_options);
+	const std::vector<char> test = bulls_and_cows::secret_code_init_with_double(game_options);
 
 
 	//ASSERT
 	REQUIRE(test.size() == game_options.number_of_characters_per_code);
 
 }
+
 
 TEST_CASE("TEST bulls_and_cows::load_option_file")
 {
@@ -129,6 +133,7 @@ TEST_CASE("TEST bulls_and_cows::load_option_file")
 	REQUIRE(game_options.minimum_allowed_character == 'A');
 	REQUIRE(game_options.maximum_allowed_character == 'C');
 }
+
 
 TEST_CASE("TEST bulls_and_cows::ask_option_menu_choice WHEN choice is 1")
 {
