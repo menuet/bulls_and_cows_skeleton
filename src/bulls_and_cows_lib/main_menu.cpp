@@ -2,7 +2,10 @@
 #include "main_menu.hpp"
 #include "input.hpp"
 
+using namespace std;
+
 namespace bulls_and_cows {
+    
 
     void display_main_menu(std::ostream& output_stream)
     {

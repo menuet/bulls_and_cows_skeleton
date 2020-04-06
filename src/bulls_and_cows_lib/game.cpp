@@ -14,16 +14,61 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        // Create a board with a randomly generated secret code\n"
+
+        Board panel{};
+
+        AttemptAndFeedback my_feedback{};
+
+        panel = create_board(game_options);
+
+        do
+
+        {
+
+            std::cout << "\n";
+
+            display_board(std::cout, game_options, panel);
+
+            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, panel);
+
+            while (!validate_attempt(game_options, my_feedback.attempt))
+
+            {
+
+                std::cout << "Your attempt is not valid, try again\n";
+
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, panel);
+            }
+
+            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, panel.secret_code);
+
+            panel.attempts_and_feedbacks.push_back(my_feedback);
+
+        } while (!(is_end_of_game(game_options, panel)) && !(is_win(game_options, panel)));
+
+        std::cout << "\n";
+
+        display_board(std::cout, game_options, panel);
+
+        if (is_win(game_options, panel))
+
+        {
+
+            std::cout << "\n"
+
+                      << "You are the best  ! The secret code is : " << panel.secret_code.value << "\n";
+        }
+
+        else
+
+        {
+
+            std::cout << "\n"
+
+                      << "LOOSER!!!! BOUHHHH! The secret code is : " << panel.secret_code.value << "\n";
+        }
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -59,17 +104,15 @@ namespace bulls_and_cows {
 
             GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(std::cin);
 
-            switch ((int)user_choice) // require int type
+            switch (user_choice) // require int type
 
             {
 
-            case 0:
+            case GameOptionsMenuChoice::BackToMain:
 
-                false;
+                return;
 
-                break;
-
-            case 1:
+            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
 
                 std::cout << " 1 - Modify maximum number of attemps per game\n";
 
@@ -77,7 +120,7 @@ namespace bulls_and_cows {
 
                 break;
 
-            case 2:
+            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
 
                 std::cout << " 2 - Modify number of character in a code \n";
 
@@ -85,7 +128,7 @@ namespace bulls_and_cows {
 
                 break;
 
-            case 3:
+            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
 
                 std::cout << "3 - Modify Minimun allowed character\n";
 
@@ -93,7 +136,7 @@ namespace bulls_and_cows {
 
                 break;
 
-            case 4:
+            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
 
                 std::cout << "4 - Modify Maximum allowed character \n";
 
@@ -101,14 +144,13 @@ namespace bulls_and_cows {
 
                 break;
 
-            case 5:
-
+            case GameOptionsMenuChoice::SaveOptions:
 
                 save_game_options(std::cout, game_options);
 
                 break;
 
-            case 6:
+            case GameOptionsMenuChoice::LoadOptions:
 
                 load_game_options(std::cin, game_options);
 
