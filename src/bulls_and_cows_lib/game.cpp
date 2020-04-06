@@ -30,7 +30,6 @@ namespace bulls_and_cows {
         */
 
         Board board = create_board(game_options);
-        bool resultat;
 
         do
         {
@@ -45,6 +44,8 @@ namespace bulls_and_cows {
         } while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
 
         display_board(std::cout, game_options, board);
+
+        bool resultat;
 
         resultat = is_win(game_options, board);
 
@@ -114,10 +115,8 @@ namespace bulls_and_cows {
             display_game_options_menu(std::cout);
 
             const auto Choice = ask_game_options_menu_choice(std::cin);
-           
-            std::ifstream in{"C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt"};
-            std::ofstream out{"C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt"};
 
+            std::ofstream out("C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt");
 
             switch (Choice)
             {
@@ -141,24 +140,48 @@ namespace bulls_and_cows {
                 break;
 
             case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
-                std::cout << "\nEnter the Minimum allowed character: ";
-                game_options.minimum_allowed_character =
-                    ask_char_or_default(std::cin, game_options.minimum_allowed_character);
+
+                do
+                {
+                    std::cout << "\nEnter the Minimum allowed character: ";
+                    game_options.minimum_allowed_character =
+                        ask_char_or_default(std::cin, game_options.minimum_allowed_character);
+
+                    if (game_options.minimum_allowed_character >= 'a' && game_options.minimum_allowed_character<='z')
+                     game_options.minimum_allowed_character = game_options.minimum_allowed_character - 32;
+                    
+
+                } while (game_options.minimum_allowed_character < 'A' || game_options.minimum_allowed_character > 'Z' ||
+                             game_options.minimum_allowed_character > game_options.maximum_allowed_character);
+
                 break;
 
             case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
-                std::cout << "\nEnter the Maximum allowed character: ";
-                game_options.maximum_allowed_character =
-                    ask_char_or_default(std::cin, game_options.maximum_allowed_character);
+
+                do
+                {
+
+                    std::cout << "\nEnter the Maximum allowed character: ";
+                    game_options.maximum_allowed_character =
+                        ask_char_or_default(std::cin, game_options.maximum_allowed_character);
+
+                     if (game_options.maximum_allowed_character >= 'a' && game_options.maximum_allowed_character <= 'z')
+                        game_options.maximum_allowed_character = game_options.maximum_allowed_character - 32;
+
+                } while (game_options.maximum_allowed_character < 'A' || game_options.maximum_allowed_character > 'Z' ||
+                         game_options.minimum_allowed_character > game_options.maximum_allowed_character);
                 break;
 
             case GameOptionsMenuChoice::SaveOptions:
+
                 save_game_options(out, game_options);
                 break;
 
             case GameOptionsMenuChoice::LoadOptions:
-                
+
+                std::ifstream in("C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt");
                 load_game_options(in, game_options);
+
                 break;
             }
 
@@ -178,21 +201,21 @@ namespace bulls_and_cows {
             switch (user_choice)
             {
             case MainMenuChoice::Quit:
-                    std::cout << "\nBye bye!\n";
-                    return;
-                case MainMenuChoice::UserPlaysAgainstComputer:
-                    user_plays_against_computer(game_options);
-                    break;
-                case MainMenuChoice::ComputerPlaysAgainstComputer:
-                    computer_plays_against_computer(game_options);
-                    break;
-                case MainMenuChoice::ConfigureOptions:
-                    configure_game_options(game_options);
-                    break;
-                case MainMenuChoice::Error:
-                    std::cout << "\nYou did not enter a valid choice, please try again\n";
-                    break;
-                }
+                std::cout << "\nBye bye!\n";
+                return;
+            case MainMenuChoice::UserPlaysAgainstComputer:
+                user_plays_against_computer(game_options);
+                break;
+            case MainMenuChoice::ComputerPlaysAgainstComputer:
+                computer_plays_against_computer(game_options);
+                break;
+            case MainMenuChoice::ConfigureOptions:
+                configure_game_options(game_options);
+                break;
+            case MainMenuChoice::Error:
+                std::cout << "\nYou did not enter a valid choice, please try again\n";
+                break;
+            }
         }
     }
 

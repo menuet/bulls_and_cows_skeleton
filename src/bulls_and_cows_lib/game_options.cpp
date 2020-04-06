@@ -68,10 +68,10 @@ namespace bulls_and_cows {
 
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
     {
-        output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << "\n";
-        output_file_stream << "number_of_characters_per_code=" << game_options.number_of_characters_per_code << "\n";
-        output_file_stream << "minimum_allowed_character=" << game_options.minimum_allowed_character << "\n";
-        output_file_stream << "maximum_allowed_character=" << game_options.maximum_allowed_character << "\n";
+        output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << "\n"
+            << "number_of_characters_per_code=" << game_options.number_of_characters_per_code << "\n"
+            << "minimum_allowed_character=" << game_options.minimum_allowed_character << "\n"
+            << "maximum_allowed_character=" << game_options.maximum_allowed_character;
 
         return true;
     }
@@ -80,24 +80,34 @@ namespace bulls_and_cows {
     {
         std::string line;
 
-        while (std::getline(input_file_stream, line))
+      
+        if (input_file_stream)
         {
-            std::size_t ChercherCaracter = line.find("=");
-            std::string ChercherInfo = line.substr(0, ChercherCaracter);
-            std::string ChercherValeur = line.substr(ChercherCaracter + 1);
+            while (std::getline(input_file_stream, line))
+            {
+                std::size_t ChercherCaracter = line.find("=");
+                std::string ChercherInfo = line.substr(0, ChercherCaracter);
+                std::string ChercherValeur = line.substr(ChercherCaracter + 1);
 
-            if (ChercherInfo == "max_number_of_attempts")
-                game_options.max_number_of_attempts = std::atoi(ChercherValeur.c_str());
+                if (ChercherInfo == "max_number_of_attempts")
+                    game_options.max_number_of_attempts = std::atoi(ChercherValeur.c_str());
 
-            else if (ChercherInfo == "number_of_characters_per_code")
-                game_options.number_of_characters_per_code = std::atoi(ChercherValeur.c_str());
+                else if (ChercherInfo == "number_of_characters_per_code")
+                    game_options.number_of_characters_per_code = std::atoi(ChercherValeur.c_str());
 
-            else if (ChercherInfo == "minimum_allowed_character")
-                game_options.minimum_allowed_character = ChercherValeur[0];
+                else if (ChercherInfo == "minimum_allowed_character")
+                    game_options.minimum_allowed_character = ChercherValeur[0];
 
-            else if (ChercherInfo == "maximum_allowed_character")
-                game_options.maximum_allowed_character = ChercherValeur[0];
+                else if (ChercherInfo == "maximum_allowed_character")
+                    game_options.maximum_allowed_character = ChercherValeur[0];
+            }
+           
+            return true;
         }
-        return true;
+        else
+            return false;
+
+ 
+      
     }
 } // namespace bulls_and_cows
