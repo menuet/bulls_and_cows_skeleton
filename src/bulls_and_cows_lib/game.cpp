@@ -12,7 +12,7 @@
 
 namespace bulls_and_cows {
 
-    void user_plays_against_computer(const GameOptions& game_options)
+    void user_plays_against_computer(const GameOptions& game_options)// Beaucoup de fonction d'affichage donc pas besoin de plus expliquer
     {
         // Create a board with a randomly generated secret code\n"
 
@@ -36,7 +36,7 @@ namespace bulls_and_cows {
 
             {
 
-                std::cout << "Your attempt is not valid, try again\n";
+                std::cout << "Try again, you're not good yet! \n";
 
                 my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, my_screen);
             }

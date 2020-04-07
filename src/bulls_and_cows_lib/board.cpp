@@ -19,7 +19,7 @@ namespace bulls_and_cows
 
         char new_char;
 
-        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
+        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)//PAR IT2RATION CR2ATION DU TAB ICI"." permet de prendre les element de struct
 
         {
 
@@ -75,7 +75,7 @@ namespace bulls_and_cows
       myfeedback.bulls = cpt_bulls;
       myfeedback.cows = cpt_cows;
 
-        return myfeedback;  
+        return myfeedback;  // LES COMPTEUR VONT PARCOURIR LE BOARD DU COMPUTER POUR LE COMPARER au charac rentrer il analysera la Chaine de carc pour dire ou sont les bons positionner et etc..
     }
 
     // tentative == taille du code et comprise entre max et min allowed character
@@ -115,7 +115,7 @@ namespace bulls_and_cows
 
         if (game_options.max_number_of_attempts !=
             board.attempts_and_feedbacks
-                .size()) // Compare si le nombre de tentative est = au nombre max autorisée, si oui renvoie true
+                .size()) // Analyse si le nombre de tentative est = au nombre max autorisée, si oui renvoie true
 
         {
 
@@ -143,7 +143,7 @@ namespace bulls_and_cows
             }
         }
 
-        return false;
+        return false;//Fonction de la victoire qui analyse si notre feedback bulls est valide 
     }
 
     // Display the scret code and the list of attempts of the board
@@ -177,30 +177,28 @@ namespace bulls_and_cows
             }
         }
 
-        output_stream << "----------------------------\n"
+        output_stream << "####################\n"
 
-                         "| SECRET"
+                         "|SECRET"
 
                       << secret.value
 
                       << "|                        | \n"
 
-                         "----------------------------------|\n"
+                         "####################################\n"
 
-                         "| ATTEMPTS       | bulls   |  cows|  \n"
+                         "| ATTEMPTS       | bulls   |  cows |  \n"
 
-                         "-----------------------------------| \n";
+                         "#################################### \n";
 
         for (auto element : board.attempts_and_feedbacks)
 
         {
 
-            output_stream << "| " << element.attempt.value << "\t\t | " << element.feedback.bulls << "\t   | "
-
-                          << element.feedback.cows << "\t   | \n";
+            output_stream << "| " << element.attempt.value << "\t\t | " << element.feedback.bulls << "\t   | "  << element.feedback.cows << "\t   | \n";
         }
 
-        output_stream << "-------------------\n";
+        output_stream << "_____________________\n";
     }
 
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
@@ -219,9 +217,7 @@ namespace bulls_and_cows
 
         const char min = game_options.minimum_allowed_character;
 
-        output_stream << "Try a nex attempts\n attempt number" << nb_attempt << "(" << nb_char
-
-                      << "different characters betwen '" << min << "' and '" << max << "'): ";
+        output_stream << "MAKE AN ATTEMPT\nNUMBER OF ATTEMPT: " << nb_attempt << "(" << nb_char << " different characters betwen '" << min << "' and '" << max << "'): ";
 
         attempt.value = ask_string(input_stream);
 
