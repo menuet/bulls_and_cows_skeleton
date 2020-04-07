@@ -77,8 +77,9 @@ namespace bulls_and_cows {
             {
                 tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
                 myfeed.cows++;
- //               std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
- //                         << "\n";
+                //               std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " <<
+                //               tmp_secret_code.find(tmp_attempt[j])
+                //                         << "\n";
             }
         }
         return myfeed;
@@ -133,8 +134,22 @@ namespace bulls_and_cows {
         output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
         output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
                       << "---------------\n";
-        output_stream << "| SECRET   " << moins_function(game_options.number_of_characters_per_code, "* ") << "| "
-                      << "              |\n";
+
+        if (is_end_of_game(game_options, board) == true || is_win(game_options, board) == true)
+        {
+            output_stream << "| SECRET   ";
+            for (int i = 0; i < board.secret_code.value.size(); i++)
+            {
+                std::cout << board.secret_code.value[i] << " ";
+            }
+            output_stream << "| "
+                          << "              |\n";
+        }
+        else
+        {
+            output_stream << "| SECRET   " << moins_function(game_options.number_of_characters_per_code, "* ") << "| "
+                          << "              |\n";
+        }
         output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
                       << "---------------\n";
         output_stream << "| ATTEMPTS " << moins_function(game_options.number_of_characters_per_code, "  ") << "| "
@@ -147,12 +162,9 @@ namespace bulls_and_cows {
         int number_of_attemps = game_options.max_number_of_attempts;
         for (size_t i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
         {
-            
-            
-                output_stream << "| #" << ((i >= 10) ? "" : "0") << i << "      "
-                              << moins_function(game_options.number_of_characters_per_code, ". ")
-                              << "|       |       |\n";
-           
+
+            output_stream << "| #" << ((i >= 10) ? "" : "0") << i << "      "
+                          << moins_function(game_options.number_of_characters_per_code, ". ") << "|       |       |\n";
         }
 
         if (!board.attempts_and_feedbacks.empty())
@@ -162,12 +174,10 @@ namespace bulls_and_cows {
                 const auto& attempt_and_feedback = board.attempts_and_feedbacks[index - 1];
                 const auto& attempt = attempt_and_feedback.attempt;
                 const auto& feedback = attempt_and_feedback.feedback;
-               
-                
+
                 output_stream << "| #" << ((index >= 10) ? "" : "0") << index << "      ";
                 print_code(attempt.value);
                 output_stream << "|   " << feedback.bulls << "   |   " << feedback.cows << "   |\n";
-               
             }
         }
         //...
@@ -214,8 +224,7 @@ namespace bulls_and_cows {
             if (incode.value.size() != game_options.number_of_characters_per_code)
             {
                 valueformat = false;
-                output_stream
-                    << "Your guess has an invalid length, please try again\n";
+                output_stream << "Your guess has an invalid length, please try again\n";
             }
 
             else
@@ -232,9 +241,8 @@ namespace bulls_and_cows {
                 }
             }
         }
-   
 
         return incode;
-   }
+    }
 
 } // namespace bulls_and_cows
