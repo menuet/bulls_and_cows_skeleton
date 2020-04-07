@@ -68,7 +68,7 @@ namespace bulls_and_cows {
         Board computerboard = bulls_and_cows::create_board(game_options);
         std::vector<Code> all_possible{};
         Code origine;
-       /* erreur dans la ligne */ for (int i = 0; game_options.number_of_characters_per_code - 1; i++)
+        for (int i = 0; i < game_options.number_of_characters_per_code; i++)
         {
             origine.value.push_back(game_options.minimum_allowed_character);
         }
@@ -76,12 +76,13 @@ namespace bulls_and_cows {
         {
             all_possible.push_back(origine);
             origine.value[game_options.number_of_characters_per_code - 1]++;
-        /* erreur dans la ligne */ for (int i = game_options.number_of_characters_per_code - 1; i <= 0; i--)
+        for (int i = game_options.number_of_characters_per_code - 1; i > 0; i--)
             {
                 if (origine.value[i] > game_options.maximum_allowed_character)
                 {
                     origine.value[i] = game_options.minimum_allowed_character;
-                    origine.value[i - 1]++;
+                    int j = i-1;
+                    origine.value[j]++;
                 }
             }
         }
@@ -100,7 +101,8 @@ namespace bulls_and_cows {
             /*     important pour gestion d'affichage du tableau et pour les vérifications de réussite/echec   */                                                      computerboard.attempts_and_feedbacks.push_back(newcomputerattemp);
 
             ///////////////////////////
-            /*  ici, juste du visuel, rien d'impératif au bon foncitonnement  */   bulls_and_cows::display_board(std::cout, game_options, computerboard);
+            /*  ici, juste du visuel, rien d'impératif au bon foncitonnement  */   
+            bulls_and_cows::display_board(std::cout, game_options, computerboard);
 
 
             if (bulls_and_cows::is_win(game_options, computerboard))
