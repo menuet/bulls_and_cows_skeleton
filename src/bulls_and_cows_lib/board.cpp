@@ -77,8 +77,8 @@ namespace bulls_and_cows {
             {
                 tmp_secret_code.erase(tmp_secret_code.find(tmp_attempt[j]), 1);
                 myfeed.cows++;
-                std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
-                          << "\n";
+ //               std::cout << tmp_attempt[j] << "-" << myfeed.cows << "  " << tmp_secret_code.find(tmp_attempt[j])
+ //                         << "\n";
             }
         }
         return myfeed;

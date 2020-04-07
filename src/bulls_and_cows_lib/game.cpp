@@ -9,15 +9,17 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
+#include <list>
+#include <random>
 #include <thread>
 #include <vector>
-#include <list>
+
 
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        
+
         // CREATING BOARD using functions we implemented
         Board myboard = bulls_and_cows::create_board(game_options);
 
@@ -38,9 +40,7 @@ namespace bulls_and_cows {
                 newattemp.attempt = tempattemp;
                 newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(tempattemp, myboard.secret_code);
                 myboard.attempts_and_feedbacks.push_back(newattemp);
-                
             }
-           
         }
         std::cout << (is_win(game_options, myboard) ? "You won !! GG WP\n" : "");
         std::cout << (is_end_of_game(game_options, myboard) ? "You lost, please try again and not cry\n" : "");
@@ -48,22 +48,91 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        /*  std::cout
+              << "TODO:\n"
+                 "    Create a board with a randomly generated secret code\n"
+                 "    Generate the list of all the possible codes\n"
+                 "    DO\n"
+                 "       Display the board and the list of attempts so far\n"
+                 "       Display the number of remaining possible codes so far\n"
+                 "       Wait for 2 seconds\n"
+                 "       Pick a random attempt among in the list of remaining possible codes\n"
+                 "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
+                 "       Add the computer's attempt to the list of attempts of the board\n"
+                 "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
+                 "possible codes\n"
+                 "    WHILE not end of game\n"
+                 "    Display the board and the list of attempts so far\n"
+                 "    Display a message telling if the computer won or lost\n";*/
+
+        Board computerboard = bulls_and_cows::create_board(game_options);
+        std::vector<Code> all_possible{};
+        Code origine;
+       /* erreur dans la ligne */ for (int i = 0; game_options.number_of_characters_per_code - 1; i++)
+        {
+            origine.value.push_back(game_options.minimum_allowed_character);
+        }
+        while (origine.value[0] <= game_options.maximum_allowed_character)
+        {
+            all_possible.push_back(origine);
+            origine.value[game_options.number_of_characters_per_code - 1]++;
+        /* erreur dans la ligne */ for (int i = game_options.number_of_characters_per_code - 1; i <= 0; i--)
+            {
+                if (origine.value[i] > game_options.maximum_allowed_character)
+                {
+                    origine.value[i] = game_options.minimum_allowed_character;
+                    origine.value[i - 1]++;
+                }
+            }
+        }
+        
+        bulls_and_cows::display_board(std::cout, game_options, computerboard);
+
+        while (all_possible.size() > 0)
+        {
+            int r = bulls_and_cows::generate_random_integer(0, all_possible.size()-1);
+            Code s = all_possible[r];
+            AttemptAndFeedback newcomputerattemp;
+            newcomputerattemp.attempt = s;
+            newcomputerattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(s, computerboard.secret_code);
+
+            ///////////////////
+            /*     important pour gestion d'affichage du tableau et pour les vérifications de réussite/echec   */                                                      computerboard.attempts_and_feedbacks.push_back(newcomputerattemp);
+
+            ///////////////////////////
+            /*  ici, juste du visuel, rien d'impératif au bon foncitonnement  */   bulls_and_cows::display_board(std::cout, game_options, computerboard);
+
+
+            if (bulls_and_cows::is_win(game_options, computerboard))
+            {
+                std::cout << "Bravo Computer\n";
+                return;
+            }
+            if (bulls_and_cows::is_end_of_game(game_options, computerboard))
+            {
+                std::cout << "Dommage Computer\n";
+                return;
+            }
+
+            for (int i = all_possible.size()-1; i >= 0; i--)
+            {
+                Feedback f;
+                f = bulls_and_cows::compare_attempt_with_secret_code(s, all_possible[i]);
+                if (newcomputerattemp.feedback.bulls != f.bulls || newcomputerattemp.feedback.cows != f.cows)
+                {
+                    all_possible.erase(all_possible.begin() + i);
+                }
+            }
+            system("pause");
+        }
+
+
+        
+        /********************************************************************************************************
+         *
+         *
+         *
+         ****************************************************************/
     }
 
     void configure_game_options(GameOptions& game_options)
@@ -111,9 +180,6 @@ namespace bulls_and_cows {
             }
         }
     }
-
-        
-    
 
     void play_game()
     {
