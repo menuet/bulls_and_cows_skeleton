@@ -16,11 +16,11 @@ namespace bulls_and_cows {
     {
         // Create a board with a randomly generated secret code\n"
 
-        Board panel{};
+        Board my_screen{};
 
         AttemptAndFeedback my_feedback{};
 
-        panel = create_board(game_options);
+        my_screen = create_board(game_options);
 
         do
 
@@ -28,9 +28,9 @@ namespace bulls_and_cows {
 
             std::cout << "\n";
 
-            display_board(std::cout, game_options, panel);
+            display_board(std::cout, game_options, my_screen);
 
-            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, panel);
+            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, my_screen);
 
             while (!validate_attempt(game_options, my_feedback.attempt))
 
@@ -38,26 +38,26 @@ namespace bulls_and_cows {
 
                 std::cout << "Your attempt is not valid, try again\n";
 
-                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, panel);
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, my_screen);
             }
 
-            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, panel.secret_code);
+            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, my_screen.secret_code);
 
-            panel.attempts_and_feedbacks.push_back(my_feedback);
+            my_screen.attempts_and_feedbacks.push_back(my_feedback);
 
-        } while (!(is_end_of_game(game_options, panel)) && !(is_win(game_options, panel)));
+        } while (!(is_end_of_game(game_options, my_screen)) && !(is_win(game_options, my_screen)));
 
         std::cout << "\n";
 
-        display_board(std::cout, game_options, panel);
+        display_board(std::cout, game_options, my_screen);
 
-        if (is_win(game_options, panel))
+        if (is_win(game_options, my_screen))
 
         {
 
             std::cout << "\n"
 
-                      << "You are the best  ! The secret code is : " << panel.secret_code.value << "\n";
+                      << "You are the best  ! The secret code is : " << my_screen.secret_code.value << "\n";
         }
 
         else
@@ -66,7 +66,7 @@ namespace bulls_and_cows {
 
             std::cout << "\n"
 
-                      << "LOOSER!!!! BOUHHHH! The secret code is : " << panel.secret_code.value << "\n";
+                      << "LOOSER!!!! BOUHHHH! The secret code is : " << my_screen.secret_code.value << "\n";
         }
 
     }
