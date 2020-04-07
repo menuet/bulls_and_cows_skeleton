@@ -43,7 +43,6 @@ TEST_CASE("TEST bulls_and_cows::count_bulls_cows_with_double WHEN 1 bull and 1 c
 	REQUIRE(current_attempt.cows == 1);
 }
 
-
 TEST_CASE("TEST bulls_and_cows::conv_vector_to_string")
 {
 
@@ -59,7 +58,6 @@ TEST_CASE("TEST bulls_and_cows::conv_vector_to_string")
 
 }
 
-
 TEST_CASE("TEST bulls_and_cows::isContainedIn WHEN Char A is already in SecretCode vector")
 {
 
@@ -74,7 +72,6 @@ TEST_CASE("TEST bulls_and_cows::isContainedIn WHEN Char A is already in SecretCo
 	REQUIRE(test == true);
 
 }
-
 
 TEST_CASE("TEST bulls_and_cows::checkError WHEN carac = Z")
 {
@@ -92,8 +89,6 @@ TEST_CASE("TEST bulls_and_cows::checkError WHEN carac = Z")
 
 }
 
-
-
 TEST_CASE("TEST bulls_and_cows::secret_code_init size")
 {
 
@@ -110,7 +105,6 @@ TEST_CASE("TEST bulls_and_cows::secret_code_init size")
 	REQUIRE(test.size() == game_options.number_of_characters_per_code);
 
 }
-
 
 TEST_CASE("TEST bulls_and_cows::load_option_file")
 {
@@ -133,7 +127,6 @@ TEST_CASE("TEST bulls_and_cows::load_option_file")
 	REQUIRE(game_options.minimum_allowed_character == 'A');
 	REQUIRE(game_options.maximum_allowed_character == 'C');
 }
-
 
 TEST_CASE("TEST bulls_and_cows::ask_option_menu_choice WHEN choice is 1")
 {

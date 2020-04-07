@@ -405,7 +405,7 @@ namespace bulls_and_cows {
 				not_win = false;
 			}
 			dico_all_codes = remove_impossible_codes(dico_all_codes, current_attempt, dico_all_codes.codes[index]);
-			std::cout << "Number of codes in dico : \n" << dico_all_codes.codes.size();
+			std::cout << "Number of codes in dico : \n" << dico_all_codes.codes.size() <<"\n";
 			
 			ai_attempts++;
 				
