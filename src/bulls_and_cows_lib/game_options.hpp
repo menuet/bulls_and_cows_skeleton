@@ -8,9 +8,9 @@ namespace bulls_and_cows {
     struct GameOptions
     {
         unsigned int max_number_of_attempts{4};
-        unsigned int number_of_characters_per_code{4};
+        unsigned int number_of_characters_per_code{3};
         char minimum_allowed_character{'A'};
-        char maximum_allowed_character{'H'};
+        char maximum_allowed_character{'C'};
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);

@@ -10,8 +10,12 @@ namespace bulls_and_cows {
 
     struct PossibleSolutions
     {
-        std::vector<Code> codes;
+        std::vector<Code> codes{};
     };
+
+    unsigned int Factoriel(unsigned int n);
+
+    Code generate_random_code(const GameOptions& game_options);
 
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options);
 
