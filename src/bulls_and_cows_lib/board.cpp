@@ -3,8 +3,7 @@
 #include "random.hpp"
 #include <string>
 
-namespace bulls_and_cows 
-{
+namespace bulls_and_cows {
     Board create_board(const GameOptions& game_options)
     {
         Board board;
@@ -120,13 +119,14 @@ namespace bulls_and_cows
         {
             output_stream << "* ";
         }
-        
+
         output_stream << "|              |\n---------------------------";
         for (unsigned c = 0; c < game_options.number_of_characters_per_code; c++)
         {
             output_stream << "--";
         }
-        output_stream <<"\n" "| ATTEMPTS ";
+        output_stream << "\n"
+                         "| ATTEMPTS ";
 
         for (unsigned d = 0; d < game_options.number_of_characters_per_code; d++)
         {
@@ -171,25 +171,27 @@ namespace bulls_and_cows
                     for (unsigned h = 0; h < game_options.number_of_characters_per_code; h++)
                     {
                         output_stream << board.attempts_and_feedbacks[i - 1].attempt.value[h] << " ";
-                    }                        
-                     output_stream<< "|  "
-                                  << board.attempts_and_feedbacks[i - 1].feedback.bulls << "    |  "
+                    }
+                    output_stream << "|  " << board.attempts_and_feedbacks[i - 1].feedback.bulls << "    |  "
                                   << board.attempts_and_feedbacks[i - 1].feedback.cows << "   |\n";
                 }
             }
-            
-
-            
         }
         output_stream << "-------------------------------------\n";
     }
 
     
+    
+
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
                      const Board& board)
     {
+
+        
         Code code;
+        
         bool validattempt = validate_attempt(game_options, code);
+
         while (validattempt == false)
         {
             output_stream << "What is your guess (" << game_options.number_of_characters_per_code
@@ -208,4 +210,4 @@ namespace bulls_and_cows
         return code;
     }
 
-}
+} // namespace bulls_and_cows

@@ -9,14 +9,16 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-// Marc Belleperche m'a aidé pour ce TP pour l'implémentation de quelques fonction (dans game.cpp ET game_option.cpp)
+
+// Marc Belleperche m'a aidé pour ce TP pour l'implémentation de quelques fonctions (dans game.cpp ET game_option.cpp)
+
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
         Board board = bulls_and_cows::create_board(game_options);
         bulls_and_cows::display_board(std::cout, game_options, board);
-
+        /*
         while (bulls_and_cows::is_end_of_game(game_options, board) == false && bulls_and_cows::is_win(game_options, board) == false)
         {
             
@@ -32,7 +34,7 @@ namespace bulls_and_cows {
                 board.attempts_and_feedbacks.push_back(new_askattempt);
             }
             bulls_and_cows::display_board(std::cout, game_options, board);
-        }
+        }*/
         
     }
 
@@ -41,23 +43,13 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        PossibleSolutions possposs = bulls_and_cows::generate_all_possible_codes(game_options);
+        std::cout << possposs.codes.size();
     }
+
+
+
+    
 
     void configure_game_options(GameOptions& game_options)
     {
