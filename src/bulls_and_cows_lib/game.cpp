@@ -54,13 +54,13 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
+        /*std::cout << "TODO:\n"
                      "    DO\n"
                      "       Display the current game options\n"
                      "       Display the game options menu\n"
                      "       Ask the user to type its choice\n"
                      "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+                     "    UNTIL user's choice is to go back to main menu\n";*/
         
         bool flag = false;
         while (!flag)
@@ -78,8 +78,7 @@ namespace bulls_and_cows {
 
                {
                     cout << "Modify the max number attempt\n";
-                    game_options.max_number_of_attempts =
-                    ask_int_or_default(cin, game_options.max_number_of_attempts);
+                    game_options.max_number_of_attempts = ask_int_or_default(cin, game_options.max_number_of_attempts);
                    
                     /*unsigned int modif = ask_int_or_default(cin, game_options.max_number_of_attempts);
                     while (modif < game_options.max_number_of_attempts)
@@ -90,29 +89,26 @@ namespace bulls_and_cows {
                 break;
 
             case 2:
-
-                {
+            {
                     cout << "Modify the number of characters \n";
-                    game_options.number_of_characters_per_code =
-                            ask_int_or_default(cin, game_options.number_of_characters_per_code);
+                    game_options.number_of_characters_per_code = ask_int_or_default(cin, game_options.number_of_characters_per_code);
                   
-                }
+            }
 
                 break;
 
             case 3: 
             {
-                cout << "Modify the minimum letter";
-                game_options.minimum_allowed_character =
-                        ask_char_or_default(cin, game_options.minimum_allowed_character);
+                    cout << "Modify the minimum letter";
+                    game_options.minimum_allowed_character = ask_char_or_default(cin, game_options.minimum_allowed_character);
                 
             }
             break;
 
-            case 4: {
-                cout << "Modify max allowed \n";
-                game_options.maximum_allowed_character =
-                        ask_char_or_default(cin, game_options.maximum_allowed_character);
+            case 4: 
+            {
+                    cout << "Modify max allowed \n";
+                    game_options.maximum_allowed_character = ask_char_or_default(cin, game_options.maximum_allowed_character);
                 
             }
                 break;

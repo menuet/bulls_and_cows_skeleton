@@ -13,7 +13,7 @@ namespace bulls_and_cows {
                       << "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n" 
                       << "Number of characters in a code: " << game_options.number_of_characters_per_code << "\n" 
                       << "Range of allowed characters: " << game_options.minimum_allowed_character 
-                      << "\n up to "<< game_options.maximum_allowed_character << "\n"; 
+                      << " to "<< game_options.maximum_allowed_character << "\n"; 
 
     }
     void display_game_options_menu(std::ostream& output_stream)
@@ -66,16 +66,14 @@ namespace bulls_and_cows {
 
     bool save_game_options(std::ostream & output_file_stream, const GameOptions& game_options)
     {
-        output_file_stream << "max_number_of_attempts =" << game_options.max_number_of_attempts
+        output_file_stream << "max_number_of_attempts ="<< game_options.max_number_of_attempts
                            << "\n"
-                              "number_of_characters_per_code ="
-                           << game_options.number_of_characters_per_code
+                              "number_of_characters_per_code ="<< game_options.number_of_characters_per_code
                            << "\n"
-                              "minimum_allowed_character ="
-                           << game_options.minimum_allowed_character
+                              "minimum_allowed_character ="<< game_options.minimum_allowed_character
                            << "\n"
-                              "maximum_allowed_character="
-                           << game_options.maximum_allowed_character << "\n";
+                              "maximum_allowed_character ="<< game_options.maximum_allowed_character 
+                           << "\n";
         return true;
     }
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)

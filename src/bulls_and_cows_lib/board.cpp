@@ -54,6 +54,7 @@ namespace bulls_and_cows {
             {
                 result.erase(i, 1); //We remove the digits that are already checked to avoid repetitions
                 feed.bulls++;
+               
             }
         }
         //For COWS
@@ -62,6 +63,7 @@ namespace bulls_and_cows {
             has_already_pos = secret.find(result[i]); //stock in found_pos when the position of secret correspond to attempt
             if (has_already_pos != string::npos) 
             {
+                secret.erase(has_already_pos, 1);//We remove the characters already used
                 feed.cows++;
             }
         }
