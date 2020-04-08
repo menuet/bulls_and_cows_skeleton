@@ -6,12 +6,15 @@
 #include "input.hpp"
 #include "main_menu.hpp"
 #include "random.hpp"
-#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <thread>
 #include <vector>
 #include <list>
+#include <Windows.h>
+#include <synchapi.h>
+
+
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
@@ -45,30 +48,44 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        /*std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";*/
+        //Generaation of all solutions, and creation of the board
+        PossibleSolutions allpos = bulls_and_cows::generate_all_possible_codes(game_options);
+        std::cout << "Game has " << allpos.codes.size() << " solutions\n";
+        Board cvscboard = bulls_and_cows::create_board(game_options);
 
-
-        PossibleSolutions yeet =generate_all_possible_codes(game_options);
-        for (unsigned int i = 0U; i < yeet.codes.size(); i++)
+        //while the game is not finished
+        while (!bulls_and_cows::is_end_of_game(game_options, cvscboard) &&
+               !bulls_and_cows::is_win(game_options, cvscboard))
         {
-            std::cout << yeet.codes[i].value << "\n";
+            // Display of the board
+            bulls_and_cows::display_board(std::cout, game_options, cvscboard);
+            std::cout << "Solutions left: " << allpos.codes.size() << "\n";
+
+            // Asking  computer to pick a random attempt
+            Code randatt = bulls_and_cows::pick_random_attempt(allpos);
+            std::cout << "Computer picked the code: " << randatt.value << "\n";
+
+            // Creation of an attempt, and normal way of playing goes on
+            AttemptAndFeedback newattemp;
+            newattemp.attempt = randatt;
+            newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(randatt, cvscboard.secret_code);
+            std::cout << "Bulls : " << newattemp.feedback.bulls << " Cows : " << newattemp.feedback.cows << "\n";
+            cvscboard.attempts_and_feedbacks.push_back(newattemp);
+            //std::cout << "Secret code is : " << cvscboard.secret_code.value << "\n";
+
+            // Remove the impossible solutions from the vector
+            bulls_and_cows::remove_incompatible_codes_from_possible_solutions(newattemp, allpos);
+            
+            Sleep(2000);
         }
-        std::cout << "la taille c'est " << yeet.codes.size() << " a peu pres bg\n";
+        if (is_win(game_options, cvscboard))
+        {
+            std::cout << "The secret code was : " << allpos.codes[0].value << " \nGG !\n";
+        }
+        else
+        {
+            std::cout << "Damn, this computer is so bad, put it in microwave.\n";
+        }
     }
 
     void configure_game_options(GameOptions& game_options)
@@ -80,7 +97,7 @@ namespace bulls_and_cows {
             display_game_options(std::cout, game_options);
             display_game_options_menu(std::cout);
             std::cout << "What is your choice ? ";
-            const auto user_choice = ask_game_options_menu_choice(std::cin);
+            const auto user_choice = ask_game_options_menu_choice(std::cin); // auto in order to take any input of the user
 
 
             switch (user_choice)

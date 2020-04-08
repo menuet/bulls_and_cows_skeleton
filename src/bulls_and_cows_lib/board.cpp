@@ -217,7 +217,7 @@ namespace bulls_and_cows {
        {
            // HEAD ...
            // Showing answer to debug
-           output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
+           //output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
            output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
                          << "---------------\n";
            output_stream << "| SECRET   " << moins_function(game_options.number_of_characters_per_code, "* ") << "| "

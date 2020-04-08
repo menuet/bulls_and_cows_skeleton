@@ -1,29 +1,33 @@
 
 #include "game_solver.hpp"
 #include "game_options.hpp"
+#include "random.hpp"
 namespace bulls_and_cows {
     
 
-    void recursif(int num, int max, const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabeat,
-                  Code codes)
+    void therealgen(int num, int max, const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabeat,
+                  Code code)
+        // This method is the real method generating all possible attempts
+        // Method taking in parameter num: the current position of character in code
+        // max: the position of last character
+        // code: the code being written before being pushed back
     {
-        for (char temp : used_alphabeat)
+        for (char temp : used_alphabeat) //  for each allowed character
         {
-            if (num <= max)
+            if (num <= max) // if the last character position of code is not yet reached
             {
-                codes.value.push_back(temp);
-                num++;
+                code.value.push_back(temp); // add the character at position num 
+                num++;  // go to next character position
 
-                recursif(num, max, game_options, pls, used_alphabeat, codes);
-                codes.value.pop_back();
+                therealgen(num, max, game_options, pls, used_alphabeat, code);    // new call of method to write on the next character position of code 
+                code.value.pop_back(); // delete the last character in order to write the next character on the same position
             }
-            else if (num > max)
+            else if (num > max) // if the code is completely written
             {
-                pls.codes.push_back(codes);
-                num--;
+                pls.codes.push_back(code);  // put the code in pls
                 break;
             }
-            num--;
+            num--; // go to previous character position
         }
     }
 
@@ -34,16 +38,38 @@ namespace bulls_and_cows {
         PossibleSolutions yeet{};
         std::string alphabet;
         Code codes;
-        // Génération de la chaine avec toutes les lettres du min a la max
+        // Generation of the set of used character, stored in a string
         for (char c = game_options.minimum_allowed_character; c <= game_options.maximum_allowed_character; c++)
         {
             alphabet.push_back(c);
         }
-        recursif(1, game_options.number_of_characters_per_code, game_options, yeet, alphabet, codes);
+        therealgen(1, game_options.number_of_characters_per_code, game_options, yeet, alphabet, codes); // Call of the real method
         return yeet;
     }
 
-     
+    Code pick_random_attempt(const PossibleSolutions& possible_solutions) // everything is in the name
+    {
+        int pos = (generate_random_integer(0, static_cast<int>(possible_solutions.codes.size() - 1)));
+        return possible_solutions.codes[pos];
+    }
 
+     
+    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
+                                                           PossibleSolutions& possible_solutions)
+    {
+        auto end = std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(),
+                           [attempt_and_feedback, &possible_solutions](Code const& c) -> bool {
+            //use of lambda expression to pass several parameters to remove_if 
+                               Feedback tempfeed = compare_attempt_with_secret_code(c, attempt_and_feedback.attempt);
+                               
+                               if (tempfeed.bulls != attempt_and_feedback.feedback.bulls ||
+                                   tempfeed.cows != attempt_and_feedback.feedback.cows) 
+                               {
+                                   return true; // the code needs to be deleted 
+                               }
+                                 return false;
+                         });
+        possible_solutions.codes.erase(end, possible_solutions.codes.end()); // delete the code from array
+    }
 
 } // namespace bulls_and_cows
