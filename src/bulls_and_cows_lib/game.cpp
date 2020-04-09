@@ -74,12 +74,12 @@ namespace bulls_and_cows {
 
         if (is_win(game_options, board))
         {
-            std::cout << "IA won" << std::endl;
+            std::cout << "AI won" << std::endl;
         }
 
         else
         {
-            std::cout << "IA didn't find the solution " << std::endl;
+            std::cout << "AI didn't find the solution " << std::endl;
         }
         
     }

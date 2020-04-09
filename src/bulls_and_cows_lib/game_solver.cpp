@@ -11,7 +11,6 @@ namespace bulls_and_cows {
     {
         Code new_code;
         new_code.value = previous_code.value;
-        // int nb_character = game_options.number_of_characters_per_code;
         for (unsigned int i = game_options.number_of_characters_per_code; i > 0; i--)
         {
             if (previous_code.value[i - 1] != game_options.maximum_allowed_character)
@@ -58,7 +57,7 @@ namespace bulls_and_cows {
 
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
                                                            PossibleSolutions& possible_solutions)
-    { //.attempt : AABAA .feedback.bulls : 0 .feedback.cows : 3
+    {
         possible_solutions.codes.erase(
             std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(), [&](Code c) {
                 if (compare_attempt_with_secret_code(c, attempt_and_feedback.attempt).bulls !=
