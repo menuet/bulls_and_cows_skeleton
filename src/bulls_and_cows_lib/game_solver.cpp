@@ -25,7 +25,7 @@ namespace bulls_and_cows {
         }
     }
 
-    //retourne toutes les possibilités pour l'ia.
+    //Fonction qui retourne toutes les possibilités afin que l'ia puisse choisir un code.
     std::vector<std::string> createAllPossibilities(const GameOptions& game_options)
     {
         const unsigned int NOMBRE_DE_CARACTERES =
@@ -39,11 +39,11 @@ namespace bulls_and_cows {
         }
         allPossibilities.push_back(premierCode);
         returnAllCombination(allPossibilities, "", NOMBRE_DE_CARACTERES, game_options.number_of_characters_per_code, game_options);
-        allPossibilities.erase(allPossibilities.begin()); //permet de supprimer l'initilisation utile à ma fonction recursive
+        allPossibilities.erase(allPossibilities.begin()); //permet de supprimer l'initilisation utile à ma fonction recursive.
         return allPossibilities;
     }
 
-    //retourne un random dans la liste des possibilités.
+    //Fonction qui retourne un random dans la liste des possibilités.
     std::string randomInPossibilities(const std::vector<std::string>& allPossibilities)
     {
         unsigned int PREMIER_INDEX_DU_VECTOR = 0;
@@ -52,7 +52,7 @@ namespace bulls_and_cows {
         return allPossibilities[randomIndex];
     }
 
-    //Supprime toutes les possibilités incorrects
+    //Fonction qui supprime toutes les possibilités incorrects
     void deleteIncorrectPoissibilities(std::vector<std::string>& allPossibilities, const std::string& codeComputer,
                                        const unsigned int bulls, const unsigned int cows,
                                        const GameOptions& game_options)

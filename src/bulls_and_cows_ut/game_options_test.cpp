@@ -20,10 +20,10 @@ TEST_CASE("TEST bulls_and_cows::printOptions")
     REQUIRE(output_result ==
             "minimum_allowed_character=A\n"
             "maximum_allowed_character=H\n"
-            "number_of_characters_per_code=5\n"
+            "number_of_characters_per_code=4\n"
             "max_number_of_attempts=12\n"
             "save_game=0\n"
-            "accept_doublons=0\n");
+            "accept_doublons=1\n");
 }
 
 TEST_CASE("TEST bulls_and_cows::loadGame_options")
@@ -40,5 +40,5 @@ TEST_CASE("TEST bulls_and_cows::loadGame_options")
     REQUIRE(game_options.number_of_characters_per_code == 6);
     REQUIRE(game_options.max_number_of_attempts == 12);
     REQUIRE(game_options.save_game == false);
-    REQUIRE(game_options.accept_doublons == false);
+    REQUIRE(game_options.accept_doublons == true);
 }
