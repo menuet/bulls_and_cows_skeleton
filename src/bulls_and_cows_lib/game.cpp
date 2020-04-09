@@ -35,13 +35,14 @@ namespace bulls_and_cows {
 
         if (is_win(game_options, board))
         {
-            std::cout << "Congratulations ! You won" << std::endl;
+            std::cout << "Congratulations ! You won !" << std::endl;
         }
 
         else
         {
-            std::cout << "T'es nul" << std::endl;
+            std::cout << "You lose !" << std::endl;
         }
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -65,7 +66,6 @@ namespace bulls_and_cows {
             board.attempts_and_feedbacks.push_back(attempt_and_feedback);
 
             remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possible_solutions);
-
             
 
         } while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
@@ -135,7 +135,7 @@ namespace bulls_and_cows {
                 save_file.open(path);
                 if (!save_game_options(save_file, game_options))
                 {
-                    std::cout << "Erreur avec le fichier en écriture";
+                    std::cout << "Error with the written file" << std::endl;
                 }
                 save_file.close();
                 break;
@@ -143,7 +143,7 @@ namespace bulls_and_cows {
                 load_file.seekg(0, std::ios::beg);
                 if (!load_game_options(load_file, game_options))
                 {
-                    std::cout << "Erreur avec le fichier de lecture";
+                    std::cout << "Error with the file read" << std::endl;
                 }
                 break;
             case GameOptionsMenuChoice ::Error:
