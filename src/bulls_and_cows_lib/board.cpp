@@ -3,17 +3,43 @@
 
 namespace bulls_and_cows {
 
+    bool unichar(std::string str) // checks if the string contains unique characters
+    {
+        for (int i = 0; i < str.length() - 1; i++)
+        {
+            for (int j = i + 1; j < str.length(); j++)
+            {
+                if (str[i] == str[j])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    std::string gencode(GameOptions game_options)
+    {
+        std::string myreturn;
+        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
+        {
+            // Génération du code secret en character
+            myreturn = myreturn + generate_random_character(game_options.minimum_allowed_character, game_options.maximum_allowed_character);
+        }
+        return myreturn;
+    }
     // TODO: define the body of the functions declared in board.cpp
     Board create_board(const GameOptions& game_options)
     {
         Board myboard{};
+        myboard.secret_code.value = gencode(game_options);
 
-        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
+        if (game_options.unicate)
         {
-            //Génération du code secret en character 
-                myboard.secret_code.value = myboard.secret_code.value + bulls_and_cows::generate_random_character(
-                                                                            game_options.minimum_allowed_character,
-                                                                            game_options.maximum_allowed_character);
+            while (!unichar(myboard.secret_code.value))
+            {
+            myboard.secret_code.value = gencode(game_options);
+            }
         }
         //std::cout << "Le code secret est le suivant :" << myboard.secret_code.value;
         return myboard;

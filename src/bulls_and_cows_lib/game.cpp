@@ -8,9 +8,8 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
-#include <thread>
-#include <windows.h>
 #include "random.hpp"
+#include <thread>
 #include <vector>
 
 namespace bulls_and_cows {
@@ -19,24 +18,24 @@ namespace bulls_and_cows {
     {
        
         //CREATING BOARD using functions we implemented
-        Board myboard = bulls_and_cows::create_board(game_options);
+        Board myboard = create_board(game_options);
 
         //While the user didn't win or reached max attempt number, while loop 
 
-        while (!bulls_and_cows::is_end_of_game(game_options, myboard) && !bulls_and_cows::is_win(game_options, myboard))
+        while (!is_end_of_game(game_options, myboard) && !is_win(game_options, myboard))
         {
             // First display of the empty board
-            bulls_and_cows::display_board(std::cout, game_options, myboard);
+            display_board(std::cout, game_options, myboard);
 
             // Asking attemp to the user
-            Code tempattemp = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
+            Code tempattemp = ask_attempt(std::cout, std::cin, game_options, myboard);
 
-            if (bulls_and_cows::validate_attempt(game_options, tempattemp))
+            if (validate_attempt(game_options, tempattemp))
             {
                 AttemptAndFeedback newattemp;
                 newattemp.attempt= tempattemp;
 
-                newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(tempattemp, myboard.secret_code);
+                newattemp.feedback = compare_attempt_with_secret_code(tempattemp, myboard.secret_code);
 
                 myboard.attempts_and_feedbacks.push_back(newattemp);
             }
@@ -49,36 +48,36 @@ namespace bulls_and_cows {
         //bulls_and_cows::generate_all_possible_codes(game_options);
 
 
-        PossibleSolutions myavc = bulls_and_cows::generate_all_possible_codes(game_options);
+        PossibleSolutions myavc = generate_all_possible_codes(game_options);
         std::cout << "Solution generated with " << myavc.codes.size() << " solutions\n";
-        Board myavcboard = bulls_and_cows::create_board(game_options);
+        Board myavcboard = create_board(game_options);
 
-        while (!bulls_and_cows::is_end_of_game(game_options, myavcboard) && !bulls_and_cows::is_win(game_options, myavcboard))
+        while (!is_end_of_game(game_options, myavcboard) && !is_win(game_options, myavcboard))
         {
             // First display of the empty board
-            bulls_and_cows::display_board(std::cout, game_options, myavcboard);
+            display_board(std::cout, game_options, myavcboard);
             std::cout << "Solutions still are " << myavc.codes.size() << " solutions\n";
 
             // Asking attemp the computer to choose a random possibilitie
-            Code avctemp = bulls_and_cows::pick_random_attempt(myavc);
+            Code avctemp = pick_random_attempt(myavc);
             std::cout << "Choosen code is " << avctemp.value << "\n";
 
             AttemptAndFeedback newattemp;
             newattemp.attempt = avctemp;
-            newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(avctemp, myavcboard.secret_code);
+            newattemp.feedback = compare_attempt_with_secret_code(avctemp, myavcboard.secret_code);
             //std::cout << "Bulls : " << newattemp.feedback.bulls << " Cows : " << newattemp.feedback.cows<<"\n";
             myavcboard.attempts_and_feedbacks.push_back(newattemp);
             std::cout << "Secret code is : " << myavcboard.secret_code.value << "\n";
-            if (bulls_and_cows::is_win(game_options, myavcboard))break;
-            bulls_and_cows::remove_incompatible_codes_from_possible_solutions(newattemp, myavc);
-            Sleep(2000);
+            if (is_win(game_options, myavcboard))break;
+            remove_incompatible_codes_from_possible_solutions(newattemp, myavc);
+            //Sleep(2000);
+            //Utilisation de la bibliothèque standard
+            std::this_thread::sleep_for(std::chrono::seconds(2));
         }
     }
 
     void configure_game_options(GameOptions & game_options)
     {
-        std::ifstream in{"game_options.txt"};
-
         bool get_out = false;
         while (!get_out)
         {
@@ -112,13 +111,20 @@ namespace bulls_and_cows {
                     game_options.number_of_characters_per_code =
                         ask_uint_or_default(std::cin, game_options.number_of_characters_per_code);
                     break;
-                case GameOptionsMenuChoice::LoadOptions:
+                case GameOptionsMenuChoice::ModifyUnicateCondition:
+                    std::cout << "Enter your want the unicate condition 0 = false, 1 = true : ";
+                    game_options.unicate = ask_int_or_default(std::cin, game_options.unicate);
+                    break;
+                case GameOptionsMenuChoice::LoadOptions: {
+                    std::ifstream in{"game_options.txt"};
                     load_game_options(in, game_options);
                     break;
-                case GameOptionsMenuChoice::SaveOptions:
+                }
+                case GameOptionsMenuChoice::SaveOptions: {
                     std::ofstream out{"game_options.txt"};
                     save_game_options(out, game_options);
                     break;
+                }
                 }
             }
     }

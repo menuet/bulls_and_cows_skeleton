@@ -12,10 +12,17 @@ namespace bulls_and_cows {
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
         output_stream << "Here are the current game_options:\n"
-                      "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n"
-                      "Number of characters in a code: " << game_options.number_of_characters_per_code << "\n"
-                      "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '"
-                      << game_options.maximum_allowed_character << "'\n";
+                         "Maximum number of attempts per game: "
+                      << game_options.max_number_of_attempts
+                      << "\n"
+                         "Number of characters in a code: "
+                      << game_options.number_of_characters_per_code
+                      << "\n"
+                         "Range of allowed characters: from '"
+                      << game_options.minimum_allowed_character << "' to '" << game_options.maximum_allowed_character
+                      << "'\n"
+                        "unicate condition: "<< game_options.unicate << "\n";
+
     }
 
 
@@ -28,8 +35,9 @@ namespace bulls_and_cows {
                       "2 - Modify Number of characters in a code\n"
                       "3 - Modify Minimum allowed character\n"
                       "4 - Modify Maximum allowed character\n"
-                      "5 - Save options\n"
-                      "6 - Load options\n"
+                      "5 - Modify Unicate condition\n"
+                      "6 - Save options\n"
+                      "7 - Load options\n"
                       "What is your choice ? ";
     }
 
@@ -51,8 +59,10 @@ namespace bulls_and_cows {
         case 4:
             return GameOptionsMenuChoice::ModifyMaximumAllowedCharacter;
         case 5:
-            return GameOptionsMenuChoice::SaveOptions;
+            return GameOptionsMenuChoice::ModifyUnicateCondition;
         case 6:
+            return GameOptionsMenuChoice::SaveOptions;
+        case 7:
             return GameOptionsMenuChoice::LoadOptions;
         default:
             return GameOptionsMenuChoice::Error;
@@ -62,10 +72,17 @@ namespace bulls_and_cows {
     // Same
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
     {
-        output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << "\n"
-                            "number_of_characters_per_code=" << game_options.number_of_characters_per_code << "\n"
-                            "minimum_allowed_character=" << game_options.minimum_allowed_character << "\n"
-                            "maximum_allowed_character=" << game_options.maximum_allowed_character << "\n";
+        output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts
+                           << "\n"
+                              "number_of_characters_per_code="
+                           << game_options.number_of_characters_per_code
+                           << "\n"
+                              "minimum_allowed_character="
+                           << game_options.minimum_allowed_character
+                           << "\n"
+                              "maximum_allowed_character="
+                           << game_options.maximum_allowed_character << "\n"
+                           "unicate condition=" << game_options.unicate<<"\n";
         return true;
     }
 
@@ -83,7 +100,7 @@ namespace bulls_and_cows {
 
             if (token == "max_number_of_attempts")
                 game_options.max_number_of_attempts = std::atoi(numb.c_str());
-            //std::atoi pour récuperer le int 
+            // std::atoi pour récuperer le int
 
             else if (token == "number_of_characters_per_code")
                 game_options.number_of_characters_per_code = std::atoi(numb.c_str());
@@ -93,6 +110,9 @@ namespace bulls_and_cows {
 
             else if (token == "maximum_allowed_character")
                 game_options.maximum_allowed_character = numb[0];
+
+            else if (token == "unicate condition")
+                game_options.unicate = numb[0];
 
         }
         return true;

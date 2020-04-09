@@ -11,6 +11,7 @@ namespace bulls_and_cows {
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
+        bool unicate{true};
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
@@ -25,8 +26,9 @@ namespace bulls_and_cows {
         ModifyNumberOfCharactersPerCode = 2,
         ModifyMinimumAllowedCharacter = 3,
         ModifyMaximumAllowedCharacter = 4,
-        SaveOptions = 5,
-        LoadOptions = 6,
+        ModifyUnicateCondition = 5,
+        SaveOptions = 6,
+        LoadOptions = 7,
     };
 
     // Ask the user to select an option of the menu
