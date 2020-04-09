@@ -9,6 +9,7 @@ namespace bulls_and_cows {
         std::string value{};
         std::getline(input_stream, value);
         return value;
+
     }
 
     int ask_int_or_default(std::istream& input_stream, int default_value)

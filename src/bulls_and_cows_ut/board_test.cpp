@@ -5,7 +5,6 @@
 
 // Examples of unit tests for the functions declared in board.hpp
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
-
 /*
 
 TEST_CASE("TEST bulls_and_cows::create_board")
@@ -38,6 +37,7 @@ TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt's length is too sm
     // ASSERT
     REQUIRE(!result);
 }
+
 
 TEST_CASE("TEST bulls_and_cows::validate_attempt WHEN attempt contains non-allowed characters")
 {
@@ -195,14 +195,13 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
     // ASSERT
     REQUIRE(attempt.value == "ABCDE");
     REQUIRE(output_stream.str() ==
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
-            "? "
+            "What is your guess #01 (5 characters between 'A' and 'H') "
+            "?\n"
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
-            "? "
+            "What is your guess #01 (5 characters between 'A' and 'H') "
+            "?\n"
             "Your guess has an invalid length or contains non-allowed characters, please try again\n"
-            "What is your guess #01 (5 characters between 'A' and 'H')\n"
-            "? ");
+            "What is your guess #01 (5 characters between 'A' and 'H') "
+            "?\n");
 }
-
 */
