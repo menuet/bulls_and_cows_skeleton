@@ -72,15 +72,14 @@ namespace bulls_and_cows {
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)
     {
         std::string line;
-        while (std::getline(input_file_stream, line))
+        while (std::getline(input_file_stream, line)) // go through each line of the file
         {
-            // std::string delimiter = "=";
-            std::size_t delimiter = line.find("=");
-            std::string token = line.substr(0, delimiter);
-            std::string numb = line.substr(delimiter + 1);
-            if (numb != "")
+            std::size_t delimiter = line.find("="); // will be the separation between name of parameter and new value
+            std::string token = line.substr(0, delimiter);  //name
+            std::string numb = line.substr(delimiter + 1);  //value
+            if (numb != "") // If value not empty
             {
-                if (token == "max_number_of_attempts")
+                if (token == "max_number_of_attempts")  // Try to find the parameter to be changed
                     game_options.max_number_of_attempts = std::atoi(numb.c_str());
                 else if (token == "number_of_characters_per_code")
                     game_options.number_of_characters_per_code = std::atoi(numb.c_str());
@@ -98,13 +97,13 @@ namespace bulls_and_cows {
                 {
                     game_options.unique_characters = numb[0];
                 }
-                else
+                else    //someone wrote something, file is corrupted
                 {
                     std::cout << "Error, file corrupted\n";
                     break;
                 }
             }
-            else
+            else        // Value is empty, someone wrote in the file
             {
                 std::cout << "Error, file corrupted\n";
                 break;

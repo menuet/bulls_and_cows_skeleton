@@ -100,7 +100,7 @@ namespace bulls_and_cows {
             const auto user_choice = ask_game_options_menu_choice(std::cin); // auto in order to take any input of the user
 
 
-            switch (user_choice)
+            switch (user_choice) // depending on input
             {
             case GameOptionsMenuChoice::BackToMain:
                 getout = true;
@@ -109,12 +109,12 @@ namespace bulls_and_cows {
 
                 std::cout << "Enter the maximum character you want:";
                 char newmax = ask_char_or_default(std::cin, game_options.maximum_allowed_character);
-                unsigned int range = newmax - game_options.minimum_allowed_character;
-                if (newmax < game_options.minimum_allowed_character)
+                unsigned int range = newmax - game_options.minimum_allowed_character; // number of character available
+                if (newmax < game_options.minimum_allowed_character)    // security for maximum
                 {
                     std::cout << "Maximum cannot be inferior to minimum\n";
                 }
-                if (range < game_options.number_of_characters_per_code)
+                if (range < game_options.number_of_characters_per_code) // in order to use unicity gamemode, number of allowed character needs to be equal or superior to number of character per code
                 {
                     std::cout << "Character range is too short, please first reduce number of character per code";
                 }
@@ -126,11 +126,16 @@ namespace bulls_and_cows {
 
                 std::cout << "Enter the number of attempts you want:";
                 unsigned int newmax = ask_uint_or_default(std::cin, game_options.max_number_of_attempts);
+                unsigned int range = game_options.maximum_allowed_character - game_options.minimum_allowed_character;
                 if (newmax <= 20)
                 {
-                    game_options.max_number_of_attempts = newmax;
+                    if (range > newmax)
+                        game_options.max_number_of_attempts = newmax;
+                    else
+                        std::cout << "Warning: This number of attempts does not allow unicity, please try another "
+                                     "value or change allowed characters";
                 }
-                else
+                else // Set of a maximum, in order not to let the user make the game crash on purpose
                     std::cout << "Number of attempts cannot exceed 20 attempts\n";
                 break;
             }
@@ -203,7 +208,7 @@ namespace bulls_and_cows {
             switch (user_choice)
             {
             case MainMenuChoice::Quit:
-                std::cout << "\nBye bye!\n";
+                std::cout << "\nSee you later, aligator !\n";
                 return;
             case MainMenuChoice::UserPlaysAgainstComputer:
                 user_plays_against_computer(game_options);

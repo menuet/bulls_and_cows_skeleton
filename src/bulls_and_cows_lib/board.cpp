@@ -10,7 +10,7 @@ namespace bulls_and_cows {
 
 
 
-    bool unichar(std::string str)
+    bool unichar(std::string str) // checks if the string contains unique characters
     {
         for (int i = 0; i < str.length() - 1; i++)
         {
@@ -26,21 +26,20 @@ namespace bulls_and_cows {
     }
 
 
-    //Checked
     Board create_board(const GameOptions& game_options)
     {
         Board ans;
 
-        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
+        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)  //generation of the code
         {
             ans.secret_code.value.push_back(bulls_and_cows::generate_random_character(
                 game_options.minimum_allowed_character, game_options.maximum_allowed_character));
         }
 
-        if (game_options.unique_characters)
+        if (game_options.unique_characters) // if unicity of characters in code required
         {
             bool out = false;
-            while (!out)
+            while (!out)    // while code does not meet the requirement, generate a new one
             {
 
                 if (unichar(ans.secret_code.value))
@@ -67,15 +66,23 @@ namespace bulls_and_cows {
 
 
         //Checked
-       bool validate_attempt(const GameOptions& game_options, const Code& attempt)
+       bool validate_attempt(const GameOptions& game_options, const Code& attempt) // check if the user input attempt is correct
        {
-           if (game_options.number_of_characters_per_code == attempt.value.size())
+           if (game_options.number_of_characters_per_code == attempt.value.size()) // Size checj
            {
                for (const char& c : attempt.value)
                {
-                   if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+                   if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character)) // Char value check
                    {
                        return false;
+                   }
+
+                   if (game_options.unique_characters) // Unicity check
+                   {
+                       if (!unichar(attempt.value))
+                       {
+                           return false;
+                       }
                    }
                }
                return true;
@@ -86,26 +93,28 @@ namespace bulls_and_cows {
            }
                
        }
-    //Checked
+
+
+
        Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
        {
            Feedback myfeed{};
            std::string tmp_secret_code = secret_code.value;
            std::string tmp_attempt = attempt.value;
            std::size_t found;
-           // bulls managing
-           for (int i = 0; i < tmp_secret_code.size(); i++)
+           // bulls managing first, the easiest one
+           for (int i = 0; i < tmp_secret_code.size(); i++) 
            {
                if (tmp_secret_code[i] == tmp_attempt[i])
                {
-                   tmp_attempt.erase(i, 1);
+                   tmp_attempt.erase(i, 1); // erase char in order not to exmaine it twice
                    tmp_secret_code.erase(i, 1);
                    myfeed.bulls++;
-                   i--;
+                   i--; // tricky bug I had
                }
            }
 
-           // cows managing
+           // cows managing once bulls are out
            for (int j = 0; j < tmp_attempt.size(); j++)
            {
                found = tmp_secret_code.find(tmp_attempt[j]);
@@ -118,8 +127,7 @@ namespace bulls_and_cows {
 
            return myfeed;
        }
-       //Checked 
-       bool is_end_of_game(const GameOptions& game_options, const Board& board)
+       bool is_end_of_game(const GameOptions& game_options, const Board& board) // Check of the loss, when all attempts are filled
        {
            if (game_options.max_number_of_attempts == board.attempts_and_feedbacks.size())
            {
@@ -129,8 +137,7 @@ namespace bulls_and_cows {
        }
        
        
-       //Checked
-       bool is_win(const GameOptions& game_options, const Board& board)
+       bool is_win(const GameOptions& game_options, const Board& board) // Check of the win
        {
            if ((board.attempts_and_feedbacks.empty())) 
                return false;
@@ -143,23 +150,7 @@ namespace bulls_and_cows {
        }
 
 
-
-       // SIMPLE TEST
-       /*void display_board(std::ostream & output_stream, const GameOptions & game_options, const Board & board)
-       {
-           output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
-           for (unsigned int index = 0; index < board.attempts_and_feedbacks.size(); ++index)
-           {
-               const auto& attempt_and_feedback = board.attempts_and_feedbacks[index];
-               const auto& attempt = attempt_and_feedback.attempt;
-               const auto& feedback = attempt_and_feedback.feedback;
-               output_stream << "Attempt #" << (index + 1) << " = " << attempt.value << " | Bulls = " << feedback.bulls
-                   << " | Cows = " << feedback.cows << "\n";
-           }
-       }
-       */
-
-       std::string moins_function(int number, std::string loopadd)
+       std::string moins_function(int number, std::string loopadd) // puts the right number of character loopadd in order to make a responsive output in console
        {
            std::string moins = "";
            for (int i = 0; i < number; i++)
@@ -170,7 +161,7 @@ namespace bulls_and_cows {
            return moins;
        }
 
-       void print_code(std::string code)
+       void print_code(std::string code)    // indeed
        {
            char* ccode = const_cast<char*>(code.c_str());
            std::string codewspace = "";
@@ -179,6 +170,8 @@ namespace bulls_and_cows {
                std::cout << ccode[i] << " ";
            }
        }
+
+       // unsuccessfull attempts to optimize the display
 
        /*void affichagebg(std::ostream& output_stream, size_t compteur, std::string tentative, unsigned int bulls, unsigned int cows)
        {
@@ -213,6 +206,8 @@ namespace bulls_and_cows {
            }
        }*/
 
+
+
        void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
        {
            // HEAD ...
@@ -232,18 +227,18 @@ namespace bulls_and_cows {
 
            // BODY ...
            int number_of_attemps = game_options.max_number_of_attempts;
-           for (size_t i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
+           for (size_t i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--) // display of empty attempts
            {
-               output_stream << "| #" << ((i >= 10) ? "" : "0") << i << "      "
+               output_stream << "| #" << ((i >= 10) ? "" : "0") << i << "      " // ternary to add a 0 before the digit if needed
                              << moins_function(game_options.number_of_characters_per_code, ". ")
                              << "|       |       |\n";
                //affichagebg(std::cout, i, moins_function(game_options.number_of_characters_per_code, "."), NULL, NULL);
-
+               //here the affichagebg method works but it puts 0 in unfilled attempts, i am not satisfied with it so i don't use it
            }
 
            if (!board.attempts_and_feedbacks.empty())
            {
-               for (size_t index = board.attempts_and_feedbacks.size(); index > 0; --index)
+               for (size_t index = board.attempts_and_feedbacks.size(); index > 0; --index) // display of filled attempts
                {
                    const auto& attempt_and_feedback = board.attempts_and_feedbacks[index - 1];
                    const auto& attempt = attempt_and_feedback.attempt;
@@ -265,11 +260,10 @@ namespace bulls_and_cows {
        }
    
        
-       //Checked
        
        void whats_your_guess(std::ostream& output_stream, const GameOptions& game_options, std::string s,
                              int current_attempt, unsigned int number_of_characters_per_code,
-                             char minimum_allowed_character, char maximum_allowed_character)
+                             char minimum_allowed_character, char maximum_allowed_character) // prints the question written properly
        {
            output_stream << "What is your guess #" << s << current_attempt << " (" << number_of_characters_per_code
                          << " characters between '" << minimum_allowed_character << "' and '"
@@ -286,7 +280,7 @@ namespace bulls_and_cows {
            bool valueformat = false;
            while (!valueformat)
            {
-               if (current_attempt < 10)
+               if (current_attempt < 10) // could be replaced with ternary but it's really hard to read
                {
                    whats_your_guess(output_stream, game_options, "0", current_attempt,
                                     game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
@@ -301,24 +295,35 @@ namespace bulls_and_cows {
 
                valueformat = true;
 
-               input_stream >> incode.value;
-               if (incode.value.size() != game_options.number_of_characters_per_code)
+               input_stream >> incode.value; // take the user input
+               if (incode.value.size() != game_options.number_of_characters_per_code) // Size check
                {
                    valueformat = false;
                    output_stream
-                       << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
+                       << "Your guess has an invalid length, please enter a "<< game_options.number_of_characters_per_code <<" characters code\n";
                }
 
                else
                {
                    for (char& c : incode.value)
                    {
-                       if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character))
+                       if ((c < game_options.minimum_allowed_character) | (c > game_options.maximum_allowed_character)) // Character check
                        {
                            valueformat = false;
 
-                           output_stream << "Your guess has an invalid length or contains non-allowed characters, "
+                           output_stream << "Your guess contains non-allowed characters, "
                                             "please try again\n";
+
+                           
+                       }
+                       if (game_options.unique_characters) // Unicity check
+                       {
+                           if (!unichar(incode.value))
+                           {
+                               valueformat = false;
+                               std::cout << "Please enter a code with unique characters\n";
+                               break;
+                           }
                        }
                    }
                }
