@@ -5,6 +5,8 @@
 #include "game_options.hpp"
 #include <vector>
 
+
+
 namespace bulls_and_cows {
 
     struct PossibleSolutions
@@ -20,3 +22,7 @@ namespace bulls_and_cows {
                                                            PossibleSolutions& possible_solutions);
 
 } // namespace bulls_and_cows
+
+
+
+

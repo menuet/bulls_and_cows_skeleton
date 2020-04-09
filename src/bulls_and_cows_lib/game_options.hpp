@@ -2,6 +2,9 @@
 #pragma once
 
 #include <iostream>
+#include <iostream>
+#include <fstream>
+#include <vector>
 
 namespace bulls_and_cows {
 
@@ -16,6 +19,19 @@ namespace bulls_and_cows {
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
 
     void display_game_options_menu(std::ostream& output_stream);
+
+    void option_ModifyMaximumNumberOfAttempts(GameOptions& game_options);
+
+    void option_ModifyNumberOfCharactersPerCode(GameOptions& game_options);
+
+    void option_ModifyMinimumAllowedCharacter(GameOptions& game_options);
+
+    void option_ModifyMaximumAllowedCharacter(GameOptions& game_options);
+
+    void option_SaveOptions(std::ostream& output_file_stream, const GameOptions& game_options);
+
+    void option_LoadOptions(std::istream& input_file_stream, GameOptions& game_options);
+
 
     enum class GameOptionsMenuChoice
     {
@@ -34,6 +50,9 @@ namespace bulls_and_cows {
 
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options);
 
+    std::vector<std::string> split(std::string strToSplit, char delimeter);
+
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options);
+
 
 } // namespace bulls_and_cows
