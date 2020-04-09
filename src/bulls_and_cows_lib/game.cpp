@@ -50,40 +50,23 @@ namespace bulls_and_cows {
         std::cout << (is_end_of_game(game_options, myboard) ? "You lost, please try again and not cry\n" : "");
     }
 
+
     void computer_plays_against_computer(const GameOptions& game_options)
     {
 
         Board computerboard = bulls_and_cows::create_board(game_options);
         std::vector<Code> all_possible{};
-        Code origine;
-        for (int i = 0; i < game_options.number_of_characters_per_code; i++)
-        {
-            origine.value.push_back(game_options.minimum_allowed_character);
-        }
-        while (origine.value[0] <= game_options.maximum_allowed_character)
-        {
-            all_possible.push_back(origine);
-            origine.value[game_options.number_of_characters_per_code - 1]++;
-            for (int i = game_options.number_of_characters_per_code - 1; i > 0; i--)
-            {
-                if (origine.value[i] > game_options.maximum_allowed_character)
-                {
-                    origine.value[i] = game_options.minimum_allowed_character;
-                    int j = i - 1;
-                    origine.value[j]++;
-                }
-            }
-        }
+
+        all_possible = generate_all_possibilities(game_options);
 
         bulls_and_cows::display_board(std::cout, game_options, computerboard);
 
         while (all_possible.size() > 0)
         {
-            int r = bulls_and_cows::generate_random_integer(0, all_possible.size() - 1);
-            Code s = all_possible[r];
+            Code r = pick_random_attempt(all_possible);
             AttemptAndFeedback newcomputerattemp;
-            newcomputerattemp.attempt = s;
-            newcomputerattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(s, computerboard.secret_code);
+            newcomputerattemp.attempt = r;
+            newcomputerattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(r, computerboard.secret_code);
 
             computerboard.attempts_and_feedbacks.push_back(newcomputerattemp);
 
@@ -100,18 +83,12 @@ namespace bulls_and_cows {
                 return;
             }
 
-            for (int i = all_possible.size() - 1; i >= 0; i--)
-            {
-                Feedback f;
-                f = bulls_and_cows::compare_attempt_with_secret_code(s, all_possible[i]);
-                if (newcomputerattemp.feedback.bulls != f.bulls || newcomputerattemp.feedback.cows != f.cows)
-                {
-                    all_possible.erase(all_possible.begin() + i); // J'ai trouvé une meilleure solution mais je ne veux pas la partager à mes camarades
-                }
-            }
+            remove_all_incompatible_codes(game_options, all_possible, newcomputerattemp);
+            
             system("pause");
         }
     }
+
 
     void configure_game_options(GameOptions& game_options)
     {

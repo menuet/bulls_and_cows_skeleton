@@ -131,7 +131,7 @@ namespace bulls_and_cows {
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
         // HEAD ...
-        output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
+        // output_stream << "Secret code (for debugging and cheating) = " << board.secret_code.value << "\n";
         output_stream << "-----------" << moins_function(game_options.number_of_characters_per_code, "--") << "--"
                       << "---------------\n";
 
