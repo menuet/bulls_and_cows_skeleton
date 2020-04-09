@@ -63,16 +63,15 @@ namespace bulls_and_cows {
         }
         return input;
     }
-
     bool save_game_options(std::ostream & output_file_stream, const GameOptions& game_options)
     {
-        output_file_stream << "max_number_of_attempts ="<< game_options.max_number_of_attempts
+        output_file_stream << "max_number_of_attempts="<< game_options.max_number_of_attempts
                            << "\n"
-                              "number_of_characters_per_code ="<< game_options.number_of_characters_per_code
+                              "number_of_characters_per_code="<< game_options.number_of_characters_per_code
                            << "\n"
-                              "minimum_allowed_character ="<< game_options.minimum_allowed_character
+                              "minimum_allowed_character="<< game_options.minimum_allowed_character
                            << "\n"
-                              "maximum_allowed_character ="<< game_options.maximum_allowed_character 
+                              "maximum_allowed_character="<< game_options.maximum_allowed_character 
                            << "\n";
         return true;
     }

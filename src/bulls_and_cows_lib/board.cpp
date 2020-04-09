@@ -53,6 +53,7 @@ namespace bulls_and_cows {
             if (result[i] == secret[i])//If the user-entered code correspond to the secret code
             {
                 result.erase(i, 1); //We remove the digits that are already checked to avoid repetitions
+                secret.erase(i, 1);
                 feed.bulls++;
                
             }
