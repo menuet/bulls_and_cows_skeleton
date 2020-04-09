@@ -1,4 +1,3 @@
-
 #include <bulls_and_cows_lib/game_solver.hpp>
 #include <catch2/catch.hpp>
 #include <algorithm>
@@ -61,7 +60,7 @@ TEST_CASE("TEST bulls_and_cows::pick_random_attempt")
     // ASSERT
     REQUIRE((code.value == "ABCDE" || code.value == "DEFGH" || code.value == "HABCD"));
 }
-
+/*
 TEST_CASE("TEST bulls_and_cows::remove_incompatible_codes_from_possible_solutions")
 {
     // ARRANGE
@@ -74,6 +73,6 @@ TEST_CASE("TEST bulls_and_cows::remove_incompatible_codes_from_possible_solution
     // ASSERT
     REQUIRE(possible_solutions.codes.size() == 1);
     REQUIRE(possible_solutions.codes[0].value == "HABCD");
-}
+}*/
 
 

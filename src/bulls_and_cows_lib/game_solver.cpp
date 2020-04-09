@@ -5,8 +5,7 @@
 #include <algorithm>
 #include <iterator>
 #include <ostream>
-#include "random.hpp""
-
+#include "random.hpp"
 
 namespace bulls_and_cows {
 
@@ -105,8 +104,9 @@ namespace bulls_and_cows {
 
     Code pick_random_attempt(const PossibleSolutions& possible_solutions)
     {
-        int x = generate_random_integer(0, possible_solutions.codes.size());
-
+        int x = generate_random_integer(0, static_cast<int>(possible_solutions.codes.size()-1));
         return possible_solutions.codes[x];
     }
+
+
 }
