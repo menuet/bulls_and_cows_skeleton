@@ -14,8 +14,6 @@ namespace bulls_and_cows {
         std::vector<Code> codes;
     };
 
-    void allCombinations(PossibleSolutions& possible_solutions, std::string& set, std::string prefix, int n, int k);
-
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options);
 
     Code pick_random_attempt(const PossibleSolutions& possible_solutions);
