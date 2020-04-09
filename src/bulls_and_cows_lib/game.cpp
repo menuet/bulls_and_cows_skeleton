@@ -4,7 +4,6 @@
 #include "game_solver.hpp"
 #include "input.hpp"
 #include "main_menu.hpp"
-#include <bulls_and_cows_lib\random.cpp>
 #include <chrono>
 #include <fstream>
 #include <iostream>

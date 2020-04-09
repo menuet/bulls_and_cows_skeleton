@@ -18,7 +18,7 @@ namespace bulls_and_cows {
                 myboard.secret_code.value.push_back(temp); //retourné le caractère
             }
        
-        //std::cout << myboard.secret_code.value; //accèder à la valeur du code secret dans myboard
+        std::cout << myboard.secret_code.value; //accèder à la valeur du code secret dans myboard
         return myboard;
     }
 
@@ -42,49 +42,75 @@ namespace bulls_and_cows {
         return true;
     }
 
+
+
+    // j'essaye de modifier pour résoudre le probleme de cows et bulls 
+    
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
     {
         Feedback myfeedback{};
         int cpt_bulls = 0;
         int cpt_cows = 0;
 
-        for (unsigned int i=0;i<attempt.value.size();i++)
-        {
-            for (unsigned int j = 0; j < secret_code.value.size(); j++)
-            {
 
-                if (attempt.value[j] == secret_code.value[i])
+         Code secret_code_temp = secret_code;
+           for (unsigned int i=0;i<attempt.value.size();i++)
+        {
+               if (attempt.value[i] == secret_code_temp.value[i])
+               {
+                   cpt_bulls++;
+                   secret_code_temp.value.replace(i,1,"!");
+                   continue;
+               }
+
+            for (unsigned int j = 0; j < secret_code_temp.value.size(); j++)
+            {
+                if (attempt.value[i] == secret_code.value[j])
+                {
+                    
+
+                     cpt_cows++;
+                    secret_code_temp.value.replace(i, 1, "!");
+                    break;
+                    
+                
+                }
+
+    
+               
+
+                /*if (attempt.value[j] == secret_code.value[i])
                 {
 
                     if (i == j)
                     {
+                        
                         cpt_bulls++;
+                         
+                       
                     }
                     else
                     {
                         cpt_cows++;
                     }
                 }
-
+                */
             }
                 
         
         }
-
+        
         myfeedback.bulls = cpt_bulls;
         myfeedback.cows = cpt_cows;
 
         return myfeedback;
     }
-
+   
 
     bool is_end_of_game(const GameOptions& game_options, const Board& board)
     {
-        if (board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts) // si la taille du vecteur vaut le max_number_of_attempts (12) alors fin de partie
-        {
-            return true;
-        }
-        return false;
+        return board.attempts_and_feedbacks.size() == game_options.max_number_of_attempts; // si la taille du vecteur vaut le max_number_of_attempts (12) alors fin de partie
+
     }
 
     bool is_win(const GameOptions& game_options, const Board& board)

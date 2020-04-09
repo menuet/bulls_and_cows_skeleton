@@ -10,7 +10,7 @@ namespace bulls_and_cows {
         unsigned int max_number_of_attempts{12};
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
-        char maximum_allowed_character{'Z'};
+        char maximum_allowed_character{'H'};
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
