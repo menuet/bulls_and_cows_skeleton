@@ -105,7 +105,12 @@ TEST_CASE("TEST bulls_and_cows::adjust_char_number WHEN all is good")
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
     // ARRANGE
-    const bulls_and_cows::GameOptions game_options{};
+    bulls_and_cows::GameOptions game_options{};
+    game_options.max_number_of_attempts = 12;
+    game_options.number_of_characters_per_code = 5;
+    game_options.minimum_allowed_character = 'A';
+    game_options.maximum_allowed_character = 'H';
+    game_options.allow_duplicate = false;
     std::stringstream output_stream;
 
     // ACT
