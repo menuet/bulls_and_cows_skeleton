@@ -18,7 +18,7 @@ namespace bulls_and_cows {
     {
         Board board = bulls_and_cows::create_board(game_options);
         bulls_and_cows::display_board(std::cout, game_options, board);
-        /*
+        
         while (bulls_and_cows::is_end_of_game(game_options, board) == false && bulls_and_cows::is_win(game_options, board) == false)
         {
             
@@ -34,7 +34,7 @@ namespace bulls_and_cows {
                 board.attempts_and_feedbacks.push_back(new_askattempt);
             }
             bulls_and_cows::display_board(std::cout, game_options, board);
-        }*/
+        }
         
     }
 
@@ -45,6 +45,12 @@ namespace bulls_and_cows {
     {
         PossibleSolutions possposs = bulls_and_cows::generate_all_possible_codes(game_options);
         std::cout << possposs.codes.size();
+        AttemptAndFeedback attempt_and_feedback;
+        attempt_and_feedback.feedback.bulls = 0;
+        attempt_and_feedback.feedback.cows = 0;
+
+
+        remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possposs);
     }
 
 
