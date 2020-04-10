@@ -28,7 +28,16 @@ namespace bulls_and_cows {
             gameboard.attempts_and_feedbacks.push_back(a);// insert the value into the vector at the end
           
         }
-
+        if (is_win(game_options, gameboard))
+        {
+            cout << "You won"
+                 << "\n";
+        }
+        else
+        {
+            cout << " Try again please"
+                 << "\n";
+        }
         
     }
 
