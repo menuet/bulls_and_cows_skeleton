@@ -16,7 +16,6 @@ namespace bulls_and_cows {
 
     Code pick_random_attempt(const PossibleSolutions& possible_solutions);
 
-    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
-                                                           PossibleSolutions& possible_solutions);
+    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback, PossibleSolutions& possible_solutions);
 
 } // namespace bulls_and_cows
