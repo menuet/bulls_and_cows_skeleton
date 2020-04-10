@@ -16,7 +16,7 @@ namespace bulls_and_cows {
 
     Code pick_random_attempt(std::vector<Code>& all_possible);
 
-     void remove_all_incompatible_codes(const GameOptions& game_options, std::vector<Code>& all_possible,
+    void remove_all_incompatible_codes(const GameOptions& game_options, std::vector<Code>& all_possible,
                                        AttemptAndFeedback newcomputerattemp);
 
 } // namespace bulls_and_cows

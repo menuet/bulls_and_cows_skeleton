@@ -13,6 +13,8 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <thread>
+#include <chrono>
 
 namespace bulls_and_cows {
 
@@ -85,7 +87,8 @@ namespace bulls_and_cows {
 
             remove_all_incompatible_codes(game_options, all_possible, newcomputerattemp);
             
-            system("pause");
+           // system("pause");
+            std::this_thread::sleep_for(std::chrono::seconds(2));
         }
     }
 

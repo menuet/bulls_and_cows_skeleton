@@ -8,7 +8,7 @@ namespace bulls_and_cows {
     {
         std::vector<Code> all_possible;
         Code origine;
-        for (int i = 0; i < game_options.number_of_characters_per_code; i++)
+        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
         {
             origine.value.push_back(game_options.minimum_allowed_character);
         }
