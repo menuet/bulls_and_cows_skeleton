@@ -99,7 +99,7 @@ namespace bulls_and_cows {
 
         if (board.attempts_and_feedbacks.back().attempt.value == board.secret_code.value)
         {
-            std::cout << "~~~~~~~~ YOU WON ~~~~~~~~";
+            std::cout << "~~~~~~~~ YOU WON ~~~~~~~~\n";
             return true;
         }
 

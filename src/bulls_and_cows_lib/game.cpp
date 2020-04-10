@@ -17,7 +17,7 @@ namespace bulls_and_cows {
     void user_plays_against_computer(const GameOptions& game_options)
     {
         Board board = bulls_and_cows::create_board(game_options);
-        bulls_and_cows::display_board(std::cout, game_options, board);
+        display_board(std::cout, game_options, board);
         
         while (bulls_and_cows::is_end_of_game(game_options, board) == false && bulls_and_cows::is_win(game_options, board) == false)
         {
@@ -43,14 +43,71 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        PossibleSolutions possposs = bulls_and_cows::generate_all_possible_codes(game_options);
-        std::cout << possposs.codes.size();
-        AttemptAndFeedback attempt_and_feedback;
-        attempt_and_feedback.feedback.bulls = 0;
-        attempt_and_feedback.feedback.cows = 0;
+        PossibleSolutions possible_solution = generate_all_possible_codes(game_options);
+        Board ia_board = create_board(game_options);
+        display_board(std::cout, game_options, ia_board);
 
 
-        remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possposs);
+        while (bulls_and_cows::is_end_of_game(game_options, ia_board) == false &&
+               bulls_and_cows::is_win(game_options, ia_board) == false)
+        {
+
+            Code code_ia_attempt = pick_random_attempt(possible_solution);
+            AttemptAndFeedback newattemp;
+            newattemp.feedback = compare_attempt_with_secret_code(code_ia_attempt, ia_board.secret_code);
+            newattemp.attempt = code_ia_attempt,
+
+            //TEXT DISPLAY
+            std::cout << "\n";
+            for (unsigned a = 0; a < game_options.number_of_characters_per_code; a++)
+            {
+                std::cout  << "**";
+            }
+            std::cout << "***************************\n*";
+            
+            for (unsigned b = 0; b < game_options.number_of_characters_per_code; b++)
+            {
+                std::cout << " ";
+            }
+            std::cout << "The secret code is : " << ia_board.secret_code.value << "    *\n*";
+            for (unsigned c = 0; c < game_options.number_of_characters_per_code; c++)
+            {
+                std::cout << " ";
+            }
+            std::cout << "The attempt is     : " << code_ia_attempt.value << "    *\n";
+            //END TEXT DISPLAY
+
+            
+
+            ia_board.attempts_and_feedbacks.push_back(newattemp);
+
+            
+            display_board(std::cout, game_options, ia_board);
+
+            remove_incompatible_codes_from_possible_solutions(newattemp,possible_solution);
+            
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        }
+        
+        if (bulls_and_cows::is_win(game_options, ia_board)==true)
+        {
+            // LAST DISPLAY
+            for (unsigned d = 0; d < game_options.number_of_characters_per_code; d++)
+            {
+                std::cout << " ";
+            }
+            std::cout << "What a smart IA ! \n";
+        }
+
+        else
+        {
+            for (unsigned d = 0; d < game_options.number_of_characters_per_code; d++)
+            {
+                std::cout << " ";
+            }
+            std::cout << "The IA may need an improvement :( ! \n";
+        }
     }
 
 
