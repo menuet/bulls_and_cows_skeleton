@@ -3,33 +3,33 @@
 #include <algorithm>
 
 namespace bulls_and_cows {
-	void recursif(int num, int max, const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabeat,
-		Code codes)
-	{
-		for (char temp : used_alphabeat)
-		{
-			if (num <= max)
-			{
-				codes.value.push_back(temp);
-				num++;
 
-				recursif(num, max, game_options, pls, used_alphabeat, codes);
-				codes.value.pop_back();
-			}
-			else if (num > max)
+	void code_gen(const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabet,
+		Code& code)
+	{
+		for (char temp : used_alphabet)
+		{
+			//code creation, step by step
+			if (code.value.length() < game_options.number_of_characters_per_code)
 			{
-				pls.codes.push_back(codes);
+				code.value.push_back(temp);
+
+				code_gen(game_options, pls, used_alphabet, code);
+				code.value.pop_back(); 
+			}
+			//push in vector
+			else if (code.value.length() >= game_options.number_of_characters_per_code)
+			{
+				pls.codes.push_back(code);
 				break;
 			}
-			num--;
 		}
 	}
 
 	void get_code_without_duplicates(PossibleSolutions& pls)
 	{
-		auto end = std::remove_if(pls.codes.begin(), pls.codes.end(),
-			[&pls](Code const& code) -> bool {
-				// use of lambda expression to pass several parameters to remove_if
+		pls.codes.erase(std::remove_if(pls.codes.begin(), pls.codes.end(),
+			[](Code const& code) -> bool {
 				std::string used_chars;
 				for (char c : code.value)
 					if (used_chars.find(c) != std::string::npos)
@@ -41,9 +41,8 @@ namespace bulls_and_cows {
 						used_chars.push_back(c);
 					}
 				return false;
-
-			});
-		pls.codes.erase(end, pls.codes.end());
+			}),
+			pls.codes.end());
 	}
 
 	PossibleSolutions generate_all_possible_codes(const GameOptions& game_options)
@@ -55,9 +54,7 @@ namespace bulls_and_cows {
 			used_alphabeat.push_back(c);
 		}
 		Code codes;
-		recursif(1, game_options.number_of_characters_per_code, game_options, avc, used_alphabeat, codes);
-
-		std::cout << "char from min to max : " << used_alphabeat << "\n";
+		code_gen(game_options, avc, used_alphabeat, codes);
 
 		if (game_options.isDuplicate == false) {
 			get_code_without_duplicates(avc);
