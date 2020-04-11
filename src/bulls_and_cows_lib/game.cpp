@@ -96,7 +96,7 @@ namespace bulls_and_cows {
 
 
 	//Function to initialize secret code 
-	std::vector<char> secret_code_init_without_double(const GameOptions& option)
+	std::string secret_code_init_without_double(const GameOptions& option)
 	{
 
 		std::vector <char> secretCode(option.number_of_characters_per_code);
@@ -123,22 +123,22 @@ namespace bulls_and_cows {
 			}
 			l++;
 		}
-
-		return secretCode;
+		std::string secret_code = conv_vector_to_string(secretCode);
+		return secret_code;
 	}
 
-	std::vector<char> secret_code_init_with_double(const GameOptions& option)
+	std::string secret_code_init_with_double(const GameOptions& option)
 	{
-		std::vector <char> secretCode(option.number_of_characters_per_code);
+		std::string secretCode;
 		const char min = option.minimum_allowed_character;
 		const char max = option.maximum_allowed_character;
 		char rand = generate_random_character(min, max);
-		int l = 0;
+		unsigned int l = 0;
 
-		while (l < secretCode.size())
+		while (l < option.number_of_characters_per_code)
 		{
 			rand = generate_random_character(min, max);
-			secretCode[l] = rand;
+			secretCode += rand;
 			l++;
 		}
 
@@ -209,7 +209,7 @@ namespace bulls_and_cows {
 	}
 
 	//fonction qui permet de compter le nombre de bulls and cows pour des codes sans doublon
-	FinalBoard count_bulls_cows_without_double(std::vector <char> secretCode, std::vector <char> playerCode, FinalBoard& current_attempt)
+	FinalBoard count_bulls_cows_without_double(std::string secretCode, std::vector <char> playerCode, FinalBoard& current_attempt)
 	{
 		int bulls = 0; //nombre de bulls
 		int cows = 0; //nombre de cows
@@ -297,6 +297,7 @@ namespace bulls_and_cows {
 		//cows = cows - bulls; //evite de compter les bulls comme des cows
 		current_attempt.bulls = bulls;
 		current_attempt.cows = cows;
+		//current_attempt.secretCode = playerCode;
 
 		return current_attempt; //return un objet de la Structure FinalBoard 
 
@@ -319,35 +320,33 @@ namespace bulls_and_cows {
 
 	}
 
-    void user_plays_against_computer(const GameOptions& game_options)
-    {
-        std::cout << " ~~~~~~~~~~~~ USER PLAYS AGAINST COMPUTER ~~~~~~~~~~~~\n";
+	void user_plays_against_computer(const GameOptions& game_options)
+	{
+		std::cout << " ~~~~~~~~~~~~ USER PLAYS AGAINST COMPUTER ~~~~~~~~~~~~\n";
 
 
-		
-		std::vector <char> secretCode = secret_code_init_without_double(game_options);
+
+		std::string secret_code_to_find = secret_code_init_without_double(game_options);
 		std::vector <char> playerCode(game_options.number_of_characters_per_code);
 		std::vector<int> counter_bowls_cows(3);
 		unsigned int player_attempts = 0;
 		bool not_win = true;
-		
-		std::string secret_code_to_find = conv_vector_to_string(secretCode);
 
 		std::cout << "Code to find : " << secret_code_to_find;
-		
-		
+
+
 		std::vector <FinalBoard> board_final;
 		board_final.push_back(FinalBoard(secret_code_to_find, 0, 0, false));
 
 
 		do
 		{
-			
+
 			playerCode = secret_code_player(playerCode, game_options);
-			FinalBoard current_attempt = count_bulls_cows_without_double(secretCode, playerCode, current_attempt);
+			FinalBoard current_attempt = count_bulls_cows_without_double(secret_code_to_find, playerCode, current_attempt);
 			std::string secret_code_player = conv_vector_to_string(playerCode);
-			board_final.emplace_back(secret_code_player, current_attempt.bulls, current_attempt.cows,current_attempt.win);
-			
+			board_final.emplace_back(secret_code_player, current_attempt.bulls, current_attempt.cows, current_attempt.win);
+
 			player_attempts++;
 			std::cout << "\n";
 			display_board(board_final);
@@ -372,7 +371,7 @@ namespace bulls_and_cows {
 		}
 
 
-    }
+	}
 	
 		
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -380,10 +379,10 @@ namespace bulls_and_cows {
         std::cout
             << " Computer plays against computer \n";
 		PossibleSolutions dico_all_codes{};
-		dico_all_codes = bulls_and_cows::generate_all_codes(game_options); // Computer2 creates a collection of all the possible codes
+		dico_all_codes = bulls_and_cows::generate_all_possible_codes(game_options); // Computer2 creates a collection of all the possible codes
 
-		std::vector <char> secretCode = secret_code_init_with_double(game_options); //Computer1 creates a randomly - generated secret code
-		std::string secret_code = conv_vector_to_string(secretCode);
+		//Computer1 creates a randomly - generated secret code
+		std::string secret_code = secret_code_init_with_double(game_options);
 		bool not_win = true;
 		unsigned int ai_attempts = 0;
 		std::vector <FinalBoard> board_final;
@@ -395,19 +394,21 @@ namespace bulls_and_cows {
 			
 			// dico_all_codes.codes[index] est le code choisi par le Computer 2 
 			FinalBoard current_attempt = count_bulls_cows_with_double(secret_code, dico_all_codes.codes[index], current_attempt);
+			current_attempt.secretCode = dico_all_codes.codes[index];
+			board_final.push_back(current_attempt);
 			
-			board_final.emplace_back(dico_all_codes.codes[index], current_attempt.bulls, current_attempt.cows, current_attempt.win);
-			
+
 			display_board(board_final);
 
 			if (current_attempt.win == true)
 			{
 				not_win = false;
 			}
-			dico_all_codes = remove_impossible_codes(dico_all_codes, current_attempt, dico_all_codes.codes[index]);
+			erase_invalid_solutions(dico_all_codes, current_attempt);
 			std::cout << "Number of codes in dico : \n" << dico_all_codes.codes.size() <<"\n";
 			
 			ai_attempts++;
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 				
 
 		} while (not_win && ai_attempts < game_options.max_number_of_attempts);

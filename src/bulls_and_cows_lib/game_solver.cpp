@@ -1,6 +1,7 @@
 
 #include "game_solver.hpp"
 #include "game.hpp"
+#include <algorithm>
 
 namespace bulls_and_cows {
     // TODO: define the body of the functions declared in game_solver.cpp
@@ -22,7 +23,7 @@ namespace bulls_and_cows {
 		}
 	}
 
-
+	//fonction recursive
 	PossibleSolutions generate_all_codes(const GameOptions& game_options)
 	{
 		const unsigned int number_distinct_alphabet_char = game_options.maximum_allowed_character - game_options.minimum_allowed_character + 1; //le nombre de caractere distinct de l'alphabet possible 
@@ -40,28 +41,60 @@ namespace bulls_and_cows {
 		return dico_all_codes;
 	}
 
-
-	PossibleSolutions remove_impossible_codes(PossibleSolutions& dico_all_codes, FinalBoard current_attempt, std::string current_code)
+	PossibleSolutions generate_all_possible_codes(const GameOptions& game_options)
 	{
-
-		int size = static_cast<int>(dico_all_codes.codes.size());
-		for (int i = 0; i < size; i++)
+		//Objet qui va stocker tous les codes possible
+		PossibleSolutions dico_all_codes{};
+		
+		//code courant
+		std::string current_sequence;
+		
+		// 1er code compose du chars mini repete le nombre de chars par code permit 
+		current_sequence = std::string(game_options.number_of_characters_per_code, game_options.minimum_allowed_character);
+		
+		//dernier code possible compose du char max repete le nombre de chars par code permit 
+		std::string last_code = std::string(game_options.number_of_characters_per_code, game_options.maximum_allowed_character);
+		
+		//on push le 1er code 
+		dico_all_codes.codes.push_back(current_sequence);
+		
+		//Tant que le code courant n'est pas egal au dernier code possible
+		while (current_sequence != last_code)
 		{
+			//1er char incremente 
+			current_sequence[0]++;
 
-			FinalBoard comparison = count_bulls_cows_with_double(dico_all_codes.codes[i], current_code, comparison);
-
-			if (comparison.bulls != current_attempt.bulls || comparison.cows != current_attempt.cows)
+			//systeme de retenue, on regarde si le precedent char est > au char max possible, si c'est le cas on le remet au mini
+			// et on incremente le suivant 
+			// number_of_characters_per_code = 3 & char_min = A char_max = B ex: AAA, BAA, ABA, BBA, AAB, BAB, ABB, BBB
+			for (unsigned int i = 1; i < game_options.number_of_characters_per_code; i++)
 			{
-				dico_all_codes.codes.erase(dico_all_codes.codes.begin() + i);
-				size = size - 1;
-				i = i - 1;
+				if (current_sequence[i - 1] > game_options.maximum_allowed_character)
+				{
+					current_sequence[i]++;
+					current_sequence[i - 1] = game_options.minimum_allowed_character;
+				}
 			}
-
-
+			dico_all_codes.codes.push_back(current_sequence);
+			
 		}
+		
 		return dico_all_codes;
 	}
 
+
+	
+
+	void erase_invalid_solutions(PossibleSolutions& dico_all_codes, const FinalBoard& current_attempt)
+	{
+		FinalBoard comparison;
+		dico_all_codes.codes.erase(
+			std::remove_if(dico_all_codes.codes.begin(), dico_all_codes.codes.end(), [&current_attempt, &comparison](const std::string& code)
+				{
+					return count_bulls_cows_with_double(code, current_attempt.secretCode, comparison).bulls != current_attempt.bulls || count_bulls_cows_with_double(code, current_attempt.secretCode, comparison).cows != current_attempt.cows;
+				}),
+			dico_all_codes.codes.end());
+	}
 
 
 

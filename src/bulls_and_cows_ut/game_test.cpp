@@ -11,7 +11,7 @@ TEST_CASE("TEST bulls_and_cows::count_bulls_cows_without_double WHEN 1 bull and 
 {
 	// ARRANGE
 	
-	const std::vector <char> secretCode = { 'A', 'B', 'C', 'D', 'E' };
+	const std::string secretCode = { 'A', 'B', 'C', 'D', 'E' };
 	const std::vector <char> playerCode = { 'H', 'F', 'C', 'A', 'B' };
 
 	
@@ -94,11 +94,11 @@ TEST_CASE("TEST bulls_and_cows::secret_code_init size")
 
 	//ARRANGE
 	bulls_and_cows::GameOptions game_options;
-	const std::vector <char> secretCode (game_options.number_of_characters_per_code);
+	
 
 	//ACT
 
-	const std::vector<char> test = bulls_and_cows::secret_code_init_with_double(game_options);
+	const std::string test = bulls_and_cows::secret_code_init_with_double(game_options);
 
 
 	//ASSERT

@@ -23,8 +23,10 @@ namespace bulls_and_cows {
 
 	void generate_next_code(PossibleSolutions& dico_all_codes, std::string sequence, unsigned int  number_distinct_alphabet_char,
 		unsigned int nbrCaractereCode, std::string alphabet);
-
+	//recursif
 	PossibleSolutions generate_all_codes(const GameOptions& game_options);
-	PossibleSolutions remove_impossible_codes(PossibleSolutions& dico_all_codes, FinalBoard current_attempt, std::string current_code);
+	//non recursif
+	PossibleSolutions generate_all_possible_codes(const GameOptions& game_options);
+	void erase_invalid_solutions(PossibleSolutions& dico_all_codes, const FinalBoard& current_attempt);
 
 } // namespace bulls_and_cows
