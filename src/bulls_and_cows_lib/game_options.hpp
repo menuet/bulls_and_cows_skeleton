@@ -11,6 +11,7 @@ namespace bulls_and_cows {
         unsigned int number_of_characters_per_code{5};
         char minimum_allowed_character{'A'};
         char maximum_allowed_character{'H'};
+		bool isDuplicate;
     };
 
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options);
@@ -27,6 +28,7 @@ namespace bulls_and_cows {
         ModifyMaximumAllowedCharacter = 4,
         SaveOptions = 5,
         LoadOptions = 6,
+		Noduplicates = 7,
     };
 
     // Ask the user to select an option of the menu
@@ -35,5 +37,7 @@ namespace bulls_and_cows {
     bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options);
 
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options);
+
+	void DuplicateChoice(GameOptions& game_options);
 
 } // namespace bulls_and_cows

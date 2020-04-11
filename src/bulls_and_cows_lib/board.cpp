@@ -1,20 +1,50 @@
 
 #include "board.hpp"
+#include <algorithm>
+#include <array>
+#include <numeric>
+#include <random>
+#include <cstring>
 
 namespace bulls_and_cows {
 
-	// TODO: define the body of the functions declared in board.cpp
-	Board create_board(const GameOptions& game_options)
+	bool unichar(std::string str)
 	{
-		//std::vector<char> answer{};
-		Board myboard{};
+		for (int i = 0; i < str.length() - 1; i++)
+		{
+			for (int j = i + 1; j < str.length(); j++)
+			{
+				if (str[i] == str[j])
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
+	std::string generate_code(GameOptions game_options)
+	{
+		std::string myreturn;
 		for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
 		{
-			//myboard.secret_code.value = myboard.secret_code.value + bulls_and_cows::generate_random_character(0, 9);
-			myboard.secret_code.value = myboard.secret_code.value + static_cast<char>(bulls_and_cows::generate_random_character(game_options.minimum_allowed_character, game_options.maximum_allowed_character));
+			myreturn = myreturn + generate_random_character(game_options.minimum_allowed_character, game_options.maximum_allowed_character);
 		}
+		return myreturn;
+	}
 
+	Board create_board(const GameOptions& game_options)
+	{
+		Board myboard{};
+		myboard.secret_code.value = generate_code(game_options);
+
+		if (!game_options.isDuplicate)
+		{
+			while (!unichar(myboard.secret_code.value))
+			{
+				myboard.secret_code.value = generate_code(game_options);
+			}
+		}
 		return myboard;
 	}
 
@@ -154,11 +184,11 @@ namespace bulls_and_cows {
 	void display_board_content(const GameOptions& game_options, std::ostream& output_stream, size_t nb_attempts, std::string at, unsigned int bulls, unsigned int cows) {
 		std::string s = (nb_attempts >= 10) ? "" : "0";
 		std::string s2 = (at == " ") ? special_char(game_options.number_of_characters_per_code, ". ") : display_current_attempt(at);
-		std::string s3 = (cows != 0) ? "|   " : "";
-		std::string s4 = (cows != 0) ? std::to_string(bulls) : "|       |       |\n";
-		std::string s5 = (cows != 0) ? "   |   " : "";
-		std::string s6 = (cows != 0) ? std::to_string(cows) : "";
-		std::string s7 = (cows != 0) ? "   |\n" : "";
+		std::string s3 = (cows != 0 || bulls != 0) ? "|   " : "";
+		std::string s4 = (cows != 0 || bulls != 0) ? std::to_string(bulls) : "|       |       |\n";
+		std::string s5 = (cows != 0 || bulls != 0) ? "   |   " : "";
+		std::string s6 = (cows != 0 || bulls != 0) ? std::to_string(cows) : "";
+		std::string s7 = (cows != 0 || bulls != 0) ? "   |\n" : "";
 
 		output_stream << "| #" << s;
 		output_stream << nb_attempts << "      ";
@@ -183,7 +213,7 @@ namespace bulls_and_cows {
 		int number_of_attemps = game_options.max_number_of_attempts;
 		for (size_t i = number_of_attemps; i > board.attempts_and_feedbacks.size(); i--)
 		{
-			display_board_content(game_options, output_stream, i, " ", NULL, NULL);
+			display_board_content(game_options, output_stream, i, " ", 0, 0);
 		}
 		if (!board.attempts_and_feedbacks.empty())
 		{

@@ -1,5 +1,6 @@
 
 #include "game_options.hpp"
+#include "game_solver.hpp"
 #include "input.hpp"
 #include <sstream>
 #include <algorithm>
@@ -33,6 +34,7 @@ namespace bulls_and_cows {
                       << "4 - Modify Maximum allowed character\n"
                       << "5 - Save options\n"
                       << "6 - Load options\n"
+					  << "7 - Play without duplicates\n"
                       << "What is your choice ? ";
     }
 
@@ -57,6 +59,8 @@ namespace bulls_and_cows {
             return GameOptionsMenuChoice::SaveOptions;
         case 6:
             return GameOptionsMenuChoice::LoadOptions;
+		case 7:
+			return GameOptionsMenuChoice::Noduplicates;
 		default:
 			return GameOptionsMenuChoice::BackToMain;
         }
@@ -76,9 +80,9 @@ namespace bulls_and_cows {
 	{
 		//INT
 		str.erase(remove(str.begin(), str.end(), ' '), str.end());
-		if (b == 0) {
+		if (b == true) {
 			for (int i = 0; i < str.size(); i++) {
-				if (!isdigit(str[i])) {
+				if (!isdigit(str[i]-'0')) {
 					str.erase(i, 1);
 					i--;
 				}
@@ -86,7 +90,7 @@ namespace bulls_and_cows {
 			str.erase(2);
 		}
 		//CHAR
-		if (b == 1) {
+		if (b == false) {
 			for (int j = 0; j < str.size(); j++) {
 				if (isdigit(str[j])) {
 					str.erase(j, 1);
@@ -109,7 +113,7 @@ namespace bulls_and_cows {
 			std::string numb = line.substr(delimiter + 1);
 
 			if (token == "max_number_of_attempts") {
-				numb = remove_spaces_or_alphanum(numb, 0);
+				//numb = remove_spaces_or_alphanum(numb, true);
 				if (std::atoi(numb.c_str()) < 5 || std::atoi(numb.c_str()) > 20) {
 					std::cout << "\nFile isn't in a correct form\n";
 					return false;
@@ -117,7 +121,7 @@ namespace bulls_and_cows {
 				game_options.max_number_of_attempts = std::atoi(numb.c_str());
 			}
 			else if (token == "number_of_characters_per_code") {
-				numb = remove_spaces_or_alphanum(numb, 0);
+				//numb = remove_spaces_or_alphanum(numb, true);
 				if (std::atoi(numb.c_str()) < 3 || std::atoi(numb.c_str()) > 10) {
 					std::cout << "\nFile isn't in a correct form\n";
 					return false;
@@ -125,11 +129,11 @@ namespace bulls_and_cows {
 				game_options.number_of_characters_per_code = std::atoi(numb.c_str());
 			}
 			else if (token == "minimum_allowed_character") {
-				numb = remove_spaces_or_alphanum(numb, 1);
+				//numb = remove_spaces_or_alphanum(numb, false);
 				game_options.minimum_allowed_character = numb[0];
 			}
 			else if (token == "maximum_allowed_character") {
-				numb = remove_spaces_or_alphanum(numb, 1);
+				//numb = remove_spaces_or_alphanum(numb, false);
 				game_options.maximum_allowed_character = numb[0];
 			}
 			else{
@@ -139,4 +143,9 @@ namespace bulls_and_cows {
         }
         return true;
     }
+
+	void DuplicateChoice(GameOptions& game_options) {
+		game_options.isDuplicate = false;
+	}
+
 } // namespace bulls_and_cows

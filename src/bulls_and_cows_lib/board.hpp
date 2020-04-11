@@ -55,4 +55,8 @@ namespace bulls_and_cows {
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
                      const Board& board);
 
+	std::string generate_code(GameOptions game_options);
+	bool unichar(std::string str);
+
+
 } // namespace bulls_and_cows
