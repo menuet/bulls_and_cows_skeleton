@@ -3,81 +3,88 @@
 
 namespace bulls_and_cows {
     // en cours de construction
-    // k parmi n --> k étant la longueur du code et n étant le le nb de possiblité pour chaque char du code
 
-    unsigned int Factoriel(unsigned int n)
+    // fonction récursive qui genere tous les codes possibles (valide ou non)
+    void all_possible_code(int num, int max, const GameOptions& game_options, PossibleSolutions& var_all_possible_codes,
+                           Code codes)
     {
-        return n > 1 ? (n * Factoriel(n - 1)) : 1;
-    }
+        std::string all_allowed_char;
 
-    Code generate_random_code(const GameOptions& game_options)
-    {
-        Code code{};
-        std::vector<char> allowed_char;
-        for (auto i = game_options.minimum_allowed_character; i <= game_options.maximum_allowed_character;
-             i++) // remplir un vector avec la liste des caracteres autorisés
+        for (char c = game_options.minimum_allowed_character; c <= game_options.maximum_allowed_character; c++)
         {
-            allowed_char.push_back(i);
+            all_allowed_char.push_back(c);
         }
 
-        unsigned int i = 0;
-
-        while (i != game_options.number_of_characters_per_code)
+        for (char temp : all_allowed_char)
         {
-            char temp = generate_random_character(allowed_char.front(),
-                                                  allowed_char.back()); // piocher dans les caracteres autorisés
-
-            for (unsigned int j = 0; j < allowed_char.size(); j++)
+            if (num <= max)
             {
-                if (allowed_char[j] == temp)
-                {
-                    allowed_char.erase(allowed_char.begin() +
-                                       j);      // supprimer le caractère du vector contenant les caracteres autorisés
-                    code.value.push_back(temp); // ajouter à la string secret_code.value
-                    i++;
-                }
+                codes.value.push_back(temp);
+                num++;
+                all_possible_code(num, max, game_options, var_all_possible_codes, codes);
+                codes.value.pop_back();
             }
+            else if (num > max)
+            {
+                var_all_possible_codes.codes.push_back(codes);
+                break;
+            }
+            num--;
         }
-
-        return code;
     }
 
+    // fonction qui genere tous les codes possibles (valide uniquement)
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options)
     {
-        PossibleSolutions all_solutions{};
-        Code code{};
-        unsigned int cpt = 0;
-        auto n = game_options.maximum_allowed_character - game_options.minimum_allowed_character + 1;
-        auto k = game_options.number_of_characters_per_code;
-        unsigned int full = Factoriel(n) / Factoriel(n - k); // n! /(n-k)! = nb arrangement possible
+        PossibleSolutions var_all_possible_codes{}; // contiendra tous les codes possibles (doublons compris)
+        PossibleSolutions final_possible_code{};    // contiendra tous les codes autorisés
+        Code code;
+        auto nb_char_code = game_options.number_of_characters_per_code;
 
+        all_possible_code(1, nb_char_code, game_options, var_all_possible_codes,
+                          code); // on genère tous les codes possibles ici (on les stock dans var_all_possible_code)
 
-        while (cpt != full) // tant que toutes les possiblités de code n'ont pas été généré
+        for (unsigned int i = 0; i < var_all_possible_codes.codes.size(); i++)
         {
-            code = generate_random_code(game_options);
-            std::cout << "\n" << code.value << "\n";
-
-            // verification de la présence ou non du code generé dans le vecteur all_solutions.codes
-
-           /* for (unsigned int i = 0; i < all_solutions.codes.size(); i++)
+            if (bulls_and_cows::validate_attempt(
+                    game_options,
+                    var_all_possible_codes.codes[i])) // on séléctionne seulement les codes valides (sans doublon)
             {
-                if (code.value != all_solutions.codes[i].value)
-                {
-                    all_solutions.codes.push_back(code);
-                    cpt++;
-                }
-            }*/
-            for (Code temp : all_solutions.codes)
-            {
-                if (code.value != temp.value)
-                {
-                    all_solutions.codes.push_back(code);
-                    cpt++;
-                }
+                final_possible_code.codes.push_back(
+                    var_all_possible_codes.codes[i]); // on insert le code valide dans le vecteur final
             }
         }
 
-        return all_solutions;
+        return final_possible_code;
+    }
+
+    Code pick_random_attempt(const PossibleSolutions& possible_solutions)
+    {
+        int min = 0;
+        int max = (int)possible_solutions.codes.size() - 1; // cast
+        int rand = generate_random_integer(min, max);
+
+        return possible_solutions.codes[rand];
+    }
+
+    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
+                                                           PossibleSolutions& possible_solutions, const Board& board)
+    {
+        Feedback temp_feedback{};
+        for (auto temp : possible_solutions.codes)
+        {
+            auto i = 0;
+            // je compare chaque code avec le code secret, en récupérant le nb de bulls et cows
+            temp_feedback = compare_attempt_with_secret_code(temp, board.secret_code); 
+
+            // si le nb de bulls et cows du code qui vient d'être comparé est égal au nb de bulls et cows de l'attempt original, alors on vire ce code des solutions possibles
+            if (temp_feedback.bulls == attempt_and_feedback.feedback.bulls && 
+                temp_feedback.cows == attempt_and_feedback.feedback.cows)
+            {
+                possible_solutions.codes.erase(possible_solutions.codes.begin()+i);
+            }
+            i++;
+        }
     }
 
 } // namespace bulls_and_cows

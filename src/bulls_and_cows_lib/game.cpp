@@ -6,6 +6,7 @@
 #include "input.hpp"
 #include "main_menu.hpp"
 #include <chrono>
+#include <windows.h>
 #include <fstream>
 #include <iostream>
 #include <thread>
@@ -54,13 +55,33 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        PossibleSolutions all_solutions{};
-        all_solutions = generate_all_possible_codes(game_options);
+        Board IAboard = create_board(game_options); //Create a board with a randomly generated secret code
+        PossibleSolutions all_codes = generate_all_possible_codes(game_options); //Generate the list of all the possible codes
+        AttemptAndFeedback IA_af{};
+        
 
-        for (auto temp : all_solutions.codes)
+        do
         {
-            std::cout << "\n" << temp.value << "\n";
-        }
+            std::cout << "\n";
+            display_board(std::cout, game_options, IAboard); // Display the board and the list of attempts so far
+
+            std::cout << "\n" << all_codes.codes.size() << " Remaining possible codes :\n";
+            for (auto temp : all_codes.codes)
+            {
+                std::cout <<temp.value <<" "; //Display remaining possible codes so far
+            }
+
+            std::cout << "\n";
+            Sleep(2000); //Wait for 2 seconds
+
+            IA_af.attempt = pick_random_attempt(all_codes);
+            IA_af.feedback = compare_attempt_with_secret_code(IA_af.attempt, IAboard.secret_code);
+            IAboard.attempts_and_feedbacks.push_back(IA_af);
+            remove_incompatible_codes_from_possible_solutions(IA_af, all_codes, IAboard);
+
+        } while (!(is_end_of_game(game_options, IAboard)) && !(is_win(game_options, IAboard)));
+
+
 
         /* std::cout
              << "TODO:\n"
