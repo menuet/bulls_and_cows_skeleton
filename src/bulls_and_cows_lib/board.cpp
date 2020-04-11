@@ -26,20 +26,27 @@ namespace bulls_and_cows {
     }
 
 
+    Code generate_code(const GameOptions& game_options)
+    {
+        Code mycode;
+        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++) // generation of the code
+        {
+            mycode.value.push_back(generate_random_character(
+                game_options.minimum_allowed_character, game_options.maximum_allowed_character));
+        }
+        return mycode;
+    }
+
     Board create_board(const GameOptions& game_options)
     {
         Board ans;
 
-        for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)  //generation of the code
-        {
-            ans.secret_code.value.push_back(bulls_and_cows::generate_random_character(
-                game_options.minimum_allowed_character, game_options.maximum_allowed_character));
-        }
+        ans.secret_code = generate_code(game_options);
 
         if (game_options.unique_characters) // if unicity of characters in code required
         {
             bool out = false;
-            while (!out)    // while code does not meet the requirement, generate a new one
+            while (!unichar(ans.secret_code.value))    // while code does not meet the requirement, generate a new one
             {
 
                 if (unichar(ans.secret_code.value))
@@ -48,12 +55,7 @@ namespace bulls_and_cows {
                 }
                 else
                 {
-                    ans.secret_code.value.clear();
-                    for (unsigned int i = 0U; i < game_options.number_of_characters_per_code; i++)
-                    {
-                        ans.secret_code.value.push_back(bulls_and_cows::generate_random_character(
-                            game_options.minimum_allowed_character, game_options.maximum_allowed_character));
-                    }
+                    ans.secret_code = generate_code(game_options);
                 }
             }
 
@@ -277,21 +279,29 @@ namespace bulls_and_cows {
            Code incode;
            int current_attempt = (int)board.attempts_and_feedbacks.size() + 1;
 
-           bool valueformat = false;
+           bool valueformat = false; // flag used to handle the validity of user attempt
            while (!valueformat)
            {
-               if (current_attempt < 10) // could be replaced with ternary but it's really hard to read
-               {
-                   whats_your_guess(output_stream, game_options, "0", current_attempt,
-                                    game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
-                                    game_options.maximum_allowed_character);
-               }
-               else
-               {
-                   whats_your_guess(output_stream, game_options, "", current_attempt,
-                                    game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
-                                    game_options.maximum_allowed_character);
-               }
+               //if (current_attempt < 10) // could be replaced with ternary but it's really hard to read
+               //{
+               //    whats_your_guess(output_stream, game_options, "0", current_attempt,
+               //                     game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
+               //                     game_options.maximum_allowed_character);
+               //}
+               //else
+               //{
+               //    whats_your_guess(output_stream, game_options, "", current_attempt,
+               //                     game_options.number_of_characters_per_code, game_options.minimum_allowed_character,
+               //                     game_options.maximum_allowed_character);
+               //}
+
+               ((current_attempt < 10)
+                    ? whats_your_guess(output_stream, game_options, "0", current_attempt,
+                                       game_options.number_of_characters_per_code,
+                                       game_options.minimum_allowed_character, game_options.maximum_allowed_character)
+                    : whats_your_guess(output_stream, game_options, "", current_attempt,
+                                       game_options.number_of_characters_per_code,
+                                       game_options.minimum_allowed_character, game_options.maximum_allowed_character));
 
                valueformat = true;
 
@@ -321,7 +331,7 @@ namespace bulls_and_cows {
                            if (!unichar(incode.value))
                            {
                                valueformat = false;
-                               std::cout << "Please enter a code with unique characters\n";
+                               output_stream << "Please enter a code with unique characters\n";
                                break;
                            }
                        }

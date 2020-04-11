@@ -5,36 +5,33 @@
 namespace bulls_and_cows {
     
 
-    void therealgen(int num, int max, const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabet,
-                  Code code)
+    void therealgen(const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabet,
+                  Code& code)
         // This method is the real method generating all possible attempts
-        // Method taking in parameter num: the current position of character in code
-        // max: the position of last character
-        // code: the code being written before being pushed back
     {
         for (char temp : used_alphabet) //  for each allowed character
         {
-            if (num <= max) // if the last character position of code is not yet reached
+            if (code.value.length() < game_options.number_of_characters_per_code) // if the last character position of code is not yet reached
             {
                 code.value.push_back(temp); // add the character at position num 
-                num++;  // go to next character position
 
-                therealgen(num, max, game_options, pls, used_alphabet, code);    // new call of method to write on the next character position of code 
+                therealgen(game_options, pls, used_alphabet, code); // new call of method to write on the next character position of code 
                 code.value.pop_back(); // delete the last character in order to write the next character on the same position
             }
-            else if (num > max) // if the code is completely written
+            else if (code.value.length() >= game_options.number_of_characters_per_code) // if the code is completely written
             {
                 pls.codes.push_back(code);  // put the code in pls
                 break;
             }
-            num--; // go to previous character position
         }
     }
+
+
 
     void deleteduplicates(PossibleSolutions& pls)   // if the user requires unicity of characrter, this method will remove the codes not meeting the condition
     {
         auto end = std::remove_if(pls.codes.begin(), pls.codes.end(),
-                                  [&pls](Code const& code) -> bool {
+                                  [](Code const& code) -> bool {
                                       // use of lambda expression to pass several parameters to remove_if
                                         std::string used_chars;
                                         for (const char& c : code.value)
@@ -65,7 +62,7 @@ namespace bulls_and_cows {
         {
             alphabet.push_back(c);
         }
-        therealgen(1, game_options.number_of_characters_per_code, game_options, yeet, alphabet, codes); // Call of the real method
+        therealgen(game_options, yeet, alphabet, codes); // Call of the real method
         if (game_options.unique_characters)
             deleteduplicates(yeet);
         return yeet;
@@ -77,12 +74,14 @@ namespace bulls_and_cows {
         return possible_solutions.codes[pos];
     }
 
+    
+
      
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
                                                            PossibleSolutions& possible_solutions)
     {
-        auto end = std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(),
-                           [attempt_and_feedback, &possible_solutions](Code const& c) -> bool {
+        auto end = std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(),                                  
+                           [attempt_and_feedback](Code const& c) -> bool {
             //use of lambda expression to pass several parameters to remove_if 
                                Feedback tempfeed = compare_attempt_with_secret_code(c, attempt_and_feedback.attempt);
                                

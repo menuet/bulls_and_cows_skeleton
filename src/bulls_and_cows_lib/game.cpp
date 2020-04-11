@@ -11,8 +11,7 @@
 #include <thread>
 #include <vector>
 #include <list>
-#include <Windows.h>
-#include <synchapi.h>
+
 
 
 namespace bulls_and_cows {
@@ -21,22 +20,22 @@ namespace bulls_and_cows {
     {
 
         // CREATING BOARD using functions we implemented
-        Board myboard = bulls_and_cows::create_board(game_options);
+        Board myboard = create_board(game_options);
 
         // While the user didn't win or reach max attempt number, while loop
 
-        while (!bulls_and_cows::is_end_of_game(game_options, myboard) && !bulls_and_cows::is_win(game_options, myboard))
+        while (!is_end_of_game(game_options, myboard) && !is_win(game_options, myboard))
         {
             // First display of the empty board
-            bulls_and_cows::display_board(std::cout, game_options, myboard);
+            display_board(std::cout, game_options, myboard);
 
             // Asking attemp to the user
-            Code tempattemp = bulls_and_cows::ask_attempt(std::cout, std::cin, game_options, myboard);
-            if (bulls_and_cows::validate_attempt(game_options, tempattemp))
+            Code tempattemp = ask_attempt(std::cout, std::cin, game_options, myboard);
+            if (validate_attempt(game_options, tempattemp))
             {
                 AttemptAndFeedback newattemp;
                 newattemp.attempt = tempattemp;
-                newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(tempattemp, myboard.secret_code);
+                newattemp.feedback = compare_attempt_with_secret_code(tempattemp, myboard.secret_code);
                 myboard.attempts_and_feedbacks.push_back(newattemp);
             }
                 
@@ -49,34 +48,34 @@ namespace bulls_and_cows {
     void computer_plays_against_computer(const GameOptions& game_options)
     {
         //Generaation of all solutions, and creation of the board
-        PossibleSolutions allpos = bulls_and_cows::generate_all_possible_codes(game_options);
+        PossibleSolutions allpos = generate_all_possible_codes(game_options);
         std::cout << "Game has " << allpos.codes.size() << " solutions\n";
-        Board cvscboard = bulls_and_cows::create_board(game_options);
+        Board cvscboard = create_board(game_options);
 
         //while the game is not finished
-        while (!bulls_and_cows::is_end_of_game(game_options, cvscboard) &&
-               !bulls_and_cows::is_win(game_options, cvscboard))
+        while (!is_end_of_game(game_options, cvscboard) &&
+               !is_win(game_options, cvscboard))
         {
             // Display of the board
-            bulls_and_cows::display_board(std::cout, game_options, cvscboard);
+            display_board(std::cout, game_options, cvscboard);
             std::cout << "Solutions left: " << allpos.codes.size() << "\n";
 
             // Asking  computer to pick a random attempt
-            Code randatt = bulls_and_cows::pick_random_attempt(allpos);
+            Code randatt = pick_random_attempt(allpos);
             std::cout << "Computer picked the code: " << randatt.value << "\n";
 
             // Creation of an attempt, and normal way of playing goes on
             AttemptAndFeedback newattemp;
             newattemp.attempt = randatt;
-            newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(randatt, cvscboard.secret_code);
+            newattemp.feedback = compare_attempt_with_secret_code(randatt, cvscboard.secret_code);
             std::cout << "Bulls : " << newattemp.feedback.bulls << " Cows : " << newattemp.feedback.cows << "\n";
             cvscboard.attempts_and_feedbacks.push_back(newattemp);
             //std::cout << "Secret code is : " << cvscboard.secret_code.value << "\n";
 
             // Remove the impossible solutions from the vector
-            bulls_and_cows::remove_incompatible_codes_from_possible_solutions(newattemp, allpos);
+            remove_incompatible_codes_from_possible_solutions(newattemp, allpos);
             
-            Sleep(2000);
+            std::this_thread::sleep_for(std::chrono::seconds(2));
         }
         if (is_win(game_options, cvscboard))
         {
