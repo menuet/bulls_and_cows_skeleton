@@ -7,8 +7,13 @@
 namespace bulls_and_cows {
 
 	void returnAllCombination(std::vector<std::string>& allPossibilities, std::string sequence,
+<<<<<<< HEAD
                               unsigned int nbrCaractere, unsigned int nbrCaractereCode, const GameOptions& game_options,
                               std::string allPossibleLetters);
+=======
+                              unsigned int nbrCaractereCode, const GameOptions& game_options,
+                              const std::string& allPossibleLetters);
+>>>>>>> 074185a3863bc977497fb726c954d8aa51aaae90
 
     std::vector<std::string> createAllPossibilities(const GameOptions& game_options);
 
