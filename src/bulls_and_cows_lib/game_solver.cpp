@@ -1,6 +1,7 @@
 
 #include "game_solver.hpp"
 #include <algorithm>
+#include <set>
 
 namespace bulls_and_cows {
 
@@ -18,31 +19,24 @@ namespace bulls_and_cows {
 				code.value.pop_back(); 
 			}
 			//push in vector
-			else if (code.value.length() >= game_options.number_of_characters_per_code)
+			else
 			{
+				if (game_options.isDuplicate == false && contains_duplicates(code.value)) {
+					break;
+				}
 				pls.codes.push_back(code);
 				break;
 			}
 		}
 	}
 
-	void get_code_without_duplicates(PossibleSolutions& pls)
+	bool contains_duplicates(const std::string& s)
 	{
-		pls.codes.erase(std::remove_if(pls.codes.begin(), pls.codes.end(),
-			[](Code const& code) -> bool {
-				std::string used_chars;
-				for (char c : code.value)
-					if (used_chars.find(c) != std::string::npos)
-					{
-						return true;
-					}
-					else
-					{
-						used_chars.push_back(c);
-					}
-				return false;
-			}),
-			pls.codes.end());
+		std::set<char> check_uniq;
+		for (unsigned long int i = 0; i < s.length(); ++i)
+			if (!check_uniq.insert(s[i]).second)
+				return true; // Duplicated char found
+		return false; // No duplicated char found
 	}
 
 	PossibleSolutions generate_all_possible_codes(const GameOptions& game_options)
@@ -56,9 +50,10 @@ namespace bulls_and_cows {
 		Code codes;
 		code_gen(game_options, avc, used_alphabeat, codes);
 
-		if (game_options.isDuplicate == false) {
+		//Useless now, I check before creating possible solutions.
+		/*if (game_options.isDuplicate == false) {
 			get_code_without_duplicates(avc);
-		}
+		}*/
 
 		return avc;
 	}

@@ -182,13 +182,14 @@ namespace bulls_and_cows {
 
 
 	void display_board_content(const GameOptions& game_options, std::ostream& output_stream, size_t nb_attempts, std::string at, unsigned int bulls, unsigned int cows) {
+		const auto cb = (at != " ");
 		std::string s = (nb_attempts >= 10) ? "" : "0";
 		std::string s2 = (at == " ") ? special_char(game_options.number_of_characters_per_code, ". ") : display_current_attempt(at);
-		std::string s3 = (cows != 0 || bulls != 0) ? "|   " : "";
-		std::string s4 = (cows != 0 || bulls != 0) ? std::to_string(bulls) : "|       |       |\n";
-		std::string s5 = (cows != 0 || bulls != 0) ? "   |   " : "";
-		std::string s6 = (cows != 0 || bulls != 0) ? std::to_string(cows) : "";
-		std::string s7 = (cows != 0 || bulls != 0) ? "   |\n" : "";
+		std::string s3 = cb ? "|   " : "";
+		std::string s4 = cb ? std::to_string(bulls) : "|       |       |\n";
+		std::string s5 = cb ? "   |   " : "";
+		std::string s6 = cb ? std::to_string(cows) : "";
+		std::string s7 = cb ? "   |\n" : "";
 
 		output_stream << "| #" << s;
 		output_stream << nb_attempts << "      ";

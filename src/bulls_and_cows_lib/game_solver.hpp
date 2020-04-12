@@ -19,4 +19,9 @@ namespace bulls_and_cows {
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
                                                            PossibleSolutions& possible_solutions);
 
+	bool contains_duplicates(const std::string& s);
+
+	void code_gen(const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabet, Code& code);
+
+
 } // namespace bulls_and_cows
