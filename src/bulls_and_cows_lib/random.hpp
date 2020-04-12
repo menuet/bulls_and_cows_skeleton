@@ -14,4 +14,6 @@ namespace bulls_and_cows {
     // between min_value included and max_value included
     char generate_random_character(char min_value, char max_value);
 
+    
+
 } // namespace bulls_and_cows
