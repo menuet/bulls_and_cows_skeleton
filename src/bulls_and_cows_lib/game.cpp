@@ -251,7 +251,7 @@ namespace bulls_and_cows {
             finalBoards.emplace_back(code, bulls, cows);
             boardGame(finalBoards, game_options, std::cout);
             std::cout << "nombre de possibilités restantes : " << allPossibilities.size() << "\n";
-            deleteIncorrectPoissibilities(allPossibilities, code, bulls, cows, game_options);
+            deleteIncorrectPoissibilities(allPossibilities, code, bulls, cows);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
