@@ -24,6 +24,8 @@ namespace bulls_and_cows {
                     int j = i - 1;
                     origine.value[j]++;
                 }
+                else
+                    break;
             }
         }
 
