@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <Windows.h>
 
 namespace bulls_and_cows {
 
@@ -45,22 +46,7 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        
     }
 
     void configure_game_options(GameOptions& game_options)

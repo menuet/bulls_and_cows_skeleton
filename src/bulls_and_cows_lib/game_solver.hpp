@@ -1,5 +1,3 @@
-#pragma once
-
 #include "board.hpp"
 #include "game_options.hpp"
 #include <vector>
@@ -10,6 +8,8 @@ namespace bulls_and_cows {
     {
         std::vector<Code> codes;
     };
+
+    Code generate_next_code(const GameOptions& game_options, Code previous_code);
 
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options);
 
