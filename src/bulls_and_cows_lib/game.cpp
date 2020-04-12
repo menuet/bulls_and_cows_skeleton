@@ -69,6 +69,25 @@ namespace bulls_and_cows {
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
                "    Display a message telling if the computer won or lost\n";
+
+        Board board = create_board(game_options);
+        PossibleSolutions possible_solutions = generate_all_possible_codes(game_options);
+        AttemptAndFeedback attempt_and_feedback;
+        do
+        {
+            display_board(std::cout, game_options, board);
+
+            std::cout << "The possible number of remaining codes is : " << possible_solutions.codes.size() << std::endl;
+
+            std::this_thread_thread::sleep_for(2s);
+
+            attempt_and_feedback.attempt = pick_random_attempt(possible_solutions);
+
+            attempt_and_feedback.feedback =
+                compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+
+        } 
+
     }
     void configure_game_options(GameOptions& game_options)
     {
@@ -87,7 +106,7 @@ namespace bulls_and_cows {
 
             {
 
-            case 0:// ERREUR A MODIFIER
+            case 0:
 
                 menuretour = true;
 

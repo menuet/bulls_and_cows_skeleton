@@ -145,7 +145,7 @@ namespace bulls_and_cows {
         const char max = game_options.maximum_allowed_character;
         const char min = game_options.minimum_allowed_character;
 
-        output_stream << "Try a nex attempts\n attempt number" << nb_attempt << "(" << nb_char
+        output_stream << "\n Try a nex attempts attempt number " << nb_attempt << "(" << nb_char
                       << "different characters betwen '" << min << "' and '" << max << "'): ";
         attempt.value = ask_string(input_stream);
         return attempt;
