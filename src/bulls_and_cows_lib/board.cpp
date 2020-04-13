@@ -14,17 +14,17 @@ namespace bulls_and_cows {
         for (unsigned int j = 0; j < game_options.number_of_characters_per_code; j++) // pour j allant de 0 à number_of_characters_per_code(5) 
         {
             char temp = generate_random_character(game_options.minimum_allowed_character,
-                game_options.maximum_allowed_character); // générer un caractère entre le minimum/maximum_allowed_character ici définis de A à Z
-            myboard.secret_code.value.push_back(temp); //retourné le caractère
+                game_options.maximum_allowed_character); // génére un caractère entre le minimum/maximum_allowed_character ici défini de A à Z
+            myboard.secret_code.value.push_back(temp); //retourne le caractère
         }
 
-        //std::cout << myboard.secret_code.value; //accèder à la valeur du code secret dans myboard
+        //std::cout << myboard.secret_code.value; //accéder à la valeur du code secret dans myboard
         return myboard;
     }
 
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
-        if (attempt.value.size() != game_options.number_of_characters_per_code) // si la taille de ta tentative est différente que number_of_characters_per_code retourne fuax
+        if (attempt.value.size() != game_options.number_of_characters_per_code) // si la taille de ta tentative est différente que number_of_characters_per_code retourne faux
         {
             return false;
         }
@@ -32,7 +32,7 @@ namespace bulls_and_cows {
         for (const char attempt_char : attempt.value)
         {
             if (attempt_char < game_options.minimum_allowed_character ||
-                attempt_char > game_options.maximum_allowed_character) // vérifie que les caractère sojn bien compris entre le minimum et le maximum 
+                attempt_char > game_options.maximum_allowed_character) // vérifie que les caractères sont bien compris entre le minimum et le maximum 
             {
                 return false;
             }
@@ -91,7 +91,7 @@ namespace bulls_and_cows {
     {
         for (AttemptAndFeedback tempo : board.attempts_and_feedbacks) // récupére un à un les élément du vecteur en les stockant sur tempo   (foreach en c#) 
         {
-            if (tempo.feedback.bulls == game_options.number_of_characters_per_code) // on regard si on a bien 5 bulls pour savoir si on a gagner
+            if (tempo.feedback.bulls == game_options.number_of_characters_per_code) // on regarde si on a bien 5 bulls pour savoir si on a gagné
             {
                 return true;
             }
@@ -143,13 +143,13 @@ namespace bulls_and_cows {
         // attempt.value = ask_string(input_stream); autre méthode
 
         auto nb_attempt = board.attempts_and_feedbacks.size() + 1; // augment le nb_attempt de 1 quand on a essayé une fois
-        unsigned int nb_char = game_options.number_of_characters_per_code; // nombre de caractère qu'on doit rentrer (ici 5)
-        const char max = game_options.maximum_allowed_character;// définis le caractère maximum (ici Z)
-        const char min = game_options.minimum_allowed_character; // définis le caractère minimum (ici A)
+        unsigned int nb_char = game_options.number_of_characters_per_code; // nombre de caractères qu'on doit rentrer (ici 5)
+        const char max = game_options.maximum_allowed_character;// définit le caractère maximum (ici Z)
+        const char min = game_options.minimum_allowed_character; // définit le caractère minimum (ici A)
 
-        output_stream << "Ceci est votre " << nb_attempt << " tentative, choisisez " << nb_char << " caracters entre " << min
+        output_stream << "This is your " << nb_attempt << " attempt, choose " << nb_char << " characters between " << min
             << " et " << max << ": ";
-        attempt.value = ask_string(input_stream); // input stream c'est la siasie de l'utilisateur on va vérifié que c'est un string et si ca l'est on la met dans attempt.value
+        attempt.value = ask_string(input_stream); // input stream c'est la saisie de l'utilisateur on va vérifier que c'est un string et si ca l'est on la met dans attempt.value
         return attempt;
 
     }
