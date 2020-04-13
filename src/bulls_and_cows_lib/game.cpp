@@ -57,6 +57,9 @@ namespace bulls_and_cows {
         std::cout << "END OF GAME!!!\n";
     }
 
+
+
+
     void computer_plays_against_computer(const GameOptions& game_options)
     {
         /* std::cout
@@ -76,26 +79,22 @@ namespace bulls_and_cows {
                 "    Display the board and the list of attempts so far\n"
                 "    Display a message telling if the computer won or lost\n";*/
 
-        Board board = create_board(game_options);
-        Board compboard;
 
-        do
-        {
-            display_board(std::cout, game_options, board);
 
-            compboard = create_board(game_options);
+        PossibleSolutions PSolution;
+        PSolution = generate_all_possible_codes(game_options);
 
-            AttemptAndFeedback att;
-            att.attempt = compboard.secret_code;
-            att.feedback = compare_attempt_with_secret_code(att.attempt, board.secret_code);
+        for (int unsigned i=0;i<6;i++)
+                std::cout << PSolution.codes[i].value<<"\n";
+        
 
-            board.attempts_and_feedbacks.push_back(att);
+        
 
-        } while (!is_end_of_game(game_options, board));
-
-        is_end_of_game(game_options, board);
-        is_win(game_options, board);
     }
+
+
+
+
 
     void configure_game_options(GameOptions& game_options)
     {
