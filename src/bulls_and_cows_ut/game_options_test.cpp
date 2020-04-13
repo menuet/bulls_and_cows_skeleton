@@ -6,6 +6,7 @@
 // Examples of unit tests for the functions declared in game_options.hpp
 // These unit tests are disabled because you first need to define the tested functions in game_options.cpp
 
+
 /*
 
 TEST_CASE("TEST bulls_and_cows::display_game_options")
@@ -25,6 +26,7 @@ TEST_CASE("TEST bulls_and_cows::display_game_options")
             "Number of characters in a code: 5\n"
             "Range of allowed characters: from 'A' to 'H'\n");
 }
+
 
 TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
 {
@@ -48,6 +50,8 @@ TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
             "What is your choice ? ");
 }
 
+
+
 TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
 {
     // ARRANGE
@@ -59,6 +63,7 @@ TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
     // ASSERT
     REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
 }
+
 
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
@@ -78,6 +83,8 @@ TEST_CASE("TEST bulls_and_cows::save_game_options")
             "minimum_allowed_character=A\n"
             "maximum_allowed_character=H\n");
 }
+
+
 
 TEST_CASE("TEST bulls_and_cows::load_game_options")
 {
@@ -99,5 +106,5 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(game_options.minimum_allowed_character == '1');
     REQUIRE(game_options.maximum_allowed_character == '8');
 }
-
 */
+
