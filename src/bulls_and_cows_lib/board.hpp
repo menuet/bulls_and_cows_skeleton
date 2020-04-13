@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "game_options.hpp"
@@ -20,13 +19,13 @@ namespace bulls_and_cows {
 
     struct AttemptAndFeedback
     {
-        Code attempt{};      // user-entered code
-        Feedback feedback{}; // feedback telling how many bulls and cows the attempts contains
+        Code attempt{};      // User-entered code
+        Feedback feedback{}; // Feedback telling how many bulls and cows the attempts contains
     };
 
     struct Board
     {
-        Code secret_code{};                                       // computer-generated secret code
+        Code secret_code{};                                       // Computer-generated secret code
         std::vector<AttemptAndFeedback> attempts_and_feedbacks{}; // List of attempts of the user
     };
 
@@ -37,7 +36,7 @@ namespace bulls_and_cows {
     bool validate_attempt(const GameOptions& game_options, const Code& attempt);
 
     // Compare a user-entered code with the secret code and give the corresponding number of bulls and cows
-    Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code);
+    Feedback compare_attempt_with_secret_code(Code attempt, Code secret_code);
 
     // Test if this is the end of the game
     bool is_end_of_game(const GameOptions& game_options, const Board& board);

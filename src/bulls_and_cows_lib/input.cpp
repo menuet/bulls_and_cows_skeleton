@@ -1,4 +1,3 @@
-
 #include "input.hpp"
 #include <sstream>
 

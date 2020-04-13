@@ -1,4 +1,3 @@
-
 #include "main_menu.hpp"
 #include "input.hpp"
 
@@ -6,12 +5,12 @@ namespace bulls_and_cows {
 
     void display_main_menu(std::ostream& output_stream)
     {
-        output_stream << "Welcome to Bulls And Cows\n"
-                         "0 - Quit\n"
-                         "1 - Play against the computer\n"
-                         "2 - Watch computer playing against itself\n"
-                         "3 - Configure options\n"
-                         "What is your choice ? ";
+        output_stream << "Jeu Mastermind\n"
+                         "0 - Quitter\n"
+                         "1 - Jouer contre l'ordinateur\n"
+                         "2 - Regarder jouer l'ordinateur contre lui-meme\n"
+                         "3 - Configurer les options\n"
+                         "Que souhaitez-vous faire ?  ";
     }
 
     MainMenuChoice ask_main_menu_choice(std::istream& input_stream)
