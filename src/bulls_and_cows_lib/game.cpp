@@ -46,7 +46,43 @@ namespace bulls_and_cows {
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        
+        Board board = create_board(game_options);
+        PossibleSolutions possible_solutions = generate_all_possible_codes(game_options);
+        AttemptAndFeedback attempt_and_feedback;
+
+        do
+        {
+            display_board(std::cout, game_options, board);
+
+            std::cout << "Nombre de codes restants possibles : " << possible_solutions.codes.size() << "\n"
+                      << std::endl;
+
+            Sleep(3000);
+
+            attempt_and_feedback.attempt = pick_random_attempt(possible_solutions);
+
+            attempt_and_feedback.feedback =
+                compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+
+            board.attempts_and_feedbacks.push_back(attempt_and_feedback);
+
+            remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possible_solutions);
+        }
+
+        while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
+        {
+            display_board(std::cout, game_options, board);
+
+            if (is_win(game_options, board))
+            {
+                std::cout << "L'intelligence artificielle a gagne !" << std::endl;
+            }
+
+            else
+            {
+                std::cout << "L'intelligence artificielle n'a pas réussi à trouver la solution, elle n'a pas gagne..." << std::endl;
+            }
+        }
     }
 
     void configure_game_options(GameOptions& game_options)
