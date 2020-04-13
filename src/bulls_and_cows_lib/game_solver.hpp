@@ -1,22 +1,21 @@
-
 #pragma once
-
 #include "board.hpp"
 #include "game_options.hpp"
+#include "random.hpp"
 #include <vector>
 
 namespace bulls_and_cows {
 
-    struct PossibleSolutions
-    {
-        std::vector<Code> codes;
-    };
+        void returnAllCombination(std::vector<std::string>& allPossibilities, std::string sequence,
+                              unsigned int nbrCaractereCode, const GameOptions& game_options,
+                              const std::string& allPossibleLetters);
 
-    PossibleSolutions generate_all_possible_codes(const GameOptions& game_options);
+    std::vector<std::string> createAllPossibilities(const GameOptions& game_options);
 
-    Code pick_random_attempt(const PossibleSolutions& possible_solutions);
+    std::string randomInPossibilities(const std::vector<std::string>& allPossibilities);
 
-    void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
-                                                           PossibleSolutions& possible_solutions);
+        void deleteIncorrectPoissibilities(std::vector<std::string>& allPossibilities, const std::string& codeComputer,
+                                       const unsigned int bulls, const unsigned int cows);
+
 
 } // namespace bulls_and_cows
