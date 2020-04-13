@@ -48,30 +48,30 @@ namespace bulls_and_cows {
 
         Board board = bulls_and_cows::create_board(game_options);
 
-        AttemptAndFeedback newattemp;
-
-        while (!is_end_of_game(game_options, board) && !is_win(game_options, board))
+        
+        
+        while (!bulls_and_cows::is_end_of_game(game_options, board) && !bulls_and_cows::is_win(game_options, board))
+        
         {
 
-            display_board(std::cout, game_options, board);
+            bulls_and_cows::display_board(std::cout, game_options, board);
 
-            newattemp.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+            Code attempt = ask_attempt(std::cout, std::cin, game_options, board);
 
-            newattemp.feedback = compare_attempt_with_secret_code(newattemp.attempt, board.secret_code);
+          if (is_win(game_options, board))
+          
+          {
+              AttemptAndFeedback newattemp;
 
-            board.attempts_and_feedbacks.push_back(newattemp);
+              newattemp.attempt = attempt;
+
+              newattemp.feedback = bulls_and_cows::compare_attempt_with_secret_code(attempt, board.secret_code);
+              
+              board.attempts_and_feedbacks.push_back(newattemp);
+          }
+        
         }
-
-        if (is_win(game_options, board))
-        {
-
-            std::cout << "you won" << std::endl;
-        }
-
-        else
-
-            std::cout << "Try again" << std::endl;
-    }
+     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
 
