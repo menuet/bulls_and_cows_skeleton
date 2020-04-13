@@ -13,7 +13,6 @@ namespace bulls_and_cows {
         std::vector<Code> codes{};
     };
 
-
     void all_possible_code(int num, int max, const GameOptions& game_options, PossibleSolutions& var_all_possible_codes,
                            Code codes); //fonction récursive qui genere tous les codes possibles (valide ou non)
 
@@ -22,6 +21,6 @@ namespace bulls_and_cows {
     Code pick_random_attempt(const PossibleSolutions& possible_solutions);
 
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
-                                                           PossibleSolutions& possible_solutions, const Board& board);
+                                                           PossibleSolutions& possible_solutions);
 
 } // namespace bulls_and_cows

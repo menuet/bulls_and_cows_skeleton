@@ -1,5 +1,6 @@
 
 #include "game_solver.hpp"
+#include <algorithm>
 
 namespace bulls_and_cows {
     // en cours de construction
@@ -68,22 +69,18 @@ namespace bulls_and_cows {
     }
 
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
-                                                           PossibleSolutions& possible_solutions, const Board& board)
+                                                           PossibleSolutions& possible_solutions)
     {
         Feedback temp_feedback{};
-        for (auto temp : possible_solutions.codes)
-        {
-            auto i = 0;
-            // je compare chaque code avec le code secret, en récupérant le nb de bulls et cows
-            temp_feedback = compare_attempt_with_secret_code(temp, board.secret_code); 
 
-            // si le nb de bulls et cows du code qui vient d'être comparé est égal au nb de bulls et cows de l'attempt original, alors on vire ce code des solutions possibles
-            if (temp_feedback.bulls == attempt_and_feedback.feedback.bulls && 
-                temp_feedback.cows == attempt_and_feedback.feedback.cows)
+        for (auto i = 0; i < possible_solutions.codes.size(); i++)
+        {
+            temp_feedback = compare_attempt_with_secret_code(possible_solutions.codes[i], attempt_and_feedback.attempt);
+            if (temp_feedback.bulls != attempt_and_feedback.feedback.bulls ||
+                temp_feedback.cows != attempt_and_feedback.feedback.cows)
             {
-                possible_solutions.codes.erase(possible_solutions.codes.begin()+i);
+                possible_solutions.codes.erase(possible_solutions.codes.begin() + i);
             }
-            i++;
         }
     }
 

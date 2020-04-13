@@ -65,21 +65,34 @@ namespace bulls_and_cows {
             std::cout << "\n";
             display_board(std::cout, game_options, IAboard); // Display the board and the list of attempts so far
 
-            std::cout << "\n" << all_codes.codes.size() << " Remaining possible codes :\n";
-            for (auto temp : all_codes.codes)
+            std::cout << "\n" << all_codes.codes.size() << " Remaining possible codes.\n";
+            /*for (auto temp : all_codes.codes)
             {
                 std::cout <<temp.value <<" "; //Display remaining possible codes so far
-            }
+            }*/
 
-            std::cout << "\n";
             Sleep(2000); //Wait for 2 seconds
 
             IA_af.attempt = pick_random_attempt(all_codes);
             IA_af.feedback = compare_attempt_with_secret_code(IA_af.attempt, IAboard.secret_code);
             IAboard.attempts_and_feedbacks.push_back(IA_af);
-            remove_incompatible_codes_from_possible_solutions(IA_af, all_codes, IAboard);
+            remove_incompatible_codes_from_possible_solutions(IA_af, all_codes);
 
         } while (!(is_end_of_game(game_options, IAboard)) && !(is_win(game_options, IAboard)));
+
+        std::cout << "\n";
+        display_board(std::cout, game_options, IAboard);
+
+        if (is_win(game_options, IAboard))
+        {
+            std::cout << "\n"
+                      << "Computer won ! The secret code is : " << IAboard.secret_code.value << "\n";
+        }
+        else
+        {
+            std::cout << "\n"
+                      << "Computer lost ! The secret code is : " << IAboard.secret_code.value << "\n";
+        }
 
 
 
