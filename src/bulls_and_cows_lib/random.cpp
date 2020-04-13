@@ -12,6 +12,8 @@ namespace bulls_and_cows {
         return distrib(rg);
     }
 
+	
+
     char generate_random_character(char min_value, char max_value)
     {
         return static_cast<char>(generate_random_integer(min_value, max_value));

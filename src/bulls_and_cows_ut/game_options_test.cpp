@@ -6,8 +6,8 @@
 // Examples of unit tests for the functions declared in game_options.hpp
 // These unit tests are disabled because you first need to define the tested functions in game_options.cpp
 
-/*
 
+/*
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
     // ARRANGE
@@ -25,6 +25,19 @@ TEST_CASE("TEST bulls_and_cows::display_game_options")
             "Number of characters in a code: 5\n"
             "Range of allowed characters: from 'A' to 'H'\n");
 }
+
+TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
+{
+	// ARRANGE
+	std::stringstream input_stream{"2"};
+
+	// ASK
+	const bulls_and_cows::GameOptionsMenuChoice choice = bulls_and_cows::ask_game_options_menu_choice(input_stream);
+
+	// ASSERT
+	REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
+}
+
 
 TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
 {
@@ -47,19 +60,11 @@ TEST_CASE("TEST bulls_and_cows::display_game_options_menu")
             "6 - Load options\n"
             "What is your choice ? ");
 }
+ */
 
-TEST_CASE("TEST bulls_and_cows::ask_game_options_menu_choice WHEN choice is 2")
-{
-    // ARRANGE
-    std::stringstream input_stream{"2"};
 
-    // ASK
-    const bulls_and_cows::GameOptionsMenuChoice choice = bulls_and_cows::ask_game_options_menu_choice(input_stream);
 
-    // ASSERT
-    REQUIRE(choice == bulls_and_cows::GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode);
-}
-
+/*
 TEST_CASE("TEST bulls_and_cows::save_game_options")
 {
     // ARRANGE
