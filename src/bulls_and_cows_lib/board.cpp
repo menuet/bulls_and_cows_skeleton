@@ -47,32 +47,35 @@ namespace bulls_and_cows {
         Feedback myfeedback{};
         int cpt_bulls = 0;
         int cpt_cows = 0;
+        std::size_t presence;
+        std::string secret_code_bis = secret_code.value;
+        std::string attempt_bis = attempt.value;
+
 
         for (unsigned int i = 0; i < attempt.value.size(); i++)
         {
-            for (unsigned int j = 0; j < secret_code.value.size(); j++)
+
+
+            if (attempt.value[i] == secret_code.value[i])
             {
-
-                if (attempt.value[j] == secret_code.value[i])
-                {
-
-                    if (i == j)
-                    {
-                        cpt_bulls++;
-                    }
-                    else
-                    {
-                        cpt_cows++;
-                    }
-                }
-
+                cpt_bulls++;
+                
             }
-
-
         }
 
+        for (int j = 0; j < attempt.value.size(); j++)
+        {
+            presence = secret_code_bis.find(attempt_bis[j]);
+            if (presence != std::string::npos)
+            {
+                secret_code_bis.erase(secret_code_bis.find(attempt_bis[j]), 1);
+                cpt_cows++;
+            }
+        }
+
+
         myfeedback.bulls = cpt_bulls;
-        myfeedback.cows = cpt_cows;
+        myfeedback.cows = cpt_cows - cpt_bulls; // contraint de faire cette soustraction sinon les bulls sont comptés comme des cows.
 
         return myfeedback;
     }

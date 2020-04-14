@@ -89,21 +89,21 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-       // GameOptions game_options{};
+        // GameOptions game_options{};
 
         std::cout << "Type a number of attempts: "; // Type a number and press enter
         std::cin >> game_options.max_number_of_attempts; // Get user input from the keyboard
 
-        std::cout << "Type a number of characters: "; 
-        std::cin >> game_options.number_of_characters_per_code; 
+        std::cout << "Type a number of characters: ";
+        std::cin >> game_options.number_of_characters_per_code;
 
-        std::cout << "Type the minimum allowed character: "; 
-        std::cin >> game_options.minimum_allowed_character; 
+        std::cout << "Type the minimum allowed character: ";
+        std::cin >> game_options.minimum_allowed_character;
 
-        std::cout << "Type the maximum allowed character "; 
-        std::cin >> game_options.maximum_allowed_character; 
+        std::cout << "Type the maximum allowed character ";
+        std::cin >> game_options.maximum_allowed_character;
 
-    } 
+    }
 
     void play_game()
     {
