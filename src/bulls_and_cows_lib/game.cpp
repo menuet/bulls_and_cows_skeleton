@@ -84,8 +84,6 @@ namespace bulls_and_cows {
         PossibleSolutions PSolution;
         PSolution = generate_all_possible_codes(game_options);
 
-       
-
         do
         {
             display_board(std::cout, game_options, board);
@@ -142,7 +140,7 @@ namespace bulls_and_cows {
 
             const auto Choice = ask_game_options_menu_choice(std::cin);
 
-            std::ofstream out("C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt");
+           
 
             switch (Choice)
             {
@@ -198,17 +196,21 @@ namespace bulls_and_cows {
                          game_options.minimum_allowed_character > game_options.maximum_allowed_character);
                 break;
 
-            case GameOptionsMenuChoice::SaveOptions:
-
+            case GameOptionsMenuChoice::SaveOptions: {
+                std::ofstream out{"C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt"};
                 save_game_options(out, game_options);
                 break;
+            }
 
-            case GameOptionsMenuChoice::LoadOptions:
+               
 
-                std::ifstream in("C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt");
+            case GameOptionsMenuChoice::LoadOptions: {
+                std::ifstream in{"C:/DEVCPP/bulls_and_cows_skeleton/game_options.txt"};
+
                 load_game_options(in, game_options);
 
                 break;
+            }
             }
 
         } while (!verif);

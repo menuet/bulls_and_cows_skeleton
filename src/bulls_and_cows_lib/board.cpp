@@ -68,14 +68,15 @@ namespace bulls_and_cows {
         for (int unsigned i = 0; i < secret_code.value.size(); i++)
         {
             for (int unsigned j = 0; j < attempt.value.size(); j++)
-
-            if (attempt.value[j]==secret_code.value[i])
             {
-                attempt.value.erase(j, 1);
-                feedback.cows++;
-                i--;
+                if (attempt.value[j] == secret_code.value[i])
+                {
+                    attempt.value.erase(j, 1);
+                    feedback.cows++;
+                    i--;
+                }
             }
-                
+
         }
 
         return feedback;
