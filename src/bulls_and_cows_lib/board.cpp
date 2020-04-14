@@ -8,7 +8,7 @@ namespace bulls_and_cows {
 
     // TODO: define the body of the functions declared in board.cpp
 
-    // Create a board and with a new random secret code composed of allowed characters
+    // Créer un tableau et avec un nouveau code secret aléatoire composé de caractères autorisés
     Board create_board(const GameOptions& game_options)
     {
         Board test{};
@@ -22,48 +22,56 @@ namespace bulls_and_cows {
         return test;
     }
 
-    // Validate that a user-entered code contains proper number of allowed characters
-    Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code)
-    {
-        Feedback myfeedback{};
-        int cpt_bulls = 0;
-        int cpt_cows = 0;
+    // Valider qu'un code saisi par l'utilisateur contient le nombre adéquat de caractères autorisés
+    Feedback compare_attempt_with_secret_code(Code attempt, Code secret_code)
 
-        for (unsigned int i = 0; i < attempt.value.size(); i++)
+    {
+        Feedback feedback;
+
+        for (unsigned i = 0; i < attempt.value.size(); i++)
+
         {
-            for (unsigned int j = 0; j < secret_code.value.size(); j++)
+
+            if (attempt.value[i] == secret_code.value[i])
+
             {
 
-                if (attempt.value[j] == secret_code.value[i])
-                {
+                feedback.bulls++;
 
-                    if (i == j)
-                    {
-                        cpt_bulls++;
-                    }
-                    else
-                    {
-                        cpt_cows++;
-                    }
-                }
+                secret_code.value.replace(i, 1, "?");
+
+                attempt.value.replace(i, 1, "!");
             }
         }
 
-        myfeedback.bulls = cpt_bulls;
-        myfeedback.cows = cpt_cows;
+        for (auto a : attempt.value)
 
-        return myfeedback;
+        {
+
+            auto iter = std::find(secret_code.value.begin(), secret_code.value.end(), a);
+
+            if (iter != secret_code.value.end())
+
+            {
+
+                feedback.cows++;
+
+                *iter = '?';
+            }
+        }
+
+        return feedback;
     }
     // tentative == taille du code et comprise entre max et min allowed character
     bool validate_attempt(const GameOptions& game_options, const Code& attempt)
     {
         if (attempt.value.size() !=
-            game_options.number_of_characters_per_code) // Verification de la Taille de la tentative
+            game_options.number_of_characters_per_code) // Verification de la taille de la tentative
         {
             return false;
         }
         for (const char attempt_char :
-             attempt.value) // Verifie si les caractere de la tentatives sont compris entre min et max
+             attempt.value) // Verifie si les caractere de la tentatives sont compris entre le min et max
         {
             if (attempt_char > game_options.maximum_allowed_character ||
                 attempt_char < game_options.minimum_allowed_character)
@@ -87,7 +95,7 @@ namespace bulls_and_cows {
         return true;
     }
 
-    // Test if the last attempt is a win
+    // Tester si la dernière tentative est une victoire
     bool is_win(const GameOptions& game_options, const Board& board)
     {
 
@@ -101,7 +109,7 @@ namespace bulls_and_cows {
         return false;
     }
 
-    // Display the scret code and the list of attempts of the board
+    // Afficher le code et la liste des tentatives
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
     {
 

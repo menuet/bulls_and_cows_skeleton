@@ -13,7 +13,7 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        // Create a board with a randomly generated secret code\n"
+        // Créer un tableau avec un code secret généré de façon aléatoire"
         Board mon_board{};
         AttemptAndFeedback my_feedback{};
         mon_board = create_board(game_options);
@@ -92,6 +92,10 @@ namespace bulls_and_cows {
     void configure_game_options(GameOptions& game_options)
     {
         bool menuretour = false;
+        std::string chemin = "C:\DEVCPP\PROJECTS\bulls_and_cows_skeleton\game_options.txt";
+        std::ofstream save;
+        std::ofstream load(chemin);
+
         while (!menuretour)
 
         {
@@ -102,7 +106,7 @@ namespace bulls_and_cows {
 
             GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(std::cin);
 
-            switch ((int)user_choice) // require int type
+            switch ((int)user_choice) // exige le type int
 
             {
 
@@ -138,12 +142,15 @@ namespace bulls_and_cows {
 
             case 5:
 
-                save_game_options(std::cout, game_options);
+                save.open(chemin);
+                save_game_options(save, game_options);
+                save.close();
+
                 break;
 
             case 6:
 
-                load_game_options(std::cin, game_options);
+                load_game_options(load, game_options);
                 break;
 
             default:

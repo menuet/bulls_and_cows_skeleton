@@ -4,7 +4,7 @@
 
 namespace bulls_and_cows {
 
-    // TODO: define the body of the functions declared in game_options.cpp
+  
     void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
     {
         output_stream << "\n#################################\n"
@@ -103,4 +103,4 @@ namespace bulls_and_cows {
         }
         return true;
     }
-} // namespace bulls_and_cows
+} 
