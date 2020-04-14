@@ -1,5 +1,6 @@
 
 #include "game.hpp"
+#include "board.cpp"
 #include "board.hpp"
 #include "game_options.hpp"
 #include "game_solver.hpp"
@@ -14,6 +15,28 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
+        Board board = create_board(game options);
+
+        do{
+            display_board(std::cout,game_options,board);
+            attempt_and_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+            if (validate_attempt(game_options,attempt))
+            {
+                attempt_and_feedback.feedback = compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+                board.attempts_and_feedbacks.push_back(attempt_and_feedback);
+            }while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
+
+            if (is_win(game_options, board))
+                {
+                    std::cout << "Your guessed well"
+                }
+            else
+                {
+                    std::cout << "You failed, the code was : " + board.secret_code;
+                }
+
+        }
+
         std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
                      "    DO\n"
@@ -89,3 +112,4 @@ namespace bulls_and_cows {
     }
 
 } // namespace bulls_and_cows
+
