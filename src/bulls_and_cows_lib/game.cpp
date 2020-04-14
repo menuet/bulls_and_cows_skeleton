@@ -71,6 +71,62 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
+        do
+        {
+
+            display_game_options(std::cout, game_options);
+            display_game_options_menu(std::cout);
+            std::cout<< "Enter your choice";
+            std::cin>>choice;
+            switch(choice)
+            {
+                case GameOptionsMenuChoice::Error:{
+                    std::cout<< "Please write a valid choice";
+                    break;
+                }
+                case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:{
+                    int newattemps();
+                    std::cout<<"How many attemps do you want?";
+                    std::cin>>newattemps;
+                    game_options.max_number_of_attempts=newattemps;
+                    break;
+                }
+                case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:{
+                    int newnbchar();
+                    std::cout<<"How many characters do you want in the code?";
+                    std:cin>>newnbchar;
+                    game_options.number_of_characters_per_code=newnbchar;
+                    break;
+                }
+                case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:{
+                    char newminchar();
+                    std::cout<<"Enter the minimum character you want";
+                    std::cin>>newminchar;
+                    game_options.minimum_allowed_character=newminchar;
+                    break;
+                }
+                case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:{
+                    char newmaxchar();
+                    std::cout<<"Enter the maximum character you want";
+                    std::cin>>newmaxchar;
+                    game_options.maximum_allowed_character=newmaxchar;
+                    break;
+                }
+                case GameOptionsMenuChoice::SaveOptions:{
+                    save_game_options(std::out, game_options);
+                    break;
+                }
+                case GameOptionsMenuChoice::LoadOptions:{
+                    load_game_options(std::in,game_options);
+                    break;
+                }
+
+
+
+
+
+            }
+        }while (choice!=GameOptionsMenuChoice::BackToMain);
         std::cout << "TODO:\n"
                      "    DO\n"
                      "       Display the current game options\n"
