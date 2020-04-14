@@ -3,7 +3,6 @@
 #include <algorithm>
 
 namespace bulls_and_cows {
-    // en cours de construction
 
     // fonction récursive qui genere tous les codes possibles (valide ou non)
     void all_possible_code(int num, int max, const GameOptions& game_options, PossibleSolutions& var_all_possible_codes,
