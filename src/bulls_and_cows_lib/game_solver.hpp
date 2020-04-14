@@ -18,5 +18,6 @@ namespace bulls_and_cows {
 
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
                                                            PossibleSolutions& possible_solutions);
+    Code generate_next_code(const GameOptions& game_options, Code previous_code);
 
 } // namespace bulls_and_cows
