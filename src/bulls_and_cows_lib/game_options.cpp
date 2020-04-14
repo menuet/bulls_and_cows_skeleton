@@ -29,7 +29,7 @@ namespace bulls_and_cows
 			<< game_options.maximum_allowed_character << "'\n";
 	}
 	
-	GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)//entering stream we ask the user
+	GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)// ask the user to enter stream 
 	{
 
 		switch (ask_int_or_default(input_stream, -1))

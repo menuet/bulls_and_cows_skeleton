@@ -20,66 +20,68 @@ namespace bulls_and_cows {
 		return test;
 	}
 
-	//tentative == taille du code et comprise entre max et min allowed character
+	//taille du code secret et comprise entre le maximum et minimum allowed character
 	bool validate_attempt(const GameOptions& game_options, const Code& attempt)
 	{
-		if (attempt.value.size() != game_options.number_of_characters_per_code)   // Verification de la Taille de la tentative
+		if (attempt.value.size() != game_options.number_of_characters_per_code)   // test pour voir de la taille du code entré
 		{
 			return false;
 		}
-		for (const char attempt_char : attempt.value)  //Verifie si les caractere de la tentatives sont compris entre min et max
+		for (const char attempt_char : attempt.value)  //tester si les caractere de la tentatives sont compris entre les limites
 		{
 			if (attempt_char > game_options.maximum_allowed_character || attempt_char < game_options.minimum_allowed_character)
 			{
-				return false;
+				return false; // faux si le nombre de caratere ne correspond pas.
 			}
 		}
-		return true;
+		return true; // vrai si ca correspond bien a la taille du secret code.
 
 	}
 	
-	// Validate that a user-entered code contains proper number of allowed characters
-	Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code) // comparer les 2 codes
+	// verifier le nombre de charactere du code du joueur est bon
+	Feedback compare_attempt_with_secret_code(Code attempt, Code secret_code) // comparer les 2 codes
 	{
-		Feedback myfeedback{};
-		int cpt_bulls = 0;
-		int cpt_cows = 0;
+		Feedback feedback{};
 
-		for (unsigned int i = 0; i < attempt.value.size(); i++)
+		for (unsigned i = 0; i < attempt.value.size(); i++)
 		{
-			for (unsigned int j = 0; j < secret_code.value.size(); j++)
+			if (attempt.value[i] == secret_code.value[i])
+			{
+				feedback.bulls++;
+				secret_code.value.replace(i, 1, "?");
+				attempt.value.replace(i, 1, "!");
+			}
+
+		}
+
+		for (auto a : attempt.value)
+
+		{
+			auto iter = std::find(secret_code.value.begin(), secret_code.value.end(), a);
+			if (iter != secret_code.value.end())
 			{
 
-				if (attempt.value[j] == secret_code.value[i])
-				{
-					if (i == j)
-					{
-						cpt_bulls++;
-					}
-					else
-					{
-						cpt_cows++;
-					}
-				}
+				feedback.cows++;
+				*iter = '?';
 			}
 		}
-		myfeedback.bulls = cpt_bulls;
-		myfeedback.cows = cpt_cows;
-		return myfeedback;
+			  			
+		return feedback;
 	}
 	
-	// Test if this is the end of the game
+	//voir si le jeu est fini ou pas, on effectue un test, et si le code est bon, le jeu est fini
 	bool is_end_of_game(const GameOptions& game_options, const Board& board)
 	{
-		if (game_options.max_number_of_attempts != board.attempts_and_feedbacks.size()) // Compare si le nombre de tentative est = au nombre max autorisée, si oui renvoie true
+		// Comparer si le nombre de tentative est egal au nombre max autorisée
+		if (game_options.max_number_of_attempts != board.attempts_and_feedbacks.size()) 
 		{
-			return false;
+			return false; // si faux renvoie false
 		}
 
-		return true;
+		return true; // si oui renvoie true
 	}
 
-	// Test if the last attempt is a win
+	//voir si la derniere tentative est vrai
 	bool is_win(const GameOptions& game_options, const Board& board)
 	{
 
@@ -87,14 +89,14 @@ namespace bulls_and_cows {
 		{
 			if (tempo.feedback.bulls == game_options.number_of_characters_per_code)
 			{
-				return true;
+				return true; // retourne vrai si la derniere tentavie est vrai
 			}
 		}
-		return false;
+		return false; // retourne faux si la tentative est fausse
 
 	}
 
-	// Display the scret code and the list of attempts of the board
+	// Afficher le code secret + liste des tentatives.
 	void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board)
 	{
 

@@ -14,7 +14,7 @@
 
 	  void user_plays_against_computer(const GameOptions& game_options)
 	  {
-		  // Create a board with a randomly generated secret code\n"
+		  // board creation, adding a random code
 		  Board mon_board{};
 		  AttemptAndFeedback my_feedback{};
 		  mon_board = create_board(game_options);
@@ -24,7 +24,7 @@
 		  do
 		  {
 			  std::cout << "\n";
-			  display_board(std::cout, game_options, mon_board);
+			  display_board(std::cout, game_options, mon_board); //afficher le board
 
 
 
@@ -32,37 +32,33 @@
 
 
 
-			  while (!validate_attempt(game_options, my_feedback.attempt))
+			  while (!validate_attempt(game_options, my_feedback.attempt)) //tester si la tentative est bonne, sinon essayer de nouveau
 			  {
 				  std::cout << "Your attempt is not valid, try again\n";
 				  my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, mon_board);
 			  }
 
 
-
+			  // comparer la tentavie avec le code secret, pour voir si c'est bon
 			  my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, mon_board.secret_code);
 			  mon_board.attempts_and_feedbacks.push_back(my_feedback);
 
 
 
-		  } while (!(is_end_of_game(game_options, mon_board)) && !(is_win(game_options, mon_board)));
-
-
-
+		  } 
+		  while (!(is_end_of_game(game_options, mon_board)) && !(is_win(game_options, mon_board)));
 		  std::cout << "\n";
 		  display_board(std::cout, game_options, mon_board);
 
-
-
-		  if (is_win(game_options, mon_board))
+		  if (is_win(game_options, mon_board)) // voir si le joueur a trouver le bon code secret
 		  {
 			  std::cout << "\n"
-				  << "You won ! This is the secret code : " << mon_board.secret_code.value << "\n";
+				  << "You won the game! The secret code is : " << mon_board.secret_code.value << "\n";
 		  }
-		  else
+		  else // si le code secret est faux et que le nb de tentative max est atteint
 		  {
 			  std::cout << "\n"
-				  << "You lost ! This is the secret code : " << mon_board.secret_code.value << "\n";
+				  << "GAME OVER ! The secret code is : " << mon_board.secret_code.value << "\n";
 		  }
 	  }
 
@@ -88,13 +84,18 @@
 	void configure_game_options(GameOptions& game_options)
 	{
 		bool menuretour = false;
+		std::string path = "C:\DEVCPP\PROJECTS\bulls_and_cows_skeleton\game_options.txt"; // ajouter le chemin du fichier dans lequel les options vont etres enregistrer
+		std::ofstream save;
+		std::ofstream load(path);
+
 		while (!menuretour)
 
 		{
 			display_game_options(std::cout, game_options);
 			display_game_options_menu(std::cout);
 			GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(std::cin);
-			switch ((int)user_choice) // require int type
+			switch ((int)user_choice) // casting method, pour transformer la variable user_choice en un int
+			// des int vu que le switch n'utilise que des variables des type int
 
 			{
 			case 0:
@@ -122,11 +123,16 @@
 				break;
 
 			case 5:
-				save_game_options(std::cout, game_options);
+				
+				save.open(path);
+				save_game_options(save, game_options);
+				save.close();
+
 				break;
 
 			case 6:
-				load_game_options(std::cin, game_options);
+				
+				load_game_options(load, game_options);
 				break;
 
 			    default:
@@ -147,7 +153,7 @@
 			switch (user_choice)
 			{
 			case MainMenuChoice::Quit:
-				std::cout << "\nBye bye!\n";
+				std::cout << "\n GOOD BYE!\n";
 				return;
 			case MainMenuChoice::UserPlaysAgainstComputer:
 				user_plays_against_computer(game_options);
@@ -159,7 +165,7 @@
 				configure_game_options(game_options);
 				break;
 			case MainMenuChoice::Error:
-				std::cout << "\nYou did not enter a valid choice, please try again\n";
+				std::cout << "\n ERROR! enter a valid choice, try again\n";
 				break;
 			}
 		}
