@@ -1,4 +1,3 @@
-
 #include <bulls_and_cows_lib/game_solver.hpp>
 #include <catch2/catch.hpp>
 #include <algorithm>
@@ -7,7 +6,7 @@
 // Examples of unit tests for the functions declared in game_solver.hpp
 // These unit tests are disabled because you first need to define the tested functions in game_solver.cpp
 
-/*
+
 
 static unsigned int computed_value(const bulls_and_cows::GameOptions game_options, const bulls_and_cows::Code& code)
 {
@@ -76,4 +75,4 @@ TEST_CASE("TEST bulls_and_cows::remove_incompatible_codes_from_possible_solution
     REQUIRE(possible_solutions.codes[0].value == "HABCD");
 }
 
-*/
+
