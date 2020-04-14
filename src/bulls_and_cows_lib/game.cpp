@@ -80,15 +80,42 @@ namespace bulls_and_cows {
                 "    Display a message telling if the computer won or lost\n";*/
 
 
-
+        Board board = create_board(game_options);
         PossibleSolutions PSolution;
         PSolution = generate_all_possible_codes(game_options);
 
-        for (int unsigned i=0;i<6;i++)
-                std::cout << PSolution.codes[i].value<<"\n";
-        
+       
 
-        
+        do
+        {
+            display_board(std::cout, game_options, board);
+            std::cout << "Number of remaining possible codes: " << PSolution.codes.size() << "\n";
+           
+          
+            AttemptAndFeedback att;
+            att.attempt = pick_random_attempt(PSolution);           
+            att.feedback = compare_attempt_with_secret_code(att.attempt, board.secret_code);
+
+            board.attempts_and_feedbacks.push_back(att);
+
+            remove_incompatible_codes_from_possible_solutions(att, PSolution);
+
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            
+        } while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
+
+         display_board(std::cout, game_options, board);
+
+        bool resultat;
+
+        resultat = is_win(game_options, board);
+
+        if (resultat == true)
+            std::cout << "COMPUTER WIN!!!\n";
+        else
+            std::cout << "COMPUTER LOST!!!\n";
+
+        std::cout << "END OF GAME!!!\n";
 
     }
 
