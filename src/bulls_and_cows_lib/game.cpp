@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <windows.h>
+
 
 namespace bulls_and_cows {
 
@@ -40,36 +42,43 @@ namespace bulls_and_cows {
         }
         
         
-        /* "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";*/
+       
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
+        Board board = create_board(game_options);
+        PossibleSolutions possible_solutions = generate_all_possible_codes(game_options);
+        AttemptAndFeedback attempt_and_feedback;
+        do
+        {
+            display_board(std::cout, game_options, board);
+
+            std ::cout << "Number of remaining possible codes : " << possible_solutions.codes.size() << std::endl;
+
+            Sleep(1);
+
+            attempt_and_feedback.attempt = pick_random_attempt(possible_solutions);
+
+            attempt_and_feedback.feedback =
+                compare_attempt_with_secret_code(attempt_and_feedback.attempt, board.secret_code);
+
+            board.attempts_and_feedbacks.push_back(attempt_and_feedback);
+
+            remove_incompatible_codes_from_possible_solutions(attempt_and_feedback, possible_solutions);
+
+        } while (!is_end_of_game(game_options, board) && !is_win(game_options, board));
+
+        display_board(std ::cout, game_options, board);
+
+        if (is_win(game_options, board))
+        {
+            std ::cout << "IA a gagné "  << std::endl;
+        }
+        else
+        {
+            std ::cout << "IA n'a pas trouvé " << std::endl;
+        }
     }
 
     void configure_game_options(GameOptions& game_options)
