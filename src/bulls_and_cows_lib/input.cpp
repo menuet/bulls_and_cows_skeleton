@@ -7,7 +7,8 @@ namespace bulls_and_cows {
     std::string ask_string(std::istream& input_stream)
     {
         std::string value{};
-        std::getline(input_stream, value);
+		std::cin >> value;
+        //std::getline(input_stream, value);
         return value;
     }
 
@@ -17,8 +18,9 @@ namespace bulls_and_cows {
         std::istringstream iss(string_value);
         int value{};
         iss >> value;
-        if (iss.fail() || iss.peek() != std::stringstream::traits_type::eof())
-            return default_value;
+		if (iss.fail() || iss.peek() != std::stringstream::traits_type::eof()) {
+			return default_value;
+		}
         return value;
     }
 

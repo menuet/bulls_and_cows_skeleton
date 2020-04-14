@@ -27,8 +27,9 @@ namespace bulls_and_cows {
             return MainMenuChoice::ComputerPlaysAgainstComputer;
         case 3:
             return MainMenuChoice::ConfigureOptions;
+		default:
+			return MainMenuChoice::Error;
         }
-        return MainMenuChoice::Error;
     }
 
 } // namespace bulls_and_cows
