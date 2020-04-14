@@ -63,9 +63,9 @@ namespace bulls_and_cows {
 	{
 		if (possible_solutions.codes.size() != 0) {
 			int pos = (generate_random_integer(0, static_cast<int> (possible_solutions.codes.size() - 1)));
-			return possible_solutions.codes[pos];
+			return possible_solutions.codes.at(pos);
 		}
-		return possible_solutions.codes[0];
+		return possible_solutions.codes.at(0);
 	}
 
 
