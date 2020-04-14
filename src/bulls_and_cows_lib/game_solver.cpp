@@ -2,6 +2,7 @@
 #include "game_solver.hpp"
 #include "random.hpp"
 
+
 namespace bulls_and_cows {
 
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options)
@@ -10,15 +11,12 @@ namespace bulls_and_cows {
         Code first_code;
 
         // Création du premier code "AAAA..." nécessaire à la récurrence
-        while (first_code.value.size() != game_options.number_of_characters_per_code)
-        {
-            first_code.value += game_options.minimum_allowed_character;
-        }
-        possible_solution.codes.push_back(first_code);
+        possible_solution.codes.push_back(
+            Code{std::string(game_options.number_of_characters_per_code, game_options.minimum_allowed_character)});
 
         // Calcul de du nombre total de possibilité de codes
-        int ecart_lettre = game_options.maximum_allowed_character - game_options.minimum_allowed_character + 1;
-        double tot_nb_code = pow(ecart_lettre, game_options.number_of_characters_per_code);
+        const int ecart_lettre = game_options.maximum_allowed_character - game_options.minimum_allowed_character + 1;
+        const double tot_nb_code = pow(ecart_lettre, game_options.number_of_characters_per_code);
 
         // Création des premières variables nécessaires à la récurrence
         size_t totnb_createdcode = possible_solution.codes.size();

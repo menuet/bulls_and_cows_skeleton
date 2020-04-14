@@ -9,6 +9,9 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <windows.h>
+#include <tchar.h>
+#include <stdio.h>
 
 // Marc Belleperche m'a aidé pour ce TP pour l'implémentation de quelques fonctions (dans game.cpp ET game_option.cpp)
 
@@ -36,6 +39,7 @@ namespace bulls_and_cows {
             bulls_and_cows::display_board(std::cout, game_options, board);
         }
         
+       
     }
 
 
@@ -51,7 +55,7 @@ namespace bulls_and_cows {
         while (bulls_and_cows::is_end_of_game(game_options, ia_board) == false &&
                bulls_and_cows::is_win(game_options, ia_board) == false)
         {
-
+            //Création d'un attempt et d'un feedback
             Code code_ia_attempt = pick_random_attempt(possible_solution);
             AttemptAndFeedback newattemp;
             newattemp.feedback = compare_attempt_with_secret_code(code_ia_attempt, ia_board.secret_code);
@@ -77,29 +81,25 @@ namespace bulls_and_cows {
             std::cout << "The attempt is     : " << code_ia_attempt.value << "    *\n";
             //END TEXT DISPLAY
 
-            
 
             ia_board.attempts_and_feedbacks.push_back(newattemp);
-
-            
             display_board(std::cout, game_options, ia_board);
-
             remove_incompatible_codes_from_possible_solutions(newattemp,possible_solution);
-            
+
+            //Création d'un thread pour mieux voir les attempts de l'IA
             std::this_thread::sleep_for(std::chrono::seconds(1));
 
         }
-        
+
+        //LAST TEXT DISPLAY : Selon le résultat
         if (bulls_and_cows::is_win(game_options, ia_board)==true)
         {
-            // LAST DISPLAY
             for (unsigned d = 0; d < game_options.number_of_characters_per_code; d++)
             {
                 std::cout << " ";
             }
             std::cout << "What a smart IA ! \n";
         }
-
         else
         {
             for (unsigned d = 0; d < game_options.number_of_characters_per_code; d++)
