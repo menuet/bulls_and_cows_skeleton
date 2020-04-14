@@ -32,8 +32,7 @@ namespace bulls_and_cows {
     
       GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)
     {
-        const int user_choice = ask_int_or_default(input_stream, -1);
-        switch (user_choice)
+        switch (ask_int_or_default(input_stream,-1))
         {
         case 0:
             return GameOptionsMenuChoice::BackToMain;
