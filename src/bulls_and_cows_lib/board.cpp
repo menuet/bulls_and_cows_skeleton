@@ -1,6 +1,7 @@
 
 #include "board.hpp"
 #include "random.cpp"
+#include "input.hpp"
 namespace bulls_and_cows {
     using namespace std;
     Board create_board(const GameOptions& game_options)
@@ -152,7 +153,7 @@ namespace bulls_and_cows {
         output_stream << "What is your guess #01 (" << game_options.number_of_characters_per_code
                       << " characters between '" << game_options.minimum_allowed_character << "' and '"
                       << game_options.maximum_allowed_character << "') ?" << endl;
-        input_stream >> attempt.value;
+         attempt.value = ask_string(input_stream);
 
         while (!validate_attempt(game_options, attempt))
         {
@@ -160,7 +161,7 @@ namespace bulls_and_cows {
                           << "What is your guess #01 (" << game_options.number_of_characters_per_code
                           << " characters between '" << game_options.minimum_allowed_character << "' and '"
                           << game_options.maximum_allowed_character << "') ?" << endl;
-            input_stream >> attempt.value;
+            attempt.value = ask_string(input_stream);
         }
 
         return attempt;
