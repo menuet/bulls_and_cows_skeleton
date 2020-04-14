@@ -11,30 +11,30 @@ namespace bulls_and_cows {
 
      // TODO: define the body of the functions declared in game_solver.cpp
 
-    void generation_all_codes(int num, int max, const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabeat, Code& codes)
+    void generation_all_codes(const GameOptions& game_options, PossibleSolutions& pls, std::string used_alphabeat, Code& codes)
     {
         for (char temp : used_alphabeat)
         {
-            if (num <= max)
+            if (codes.value.length() < game_options.number_of_characters_per_code)
             {
                 codes.value.push_back(temp);
-                num++;
-                generation_all_codes(num, max, game_options, pls, used_alphabeat, codes);
+                //num++;
+                generation_all_codes(game_options, pls, used_alphabeat,codes);
                 codes.value.pop_back();
             }
-            else if (num > max)
+            else if (codes.value.length() >= game_options.number_of_characters_per_code)
             {
                 pls.codes.push_back(codes);
                 break;
             }
-            num--;
+            //num--;
         }
     }
 
 
        void deleteduplicates(PossibleSolutions& pls)
     {
-        auto end = std::remove_if(pls.codes.begin(), pls.codes.end(), [&pls](Code const& code) -> bool {
+        auto end = std::remove_if(pls.codes.begin(), pls.codes.end(), [](Code const& code) -> bool {
             // use of lambda expression to pass several parameters to remove_if
             std::string used_chars;
             for (const char& c : code.value)
@@ -64,7 +64,9 @@ namespace bulls_and_cows {
 
         Code codes; 
 
-        generation_all_codes(1, game_options.number_of_characters_per_code, game_options, avc, used_alphabeat, codes);
+        //generation_all_codes(1, game_options.number_of_characters_per_code, game_options, avc, used_alphabeat, codes);
+        generation_all_codes(game_options, avc, used_alphabeat, codes);
+
 
         std::cout << "char from min to max : " << used_alphabeat <<"\n";
         if (game_options.unicate) deleteduplicates(avc);
@@ -83,7 +85,6 @@ namespace bulls_and_cows {
 
     void remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback, PossibleSolutions& possible_solutions)
     {
-
         auto it = std::remove_if(possible_solutions.codes.begin(), possible_solutions.codes.end(), 
             [attempt_and_feedback](Code &c) -> bool {
                         Feedback tempfeed = compare_attempt_with_secret_code(c, attempt_and_feedback.attempt);

@@ -124,29 +124,35 @@ namespace bulls_and_cows {
     }
 
 
-    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
-                         const Board& board)
+    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options, const Board& board)
         {
             Code incode;
             auto current_attempt = board.attempts_and_feedbacks.size() + 1;
 
             bool valueformat = false;
+
+
             while (!valueformat)
             {
                 output_stream << "What is your guess #" << current_attempt << " ("
                               << game_options.number_of_characters_per_code << " characters between '"
                               << game_options.minimum_allowed_character << "' and '"
                               << game_options.maximum_allowed_character << "')\n? ";
-
                 valueformat = true;
-
                 input_stream >> incode.value;
                 if (incode.value.size() != game_options.number_of_characters_per_code)
                 {
                     valueformat = false;
                     output_stream
                         << "Your guess has an invalid length or contains non-allowed characters, please try again\n";
-                    break;
+                    //break;
+                }
+
+                else if(game_options.unicate && !unichar(incode.value))
+                {
+                      valueformat = false;
+                      output_stream << "Please enter a code with unique characters\n";
+                      //break;
                 }
 
                 else
