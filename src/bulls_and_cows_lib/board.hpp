@@ -1,7 +1,8 @@
 
 #pragma once
-
+#include "random.hpp"
 #include "game_options.hpp"
+#include "input.hpp"
 #include <string>
 #include <vector>
 
@@ -30,11 +31,20 @@ namespace bulls_and_cows {
         std::vector<AttemptAndFeedback> attempts_and_feedbacks{}; // List of attempts of the user
     };
 
-    // Create a board and with a new random secret code composed of allowed characters
-    Board create_board(const GameOptions& game_options);
+    //Function dedicated for the display of a a beautiful homemade game board
+    void display_board(const GameOptions& game_options, Board Board);
+
+    // Create a secret code composed of allowed characters proposed by the user
+    std :: string create_secret(const GameOptions& game_options, std::istream& input_stream);
+
+    // Create a secret code composed of allowed characters proposed by the user
+    std ::string create_secret_randomly(const GameOptions& game_options, std::istream& input_stream);
 
     // Validate that a user-entered code contains proper number of allowed characters
     bool validate_attempt(const GameOptions& game_options, const Code& attempt);
+
+    // Create a secret code composed of allowed characters proposed by the user
+    std ::string create_attempt(const GameOptions& game_options, std::istream& input_stream);
 
     // Compare a user-entered code with the secret code and give the corresponding number of bulls and cows
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code);
@@ -44,9 +54,6 @@ namespace bulls_and_cows {
 
     // Test if the last attempt is a win
     bool is_win(const GameOptions& game_options, const Board& board);
-
-    // Display the scret code and the list of attempts of the board
-    void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board);
 
     // Ask the user to provide another attempt
     Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,

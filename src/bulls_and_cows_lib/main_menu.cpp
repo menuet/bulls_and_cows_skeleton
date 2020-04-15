@@ -14,6 +14,21 @@ namespace bulls_and_cows {
                          "What is your choice ? ";
     }
 
+    MainMenuChoice1 ask_main_random_or_typed(std::istream& input_stream)
+    {
+        const int user_choice = ask_int_or_default(input_stream, -1);
+        switch (user_choice)
+        {
+        case 0:
+            return MainMenuChoice1::Quit;
+        case 1:
+            return MainMenuChoice1:: RandomGenerator;
+        case 2:
+            return MainMenuChoice1:: UserGenerated;
+        }
+        return MainMenuChoice1::Error;
+    
+    }
     MainMenuChoice ask_main_menu_choice(std::istream& input_stream)
     {
         const int user_choice = ask_int_or_default(input_stream, -1);
@@ -30,5 +45,6 @@ namespace bulls_and_cows {
         }
         return MainMenuChoice::Error;
     }
+
 
 } // namespace bulls_and_cows
