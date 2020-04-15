@@ -6,7 +6,7 @@
 // Examples of unit tests for the functions declared in board.hpp
 // These unit tests are disabled because you first need to define the tested functions in board.cpp
 
-/*
+
 
 TEST_CASE("TEST bulls_and_cows::create_board")
 {
@@ -159,26 +159,27 @@ TEST_CASE("TEST bulls_and_cows::display_board WHEN codebreaker has not yet playe
     bulls_and_cows::display_board(output_stream, game_options, board);
 
     // ASSERT
+
     const std::string output_result = output_stream.str();
     REQUIRE(output_result ==
-            "-------------------------------------\n"
-            "| SECRET   * * * * * |              |\n"
-            "-------------------------------------\n"
-            "| ATTEMPTS           | BULLS | COWS |\n"
-            "-------------------------------------\n"
-            "| #12      . . . . . |       |      |\n"
-            "| #11      . . . . . |       |      |\n"
-            "| #10      . . . . . |       |      |\n"
-            "| #09      . . . . . |       |      |\n"
-            "| #08      . . . . . |       |      |\n"
-            "| #07      . . . . . |       |      |\n"
-            "| #06      . . . . . |       |      |\n"
-            "| #05      . . . . . |       |      |\n"
-            "| #04      . . . . . |       |      |\n"
-            "| #03      . . . . . |       |      |\n"
-            "| #02      . . . . . |       |      |\n"
-            "| #01      . . . . . |       |      |\n"
-            "-------------------------------------\n");
+            "\n-----------------------------------------\n"
+            "| Secret        *****   |               |\n"
+            "-----------------------------------------\n"
+            "| ATTEMPTS              | BULLS | COWS  |\n"
+            "-----------------------------------------\n"
+            "| #12           -----   |       |       |\n"
+            "| #11           -----   |       |       |\n"
+            "| #10           -----   |       |       |\n"
+            "| #09           -----   |       |       |\n"
+            "| #08           -----   |       |       |\n"
+            "| #07           -----   |       |       |\n"
+            "| #06           -----   |       |       |\n"
+            "| #05           -----   |       |       |\n"
+            "| #04           -----   |       |       |\n"
+            "| #03           -----   |       |       |\n"
+            "| #02           -----   |       |       |\n"
+            "| #01           -----   |       |       |\n"
+            "-----------------------------------------\n");
 }
 
 TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is valid")
@@ -205,4 +206,4 @@ TEST_CASE("TEST bulls_and_cows::ask_attempt WHEN attempt is invalid and then is 
             "? ");
 }
 
-*/
+
