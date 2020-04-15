@@ -1,4 +1,3 @@
-
 #include "game.hpp"
 #include "board.hpp"
 #include "game_options.hpp"
@@ -10,11 +9,12 @@
 #include <iostream>
 #include <thread>
 
+// test 4
 namespace bulls_and_cows {
-
+    // test
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
+        /*std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
                      "    DO\n"
                      "       Display the board and the list of attempts so far\n"
@@ -23,7 +23,49 @@ namespace bulls_and_cows {
                      "       Add the user's attempt to the list of attempts of the board\n"
                      "    WHILE not end of game\n"
                      "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+                     "    Display a message telling if the user won or lost\n";*/
+
+        Board myboard{}; // créer un board
+        AttemptAndFeedback my_feedback{};
+
+        myboard = create_board(game_options); // stock le board créer
+
+        do // on fait ca tant que ce n'est pas la fin de partie ou la personne gagne
+        {
+            std::cout << "\n";
+            display_board(std::cout, game_options, myboard); // affiché les tentative
+            // std::count <<myboard.secret_code.value<<"\n";
+
+            my_feedback.attempt =
+                ask_attempt(std::cout, std::cin, game_options, myboard); // stock ask attempt dans un feedback
+
+            while (!validate_attempt(game_options, my_feedback.attempt)) // tant que l'attempt est pas valide
+            {
+                std::cout << "Your attempt is not valid, try again\n";
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, myboard);
+            }
+
+            my_feedback.feedback = compare_attempt_with_secret_code(
+                my_feedback.attempt, myboard.secret_code); // fonction qui comparer l'attempt avec le code secret et qui
+                                                           // redonne le nombre de cows et de bulls
+            myboard.attempts_and_feedbacks.push_back(my_feedback); // on insère la nouvelle tentative entière avec
+                                                                   // (bulls and cows) dans attempts and feedback
+        } while (!(is_end_of_game(game_options, myboard)) && !(is_win(game_options, myboard)));
+
+        std::cout << "\n";
+        display_board(std::cout, game_options, myboard);
+
+        if (is_win(game_options, myboard))
+        {
+            std::cout << "\n"
+                      << "Tu as gagne le code secret est " << myboard.secret_code.value << "\n";
+        }
+
+        else
+        {
+            std::cout << "\n"
+                      << "Tu as perdu le code secret est " << myboard.secret_code.value << "\n";
+        }
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -44,17 +86,25 @@ namespace bulls_and_cows {
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
                "    Display a message telling if the computer won or lost\n";
+
+
+
+
     }
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        std::cout << "Type a number of attempts: ";    
+        std::cin >> game_options.max_number_of_attempts; 
+
+        std::cout << "Type a number of characters: ";
+        std::cin >> game_options.number_of_characters_per_code;
+
+        std::cout << "Type the minimum allowed character: ";
+        std::cin >> game_options.minimum_allowed_character;
+
+        std::cout << "Type the maximum allowed character: ";
+        std::cin >> game_options.maximum_allowed_character;
     }
 
     void play_game()
