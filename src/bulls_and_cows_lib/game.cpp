@@ -1,10 +1,10 @@
-
 #include "game.hpp"
 #include "board.hpp"
 #include "game_options.hpp"
 #include "game_solver.hpp"
 #include "input.hpp"
 #include "main_menu.hpp"
+#include <bulls_and_cows_lib\game_options.cpp>
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -14,18 +14,34 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
-    }
+        Board board = create_board(game_options);
+        AttemptAndFeedback newAttemptAndFeedback;
+        do
+        {
+            display_board(std::cout, game_options, board);
+            newAttemptAndFeedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+            while (!validate_attempt(game_options, newAttemptAndFeedback.attempt))
+            {
+                std::cout << "Your attempt is not valid, try again\n";
+                newAttemptAndFeedback.attempt = ask_attempt(std::cout, std::cin, game_options, board);
+            }
 
+            newAttemptAndFeedback.feedback =
+                compare_attempt_with_secret_code(newAttemptAndFeedback.attempt, board.secret_code);
+            board.attempts_and_feedbacks.push_back(newAttemptAndFeedback);
+
+        } while (!(is_end_of_game(game_options, board)) && !(is_win(game_options, board)));
+        std::cout << "\n\n";
+        display_board(std::cout, game_options, board);
+        if (is_win(game_options, board))
+        {
+            std::cout << "Wow you just won  !! The secret code was : " << board.secret_code.value << std::endl;
+        }
+        else
+        {
+            std::cout << "Sorry but you lost. The secret combinaison was : " << board.secret_code.value << std::endl;
+        }
+    }
     void computer_plays_against_computer(const GameOptions& game_options)
     {
         std::cout
@@ -48,13 +64,62 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        bool exit = false;
+        std::string path = "./save.txt";
+        std::ofstream save;
+        std::ifstream load(path);
+
+        while (!exit)
+        {
+            std::cout << "\n";
+            std::cout << "#################################"
+                      << "\n";
+            std::cout << "#################################"
+                      << "\n";
+            std::cout << "#################################"
+                      << "\n";
+            std::cout << "\n";
+
+            display_game_options(std::cout, game_options);
+            display_game_options_menu(std::cout);
+            const auto choice = ask_game_options_menu_choice(std::cin);
+
+            switch (choice)
+            {
+            case GameOptionsMenuChoice::BackToMain:
+                return;
+            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts: {
+                option_ModifyMaximumNumberOfAttempts(game_options);
+                break;
+            }
+            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode: {
+                option_ModifyNumberOfCharactersPerCode(game_options);
+                break;
+            }
+            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter: {
+                option_ModifyMinimumAllowedCharacter(game_options);
+                break;
+            }
+            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter: {
+                option_ModifyMaximumAllowedCharacter(game_options);
+                break;
+            }
+            case GameOptionsMenuChoice::SaveOptions: {
+                std::ofstream game_options_file{"game_options.txt", std::ios::app};
+                save_game_options(game_options_file, game_options);
+                game_options_file.close();
+                break;
+            }
+            case GameOptionsMenuChoice::LoadOptions: {
+                std::ifstream file("game_options.txt");
+                load_game_options(file, game_options);
+                break;
+            }
+            case GameOptionsMenuChoice::Error:
+                std::cout << "\nYou did not enter a valid choice, please try again\n";
+                break;
+            }
+        }
     }
 
     void play_game()
@@ -64,13 +129,14 @@ namespace bulls_and_cows {
         while (true)
         {
             std::cout << "\n#################################\n";
+            std::cout << "\n#################################\n";
             display_main_menu(std::cout);
 
-            const auto user_choice = ask_main_menu_choice(std::cin);
-            switch (user_choice)
+            const auto choice = ask_main_menu_choice(std::cin);
+            switch (choice)
             {
             case MainMenuChoice::Quit:
-                std::cout << "\nBye bye!\n";
+                std::cout << "\nGood bye!\n";
                 return;
             case MainMenuChoice::UserPlaysAgainstComputer:
                 user_plays_against_computer(game_options);
