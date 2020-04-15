@@ -12,18 +12,63 @@
 
 namespace bulls_and_cows {
 
-    void user_plays_against_computer(const GameOptions& game_options)
+    void user_plays_against_computer(const GameOptions& game_options)// Beaucoup de fonction d'affichage donc pas besoin de plus expliquer
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        // Create a board with a randomly generated secret code\n"
+
+        Board my_screen{};
+
+        AttemptAndFeedback my_feedback{};
+
+        my_screen = create_board(game_options);
+
+        do
+
+        {
+
+            std::cout << "\n";
+
+            display_board(std::cout, game_options, my_screen);
+
+            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, my_screen);
+
+            while (!validate_attempt(game_options, my_feedback.attempt))
+
+            {
+
+                std::cout << "Try again, you're not good yet! \n";
+
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, my_screen);
+            }
+
+            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, my_screen.secret_code);
+
+            my_screen.attempts_and_feedbacks.push_back(my_feedback);
+
+        } while (!(is_end_of_game(game_options, my_screen)) && !(is_win(game_options, my_screen)));
+
+        std::cout << "\n";
+
+        display_board(std::cout, game_options, my_screen);
+
+        if (is_win(game_options, my_screen))
+
+        {
+
+            std::cout << "\n"
+
+                      << "You are the best  ! The secret code is : " << my_screen.secret_code.value << "\n";
+        }
+
+        else
+
+        {
+
+            std::cout << "\n"
+
+                      << "LOOSER!!!! BOUHHHH! The secret code is : " << my_screen.secret_code.value << "\n";
+        }
+
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)
@@ -48,13 +93,74 @@ namespace bulls_and_cows {
 
     void configure_game_options(GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    DO\n"
-                     "       Display the current game options\n"
-                     "       Display the game options menu\n"
-                     "       Ask the user to type its choice\n"
-                     "       Treat the user's choice\n"
-                     "    UNTIL user's choice is to go back to main menu\n";
+        /*display_game_options_menu(std::cout);*/
+        while (true)
+
+        {
+
+            display_game_options(std::cout, game_options);
+
+            display_game_options_menu(std::cout);
+
+            GameOptionsMenuChoice user_choice = ask_game_options_menu_choice(std::cin);
+
+            switch (user_choice) // require int type
+
+            {
+
+            case GameOptionsMenuChoice::BackToMain:
+
+                return;
+
+            case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
+
+                std::cout << " 1 - Modify maximum number of attemps per game\n";
+
+                std::cin >> game_options.max_number_of_attempts;
+
+                break;
+
+            case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
+
+                std::cout << " 2 - Modify number of character in a code \n";
+
+                std::cin >> game_options.number_of_characters_per_code;
+
+                break;
+
+            case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
+
+                std::cout << "3 - Modify Minimun allowed character\n";
+
+                std::cin >> game_options.minimum_allowed_character;
+
+                break;
+
+            case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
+
+                std::cout << "4 - Modify Maximum allowed character \n";
+
+                std::cin >> game_options.maximum_allowed_character;
+
+                break;
+
+            case GameOptionsMenuChoice::SaveOptions:
+
+                save_game_options(std::cout, game_options);
+
+                break;
+
+            case GameOptionsMenuChoice::LoadOptions:
+
+                load_game_options(std::cin, game_options);
+
+                break;
+
+            default:
+
+                break;
+            }
+        }
     }
 
     void play_game()
