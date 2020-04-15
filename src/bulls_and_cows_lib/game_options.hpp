@@ -36,4 +36,12 @@ namespace bulls_and_cows {
 
     bool load_game_options(std::istream& input_file_stream, GameOptions& game_options);
 
+    void modify_maximum_number_of_attempts(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
+
+    void modify_number_of_characters_per_code(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
+
+    void modify_minimum_allowed_characters(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
+
+    void modify_maximum_allowed_characters(GameOptions& game_options, std::ostream& output_stream, std::istream& input_stream);
+
 } // namespace bulls_and_cows

@@ -49,7 +49,7 @@ namespace bulls_and_cows {
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board);
 
     // Ask the user to provide another attempt
-    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options,
-                     const Board& board);
+    Code ask_attempt(std::ostream& output_stream, std::istream& input_stream, const GameOptions& game_options, const Board& board); 
+
 
 } // namespace bulls_and_cows
