@@ -31,6 +31,7 @@ namespace bulls_and_cows {
 
         Board board = create_board(game_options);
 
+
         do
         {
             display_board(std::cout, game_options, board);
@@ -84,7 +85,9 @@ namespace bulls_and_cows {
         PossibleSolutions PSolution;
         PSolution = generate_all_possible_codes(game_options);
 
-        do
+       
+
+         do
         {
             display_board(std::cout, game_options, board);
             std::cout << "Number of remaining possible codes: " << PSolution.codes.size() << "\n";

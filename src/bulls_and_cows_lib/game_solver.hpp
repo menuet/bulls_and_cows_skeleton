@@ -12,6 +12,7 @@ namespace bulls_and_cows {
         std::vector<Code> codes;
     };
 
+
     PossibleSolutions generate_all_possible_codes(const GameOptions& game_options);
  
 

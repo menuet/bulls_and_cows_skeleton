@@ -65,16 +65,26 @@ namespace bulls_and_cows {
            
         }
 
-        for (int unsigned i = 0; i < secret_code.value.size(); i++)
+        for (int unsigned secret_code_index = 0; secret_code_index < secret_code.value.size() ; secret_code_index++)
         {
-            for (int unsigned j = 0; j < attempt.value.size(); j++)
+            bool verif = false;
+            for (int unsigned attempt_index = 0; attempt_index < attempt.value.size(); attempt_index++)
             {
-                if (attempt.value[j] == secret_code.value[i])
+                if (attempt.value[attempt_index] == secret_code.value[secret_code_index])
                 {
-                    attempt.value.erase(j, 1);
+                    attempt.value.erase(attempt_index, 1);
+                    
                     feedback.cows++;
-                    i--;
+                    attempt_index--;
+                    verif = true;
+                    break;
                 }
+            }
+
+            if (verif == true)
+            {
+                secret_code.value.erase(secret_code_index, 1);
+                secret_code_index--;
             }
 
         }
@@ -120,7 +130,7 @@ namespace bulls_and_cows {
         else
             secretmot = board.secret_code.value;
 
-            output_stream << "-----------------------------------------\n";
+        output_stream << "\n-----------------------------------------\n";
         output_stream << "| Secret\t" << secretmot << "\t|\t\t|\n";
         output_stream << "-----------------------------------------\n";
         output_stream << "| ATTEMPTS\t\t| BULLS | COWS  |\n ";
@@ -173,7 +183,7 @@ namespace bulls_and_cows {
             output_stream << board.attempts_and_feedbacks.size() + 1;
             output_stream << " (" << game_options.number_of_characters_per_code;
             output_stream << " characters between '" << game_options.minimum_allowed_character << "' and '"
-                          << game_options.maximum_allowed_character << "' )\n?";
+                          << game_options.maximum_allowed_character << "')\n? ";
 
             input_stream >> code.value;
 
@@ -185,6 +195,12 @@ namespace bulls_and_cows {
                
 
             verif = validate_attempt(game_options, code);
+            
+            if (!verif)
+            {
+                output_stream
+                    << " Your guess has an invalid length or contains non-allowed characters, please try again\n";
+            }
         }
 
         return code;

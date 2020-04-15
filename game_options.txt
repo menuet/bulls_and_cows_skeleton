@@ -1,4 +1,4 @@
 max_number_of_attempts=12
 number_of_characters_per_code=5
-minimum_allowed_character=B
-maximum_allowed_character=H
+minimum_allowed_character=A
+maximum_allowed_character=U
