@@ -86,7 +86,7 @@
 		bool menuretour = false;
 		std::string path = "C:\DEVCPP\PROJECTS\bulls_and_cows_skeleton\game_options.txt"; // ajouter le chemin du fichier dans lequel les options vont etres enregistrer
 		std::ofstream save;
-		std::ofstream load(path);
+		std::ifstream load_file(path);
 
 		while (!menuretour)
 
@@ -132,7 +132,7 @@
 
 			case 6:
 				
-				load_game_options(load, game_options);
+				load_game_options(load_file, game_options);
 				break;
 
 			    default:
