@@ -20,7 +20,7 @@ namespace bulls_and_cows {
             myboard.secret_code.value.push_back(temp);   // retourné le caractère
         }
 
-        std::cout << myboard.secret_code.value; // accèder à la valeur du code secret dans myboard
+        //std::cout << myboard.secret_code.value; // accèder à la valeur du code secret dans myboard
         return myboard;
     }
 
@@ -145,17 +145,11 @@ namespace bulls_and_cows {
     {
         Code attempt{}; // créer un code attempt
 
-        // attempt.value = ask_string(input_stream); autre méthode
 
-        auto nb_attempt =
-            board.attempts_and_feedbacks.size() + 1; // augment le nb_attempt de 1 quand on a essayé une fois
-        unsigned int nb_char =
-            game_options.number_of_characters_per_code;          // nombre de caractère qu'on doit rentrer (ici 5)
-        const char max = game_options.maximum_allowed_character; // définis le caractère maximum (ici Z)
-        const char min = game_options.minimum_allowed_character; // définis le caractère minimum (ici A)
-
-        output_stream << "Ceci est votre " << nb_attempt << " tentative, choisisez " << nb_char << " caracters entre "
-                      << min << " et " << max << ": ";
+        output_stream << "Ceci est votre " << board.attempts_and_feedbacks.size() + 1 << " tentative, choisisez "
+                      << game_options.number_of_characters_per_code << " caracters entre "
+                      << game_options.minimum_allowed_character << " et " << game_options.maximum_allowed_character
+                      << ": ";
         attempt.value = ask_string(input_stream); // input stream c'est la siasie de l'utilisateur on va vérifié que
                                                   // c'est un string et si ca l'est on la met dans attempt.value
         return attempt;

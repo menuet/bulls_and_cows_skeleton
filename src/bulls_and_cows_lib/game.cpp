@@ -86,6 +86,10 @@ namespace bulls_and_cows {
                "    WHILE not end of game\n"
                "    Display the board and the list of attempts so far\n"
                "    Display a message telling if the computer won or lost\n";
+
+
+
+
     }
 
     void configure_game_options(GameOptions& game_options)
