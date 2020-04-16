@@ -37,7 +37,7 @@ namespace bulls_and_cows {
 		return true; // vrai si ca correspond bien a la taille du secret code.
 
 	}
-	
+
 	// verifier le nombre de charactere du code du joueur est bon
 	Feedback compare_attempt_with_secret_code(Code attempt, Code secret_code) // comparer les 2 codes
 	{
@@ -65,15 +65,15 @@ namespace bulls_and_cows {
 				*iter = '?';
 			}
 		}
-			  			
+
 		return feedback;
 	}
-	
+
 	//voir si le jeu est fini ou pas, on effectue un test, et si le code est bon, le jeu est fini
 	bool is_end_of_game(const GameOptions& game_options, const Board& board)
 	{
 		// Comparer si le nombre de tentative est egal au nombre max autorisée
-		if (game_options.max_number_of_attempts != board.attempts_and_feedbacks.size()) 
+		if (game_options.max_number_of_attempts != board.attempts_and_feedbacks.size())
 		{
 			return false; // si faux renvoie false
 		}

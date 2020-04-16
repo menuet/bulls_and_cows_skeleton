@@ -1,7 +1,7 @@
 #include "game_options.hpp"
 #include "input.hpp"
 
-namespace bulls_and_cows 
+namespace bulls_and_cows
 {
 
 	// TODO: define the body of the functions declared in game_options.cpp
@@ -19,8 +19,8 @@ namespace bulls_and_cows
 	}
 
 	void display_game_options(std::ostream& output_stream, const GameOptions& game_options)
-	// on va mettre en parametre les game option pour y avoir accès à l'affichage le"." est pour voir l'attribut dans la struct
-	
+		// on va mettre en parametre les game option pour y avoir accès à l'affichage le"." est pour voir l'attribut dans la struct
+
 	{
 		output_stream << "\n#################################\nHere are the current game_options:\n"
 			<< "Maximum number of attempts per game: " << game_options.max_number_of_attempts << "\n"
@@ -28,7 +28,7 @@ namespace bulls_and_cows
 			<< "Range of allowed characters: from '" << game_options.minimum_allowed_character << "' to '"
 			<< game_options.maximum_allowed_character << "'\n";
 	}
-	
+
 	GameOptionsMenuChoice ask_game_options_menu_choice(std::istream& input_stream)// ask the user to enter stream 
 	{
 
@@ -58,8 +58,8 @@ namespace bulls_and_cows
 	}
 
 	bool save_game_options(std::ostream& output_file_stream, const GameOptions& game_options)
-	//  streams aren't different than others they are just exiting so we think that we are in a text file
-	
+		//  streams aren't different than others they are just exiting so we think that we are in a text file
+
 	{
 		output_file_stream << "max_number_of_attempts=" << game_options.max_number_of_attempts << "\n"
 			<< "number_of_characters_per_code=" << game_options.number_of_characters_per_code << "\n"
@@ -69,7 +69,7 @@ namespace bulls_and_cows
 	}
 
 	bool load_game_options(std::istream& input_file_stream, GameOptions& game_options)//entering stream & gameoption
-	
+
 	{
 
 		std::string line;//string prenant toute les lignes 1 a 1
