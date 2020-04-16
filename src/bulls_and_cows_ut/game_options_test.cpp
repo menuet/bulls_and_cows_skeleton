@@ -7,7 +7,6 @@
 // These unit tests are disabled because you first need to define the tested functions in game_options.cpp
 
 /*
-
 TEST_CASE("TEST bulls_and_cows::display_game_options")
 {
     // ARRANGE
@@ -99,5 +98,6 @@ TEST_CASE("TEST bulls_and_cows::load_game_options")
     REQUIRE(game_options.minimum_allowed_character == '1');
     REQUIRE(game_options.maximum_allowed_character == '8');
 }
-
 */
+
+
