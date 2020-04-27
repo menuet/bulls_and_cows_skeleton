@@ -10,6 +10,7 @@
 #include <iostream>
 #include <thread>
 
+
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
