@@ -9,23 +9,74 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
-
+#include <vector>
 
 namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
-    }
+        // std::cout << "TODO:\n"
+        //              "    Create a board with a randomly generated secret code\n"
+        //              "    DO\n"
+        //              "       Display the board and the list of attempts so far\n"
+        //              "       Ask the user to make another attempt\n"
+        //              "       Compare the user's attempt with the secret code and deduce the number of bulls and
+        //              cows\n" "       Add the user's attempt to the list of attempts of the board\n" "    WHILE not
+        //              end of game\n" "    Display the board and the list of attempts so far\n" "    Display a message
+        //              telling if the user won or lost\n";
+        std::cout << "\n#################################\n";
+        std::cout << "Let's play! \n";
+        Board board = create_board(game_options);
+
+        display_board(std::cout, game_options, board);
+
+        Code attempt = ask_attempt(std::cout, std::cin, game_options, board);
+
+        Feedback feedBack = compare_attempt_with_secret_code(attempt, board.secret_code);
+        AttemptAndFeedback attempts_and_feedbacks{attempt, feedBack};
+        std::vector<AttemptAndFeedback> listAttemptAndFeed{attempts_and_feedbacks};
+        board.attempts_and_feedbacks = listAttemptAndFeed;
+
+        bool isEndOfGame = is_end_of_game(game_options, board);
+
+        while (!isEndOfGame)
+        {
+            display_board(std::cout, game_options, board);
+
+            attempt = ask_attempt(std::cout, std::cin, game_options, board);
+
+            feedBack = compare_attempt_with_secret_code(attempt, board.secret_code);
+            attempts_and_feedbacks.feedback = feedBack;
+            attempts_and_feedbacks.attempt = attempt;
+
+            board.attempts_and_feedbacks.push_back(attempts_and_feedbacks);
+
+            isEndOfGame = is_end_of_game(game_options, board);
+        }
+        display_board(std::cout, game_options, board);
+        if (is_win(game_options, board))
+            std::cout << "You won\n";
+
+        else
+            std::cout << "You lost!!!\n";
+        play_game();
+
+        // for (int i = 0; i < game_options.max_number_of_attempts; i++)
+        // {
+        //     display_board(std::cout, game_options, board);
+        //     std::cout << "What is your guess #";
+        //     if (i < 10)
+        //         std::cout << "0" << i;
+        //     else
+        //         std::cout << i;
+        //     std::cout << "(" << game_options.number_of_characters_per_code << "characters between '"
+        //               << game_options.minimum_allowed_character << "' and '" <<
+        //               game_options.maximum_allowed_character
+        //               << "')\n?";
+        // }
+
+        // validate_attempt()
+    } // namespace bulls_and_cows
 
     void computer_plays_against_computer(const GameOptions& game_options)
     {
